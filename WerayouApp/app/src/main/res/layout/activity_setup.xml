@@ -26,7 +26,7 @@
                 android:fontFamily="@font/righteous"
                 android:text="Werayou"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -145,6 +145,7 @@
                 android:id="@+id/imageButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:elevation="1dp"
                 android:background="@drawable/background_add_image_profil"
                 android:src="@drawable/ic_camera"
                 app:layout_constraintBottom_toBottomOf="@+id/profile_image"
