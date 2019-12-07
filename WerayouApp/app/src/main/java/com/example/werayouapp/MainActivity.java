@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Button signoutButton;
     private TextView statusText;
     String number;
+    String country;
 
     private String phoneVerificationId;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks
@@ -51,17 +53,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        phoneText = (EditText) findViewById(R.id.phoneText);
-        codeText = (EditText) findViewById(R.id.codeText);
-        verifyButton = (Button) findViewById(R.id.verifyButton);
-        sendButton = (Button) findViewById(R.id.sendButton);
-        resendButton = (Button) findViewById(R.id.resendButton);
-        signoutButton = (Button) findViewById(R.id.signoutButton);
-        statusText = (TextView) findViewById(R.id.statusText);
-
-
-
-        ccp = (CountryCodePicker) findViewById(R.id.ccp);
+        phoneText =  findViewById(R.id.phoneText);
+        codeText = findViewById(R.id.codeText);
+        verifyButton =  findViewById(R.id.verifyButton);
+        sendButton =  findViewById(R.id.sendButton);
+        resendButton =  findViewById(R.id.resendButton);
+        signoutButton = findViewById(R.id.signoutButton);
+        statusText =  findViewById(R.id.statusText);
+        ccp =findViewById(R.id.ccp);
         ccp.registerCarrierNumberEditText(phoneText);
 
         verifyButton.setEnabled(false);
@@ -75,17 +74,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendCode(View view) {
+        Intent intent = new Intent(MainActivity.this, SetupActivity.class);
+        startActivity(intent);
 
         number = ccp.getFullNumberWithPlus();
 
-        setUpVerificatonCallbacks();
 
+        setUpVerificatonCallbacks();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number,        // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 this,               // Activity (for callback binding)
                 verificationCallbacks);
+    }
+
+    public void toast(String msg){
+
+        Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
+
     }
 
     private void setUpVerificatonCallbacks() {
@@ -154,9 +161,7 @@ public class MainActivity extends AppCompatActivity {
                             verifyButton.setEnabled(false);
                             FirebaseUser user = task.getResult().getUser();
                             String phoneNumber = user.getPhoneNumber();
-
                             Intent intent = new Intent(MainActivity.this, SetupActivity.class);
-                            intent.putExtra("phone", phoneNumber);
                             startActivity(intent);
                             finish();
 
