@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -38,6 +39,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     byte[] final_image;
     ImageButton imageButton;
     boolean ischange=false;
+    Button button;
 
 
 
@@ -51,12 +53,21 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         age_user=findViewById(R.id.age_user);
         pays_user=findViewById(R.id.pays_user);
         spinner=findViewById(R.id.spinner);
+        button=findViewById(R.id.button);
         spinner.setOnItemSelectedListener(this);
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,genre);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spinner.setAdapter(arrayAdapter);
         setImage();
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
