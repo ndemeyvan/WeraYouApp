@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Activity.ActivityPrincipal"></activity>
         <activity android:name=".Activity.SetupActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".loginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

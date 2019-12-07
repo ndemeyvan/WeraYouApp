@@ -26,7 +26,7 @@ import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class loginActivity extends AppCompatActivity {
 
     private static final String TAG = "PhoneAuth";
 
@@ -74,12 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendCode(View view) {
-        Intent intent = new Intent(MainActivity.this, SetupActivity.class);
-        startActivity(intent);
-
         number = ccp.getFullNumberWithPlus();
-
-
         setUpVerificatonCallbacks();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number,        // Phone number to verify
@@ -161,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                             verifyButton.setEnabled(false);
                             FirebaseUser user = task.getResult().getUser();
                             String phoneNumber = user.getPhoneNumber();
-                            Intent intent = new Intent(MainActivity.this, SetupActivity.class);
+                            Intent intent = new Intent(loginActivity.this, SetupActivity.class);
                             startActivity(intent);
                             finish();
 
