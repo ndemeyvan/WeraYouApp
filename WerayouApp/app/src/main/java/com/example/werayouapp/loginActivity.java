@@ -75,6 +75,7 @@ public class loginActivity extends AppCompatActivity {
 
     public void sendCode(View view) {
         number = ccp.getFullNumberWithPlus();
+        country=ccp.getSelectedCountryName();
         setUpVerificatonCallbacks();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number,        // Phone number to verify
@@ -157,6 +158,7 @@ public class loginActivity extends AppCompatActivity {
                             FirebaseUser user = task.getResult().getUser();
                             String phoneNumber = user.getPhoneNumber();
                             Intent intent = new Intent(loginActivity.this, SetupActivity.class);
+                            intent.putExtra("country",country);
                             startActivity(intent);
                             finish();
 
