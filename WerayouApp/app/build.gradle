@@ -39,5 +39,7 @@ dependencies {
     implementation 'com.hbb20:ccp:2.1.9'
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'com.android.support:design:25.0.0'
+    implementation 'com.google.firebase:firebase-database:19.2.0'
+    implementation 'com.lorentzos.swipecards:library:1.0.9'
 
 }
