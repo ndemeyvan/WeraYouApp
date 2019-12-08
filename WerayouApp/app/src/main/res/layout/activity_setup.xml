@@ -101,18 +101,16 @@
                 android:id="@+id/pays_user"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
                 android:ems="10"
-                android:textColor="@color/black"
                 android:hint="Quel est votre pays ?"
                 android:inputType="textPersonName"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/user_prenom"
+                app:layout_constraintTop_toBottomOf="@+id/user_prenom" />
 
             <EditText
                 android:id="@+id/phone_number"
@@ -156,6 +154,32 @@
                 app:layout_constraintStart_toStartOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="@+id/profile_image"
                 app:layout_constraintVertical_bias="1.0" />
+
+            <EditText
+                android:id="@+id/user_nom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="38dp"
+                android:layout_marginEnd="32dp"
+                android:ems="10"
+                android:hint="Quel est votre nom ?"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+            <EditText
+                android:id="@+id/user_prenom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="Quel est votre prenom"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="@+id/user_nom"
+                app:layout_constraintStart_toStartOf="@+id/user_nom"
+                app:layout_constraintTop_toBottomOf="@+id/user_nom" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

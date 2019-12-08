@@ -41,6 +41,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     Spinner spinner;
     EditText pays_user;
     EditText phone_number;
+    EditText user_prenom;
+    EditText user_nom;
     String[] genre={"Que recherchez vous ?","Homme","Femme"};
     Uri mImageUri;
     byte[] final_image;
@@ -65,6 +67,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         spinner=findViewById(R.id.spinner);
         button=findViewById(R.id.button);
         phone_number=findViewById(R.id.phone_number);
+        user_prenom=findViewById(R.id.user_prenom);
+        user_nom=findViewById(R.id.user_nom);
         spinner.setOnItemSelectedListener(this);
         country=getIntent().getStringExtra("country");
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,genre);
@@ -84,7 +88,11 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 String phone =phone_number.getText().toString();
                 String ville=ville_user.getText().toString();
                 String ageUser=age_user.getText().toString();
+                String nom = user_nom.getText().toString();
+                String prenom=user_prenom.getText().toString();
                 Map<String, String> user_data = new HashMap<>();
+                user_data.put ( "nom",nom);
+                user_data.put ( "prenom",prenom);
                 user_data.put ( "pays",pays);
                 user_data.put ( "phone",phone);
                 user_data.put ( "ville", ville );
@@ -94,7 +102,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 if (recherche.isEmpty()||pays.isEmpty()||phone.isEmpty()||ville.isEmpty()||ageUser.isEmpty()){
                     toast("veillez remplir tous les champs");
                 }else{
-                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(recherche).child(userID).child("name");
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(recherche).child(userID);
                     userDb.setValue(user_data);
                     Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
                     startActivity(intent);
