@@ -43,7 +43,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     EditText phone_number;
     EditText user_prenom;
     EditText user_nom;
-    String[] genre={"Que recherchez vous ?","Homme","Femme"};
+    String[] genre={"Quel est votre sex ?","Homme","Femme"};
     Uri mImageUri;
     byte[] final_image;
     ImageButton imageButton;

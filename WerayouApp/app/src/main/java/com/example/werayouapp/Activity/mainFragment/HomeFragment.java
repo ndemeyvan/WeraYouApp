@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment {
         checkUserSex();
         al = new ArrayList<>();
 
-        arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.item, R.id.helloText, al );
+        arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.item, al );
         flingContainer=v.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
