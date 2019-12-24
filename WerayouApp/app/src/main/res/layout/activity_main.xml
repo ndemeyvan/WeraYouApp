@@ -241,9 +241,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:text="Bienvenu sur Werayou , creer votre compte maintenant, c'est facile et rapide ."
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/cardView"
@@ -265,10 +266,10 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_marginTop="32dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintEnd_toEndOf="@+id/sendButton"
+        app:layout_constraintStart_toStartOf="@+id/sendButton"
+        app:layout_constraintTop_toBottomOf="@+id/sendButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
