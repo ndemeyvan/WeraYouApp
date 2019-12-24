@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class loginActivity extends AppCompatActivity {
     private Button resendButton;
     private Button signoutButton;
     private TextView statusText;
+    private ProgressBar progressBar;
     String number;
     String country;
 
@@ -54,19 +56,20 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         phoneText =  findViewById(R.id.phoneText);
-        codeText = findViewById(R.id.codeText);
-        verifyButton =  findViewById(R.id.verifyButton);
         sendButton =  findViewById(R.id.sendButton);
+       /* codeText = findViewById(R.id.codeText);
+        verifyButton =  findViewById(R.id.verifyButton);
         resendButton =  findViewById(R.id.resendButton);
         signoutButton = findViewById(R.id.signoutButton);
-        statusText =  findViewById(R.id.statusText);
+        statusText =  findViewById(R.id.statusText);*/
         ccp =findViewById(R.id.ccp);
+        progressBar=findViewById(R.id.progressBar);
         ccp.registerCarrierNumberEditText(phoneText);
 
-        verifyButton.setEnabled(false);
+        /*verifyButton.setEnabled(false);
         resendButton.setEnabled(false);
-        signoutButton.setEnabled(false);
-        statusText.setText("Signed Out");
+        signoutButton.setEnabled(false);*/
+//        statusText.setText("Signed Out");
 
         fbAuth = FirebaseAuth.getInstance();
 
@@ -74,6 +77,7 @@ public class loginActivity extends AppCompatActivity {
     }
 
     public void sendCode(View view) {
+        progressBar.setVisibility(View.VISIBLE);
         number = ccp.getFullNumberWithPlus();
         country=ccp.getSelectedCountryName();
         setUpVerificatonCallbacks();
@@ -100,11 +104,11 @@ public class loginActivity extends AppCompatActivity {
                     public void onVerificationCompleted(
                             PhoneAuthCredential credential) {
 
-                        signoutButton.setEnabled(true);
+                        /*signoutButton.setEnabled(true);
                         statusText.setText("Signed In");
                         resendButton.setEnabled(false);
-                        verifyButton.setEnabled(false);
-                        codeText.setText("");
+                        verifyButton.setEnabled(false);*/
+                       /* codeText.setText("");*/
                         signInWithPhoneAuthCredential(credential);
                     }
 
@@ -128,9 +132,9 @@ public class loginActivity extends AppCompatActivity {
                         phoneVerificationId = verificationId;
                         resendToken = token;
 
-                        verifyButton.setEnabled(true);
+                        //verifyButton.setEnabled(true);
                         sendButton.setEnabled(false);
-                        resendButton.setEnabled(true);
+                       // resendButton.setEnabled(true);
                     }
                 };
     }
@@ -150,11 +154,12 @@ public class loginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            signoutButton.setEnabled(true);
+                           /* signoutButton.setEnabled(true);
                             codeText.setText("");
                             statusText.setText("Signed In");
                             resendButton.setEnabled(false);
-                            verifyButton.setEnabled(false);
+                            verifyButton.setEnabled(false);*/
+                            progressBar.setVisibility(View.INVISIBLE);
                             FirebaseUser user = task.getResult().getUser();
                             String phoneNumber = user.getPhoneNumber();
                             Intent intent = new Intent(loginActivity.this, SetupActivity.class);
