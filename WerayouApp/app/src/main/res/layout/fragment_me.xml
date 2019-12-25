@@ -12,10 +12,11 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/background_add_image_profil"
-        android:elevation="1dp"
+        android:elevation="3dp"
         android:src="@drawable/ic_edit"
         app:layout_constraintBottom_toBottomOf="@+id/cardView2"
-        app:layout_constraintEnd_toEndOf="@+id/cardView2" />
+        app:layout_constraintEnd_toEndOf="@+id/cardView2"
+        />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/cardView2"
@@ -33,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="45dp"
         android:text="Audrey TiTi"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"

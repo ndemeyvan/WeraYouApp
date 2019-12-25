@@ -110,7 +110,7 @@ public class MeFragment extends Fragment {
                                 }
                                 if(map.get("image")!=null){
                                     profileImageUrl = map.get("image").toString();
-                                    Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
+                                    Picasso.with(getActivity()).load(profileImageUrl).placeholder(R.drawable.logo).into(cardView2);
 
                                 }
                                 //
@@ -189,7 +189,7 @@ public class MeFragment extends Fragment {
                                 }
                                 if(map.get("image")!=null){
                                     profileImageUrl = map.get("image").toString();
-                                    Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
+                                    Picasso.with(getActivity()).load(profileImageUrl).placeholder(R.drawable.logo).into(cardView2);
 
                                 }
                                 //
