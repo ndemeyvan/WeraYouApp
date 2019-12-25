@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.werayouapp.R;
@@ -49,8 +50,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     EditText ville_user;
     EditText age_user;
     Spinner spinner;
-    EditText pays_user;
-    EditText phone_number;
     EditText user_prenom;
     EditText user_nom;
     String[] genre={"Quel est votre sex ?","Homme","Femme"};
@@ -63,10 +62,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     FirebaseAuth user ;
     String sexe;
     String recherche;
+    TextView place;
+    TextView phone;
     private String userID;
     private static StorageReference storageReference;
     private String lien;
     private Uri FilePathUri;
+    EditText Apropos;
 
 
     @Override
@@ -78,10 +80,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         imageButton=findViewById(R.id.imageButton);
         ville_user=findViewById(R.id.ville_user);
         age_user=findViewById(R.id.age_user);
-        pays_user=findViewById(R.id.pays_user);
+        phone=findViewById(R.id.phone);
         spinner=findViewById(R.id.spinner);
         button=findViewById(R.id.button);
-        phone_number=findViewById(R.id.phone_number);
+        place=findViewById(R.id.place);
         user_prenom=findViewById(R.id.user_prenom);
         user_nom=findViewById(R.id.user_nom);
         spinner.setOnItemSelectedListener(this);
@@ -89,12 +91,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,genre);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
+        Apropos=findViewById(R.id.apropos);
         spinner.setAdapter(arrayAdapter);
         setImage();
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
-        pays_user.setText(country);
-        phone_number.setText(user.getCurrentUser().getPhoneNumber());
+        place.setText(country);
+        phone.setText(user.getCurrentUser().getPhoneNumber());
         getuserdata();
 
 
@@ -182,8 +185,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onClick(View v) {
                 ///////////
-                final String pays=pays_user.getText().toString();
-                final String phone =phone_number.getText().toString();
+                final String apropos=Apropos.getText().toString();
                 final String ville=ville_user.getText().toString();
                 final String ageUser=age_user.getText().toString();
                 final String nom = user_nom.getText().toString();
@@ -192,7 +194,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 //////////
                 /////////// envoi des fichier dans la base de donnee
                 if (ischange) {
-                    if (!TextUtils.isEmpty ( pays ) && !TextUtils.isEmpty ( phone ) && !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )) {
+                    if ( !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
 
                         final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
                         UploadTask uploadTask = ref.putBytes(final_image);
@@ -217,7 +219,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                                         // Handle failures
                                         // ...
                                     }
-                                    stockage ( task,nom,prenom,pays,phone,ville,ageUser);
+                                    stockage ( task,nom,prenom,ville,ageUser,apropos);
 
                                 } else {
                                     // Handle failures
@@ -231,14 +233,14 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                     }
                 }else{
 
-                    stockage ( null, nom,prenom,pays,phone,ville, ageUser);
+                    stockage ( null, nom,prenom,ville, ageUser,apropos);
 
                 }
             }
         });
     }
 
-    public void stockage(@NonNull Task<Uri> task,String nom,String prenom,String pays,String phone,String ville,String ageUser ){
+    public void stockage(@NonNull Task<Uri> task,String nom,String prenom,String ville,String ageUser,String apropos ){
         Uri downloadUri;
         if (task!=null){
 
@@ -257,8 +259,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         Map<String, String> user_data = new HashMap<>();
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
-        user_data.put ( "pays",pays);
-        user_data.put ( "phone",phone);
+        user_data.put ( "pays",country);
+        user_data.put ( "phone",user.getCurrentUser().getPhoneNumber());
         user_data.put ( "ville", ville );
         user_data.put ( "age", ageUser );
         user_data.put ( "sexe",sexe);
@@ -267,7 +269,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
-        user_data.put("apropos","ras");
+        user_data.put("apropos",apropos);
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
         userDb.setValue(user_data);
