@@ -8,7 +8,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
@@ -17,6 +19,7 @@ import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -26,7 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ActivityPrincipal extends AppCompatActivity {
+public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Toolbar toolbar;
 
 
@@ -50,7 +53,7 @@ public class ActivityPrincipal extends AppCompatActivity {
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.home:
-                    toolbar.setTitle("Home");
+                    toolbar.setTitle("Werayou");
                     fragment = new HomeFragment();
                     loadFragment(fragment);
                     return true;
@@ -92,4 +95,25 @@ public class ActivityPrincipal extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        getMenuInflater ().inflate ( R.menu.toolbar_menu, (Menu) menuItem);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId ();
+        if (id == R.id.add_photo) {
+            Intent gogotoSearch = new Intent(getApplicationContext(),AddPhotoActivity.class);
+            startActivity(gogotoSearch);
+            //finish ();
+            return true;
+        }
+
+        return super.onOptionsItemSelected ( item );
+    }
+
+
 }
