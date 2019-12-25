@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -64,6 +65,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     String recherche;
     private String userID;
     private static StorageReference storageReference;
+    private String lien;
+    private Uri FilePathUri;
 
 
     @Override
@@ -135,6 +138,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 mImageUri = result.getUri();
+                FilePathUri = data.getData();
                 File actualImage = new File(mImageUri.getPath());
                 try{
                     Bitmap compressedImage = new Compressor(this)
@@ -173,46 +177,92 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
 
+
     public void getuserdata(){
-        button.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener ( new View.OnClickListener () {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+
+                ///////////
+                final String pays=pays_user.getText().toString();
+                final String phone =phone_number.getText().toString();
+                final String ville=ville_user.getText().toString();
+                final String ageUser=age_user.getText().toString();
+                final String nom = user_nom.getText().toString();
+                final String prenom=user_prenom.getText().toString();
+
+                //////////
+                /////////// envoi des fichier dans la base de donnee
                 if (ischange) {
+                    if (!TextUtils.isEmpty ( pays ) && !TextUtils.isEmpty ( phone ) && !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )) {
 
-                    final StorageReference image_de_profil = storageReference.child ( "image_de_profil" ).child ( userID + " .jpg" );
-                    UploadTask uploadTask = image_de_profil.putBytes(final_image);
-                    Task<Uri> urlTask = uploadTask.continueWithTask (new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                        @Override
-                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                            if (!task.isSuccessful ()) {
-                                throw task.getException ();
+                       /* final StorageReference image_de_profil = storageReference.child ( "image_de_profil" ).child ( userID + " .jpg" );
+                        UploadTask uploadTask = image_de_profil.putBytes(final_image);
+                        Task<Uri> urlTask = uploadTask.continueWithTask ( new Continuation<UploadTask.TaskSnapshot, Task<Uri>> () {
+                            @Override
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful ()) {
+                                    throw task.getException ();
+                                }
+                                // Continue with the task to get the download URL
+                                lien = image_de_profil.getDownloadUrl ().toString();
+                                return image_de_profil.getDownloadUrl ();
                             }
-                            // Continue with the task to get the download URL
-                            return image_de_profil.getDownloadUrl ();
-                        }
-                    } ).addOnCompleteListener ( new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            if (task.isSuccessful ()) {
-                                stockage ( task);
-                            } else {
+                        } ).addOnCompleteListener ( new OnCompleteListener<Uri> () {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful ()) {
+                                    stockage ( task,nom,prenom,pays,phone,ville,ageUser);
+                                } else {
+                                    String error = task.getException ().getMessage ();
+                                    // Toast.makeText ( getApplicationContext (), error, Toast.LENGTH_LONG ).show ();
+                                }
+                            }
+                        } );*/
 
+
+
+
+                        final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
+                        UploadTask uploadTask = ref.putFile(mImageUri);
+
+                        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                            @Override
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful()) {
+                                    throw task.getException();
+                                }
+
+                                // Continue with the task to get the download URL
+                                return ref.getDownloadUrl();
                             }
-                        }
-                    } );
-                    ////////fin de l'nvoie
+                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    Uri downloadUri = task.getResult();
+                                    stockage ( task,nom,prenom,pays,phone,ville,ageUser);
+
+                                } else {
+                                    // Handle failures
+                                    // ...
+                                }
+                            }
+                        });
+                        ////////fin de l'nvoie
+                    } else {
+                        Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
+                    }
                 }else{
 
-                    stockage ( null);
+                    stockage ( null, nom,prenom,pays,phone,ville, ageUser);
 
                 }
             }
         });
-
-
     }
 
-    public void stockage(@NonNull Task<Uri> task){
+    public void stockage(@NonNull Task<Uri> task,String nom,String prenom,String pays,String phone,String ville,String ageUser ){
         Uri downloadUri;
         if (task!=null){
             downloadUri = task.getResult ();
@@ -224,12 +274,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
         String saveCurrentDate=currentDate.format ( calendar.getTime () );
         String randomKey=saveCurrentDate;
-        String pays=pays_user.getText().toString();
-        String phone =phone_number.getText().toString();
-        String ville=ville_user.getText().toString();
-        String ageUser=age_user.getText().toString();
-        String nom = user_nom.getText().toString();
-        String prenom=user_prenom.getText().toString();
         Map<String, String> user_data = new HashMap<>();
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
@@ -243,17 +287,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
 
-
-        if (sexe.isEmpty()||pays.isEmpty()||phone.isEmpty()||ville.isEmpty()||ageUser.isEmpty()){
-            toast("veillez remplir tous les champs");
-        }else{
-            DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
-            userDb.setValue(user_data);
-            Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
-            startActivity(intent);
-            finish();
-        }
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
+        userDb.setValue(user_data);
+        Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
+        startActivity(intent);
+        finish();
 
 
     }
+
 }

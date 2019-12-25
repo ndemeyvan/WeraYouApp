@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.werayouapp.R;
+import com.example.werayouapp.model.Cards;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -27,19 +29,22 @@ import com.lorentzos.flingswipe.FlingCardListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
     View v;
-    private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+    Cards cards[];
+    private ArrayAdapter arrayAdapter;
     private int i;
     private SwipeFlingAdapterView flingContainer;
     String userSex;
     String oppositeUserSex;
     FirebaseUser user;
+    ListView listView;
+    List<Cards> rowsItems;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -51,15 +56,15 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         v= inflater.inflate(R.layout.fragment_home2, container, false);
         checkUserSex();
-        al = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.item,R.id.nameUser, al );
+        rowsItems = new ArrayList<Cards>();
+        arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.item,R.id.nameUser, rowsItems);
         flingContainer=v.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
                 Log.d("LIST", "removed object!");
-                al.remove(0);
+                rowsItems.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -174,7 +179,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.exists()) {
-                    al.add(dataSnapshot.child("nom").getValue().toString());
+                    Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString());
+                    rowsItems.add(item);
                     arrayAdapter.notifyDataSetChanged();
                 }
             }

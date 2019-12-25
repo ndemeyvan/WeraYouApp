@@ -1,5 +1,6 @@
 package com.example.werayouapp;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.werayouapp.Activity.ActivityPrincipal;
 import com.example.werayouapp.Activity.SetupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -54,23 +56,12 @@ public class loginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         phoneText =  findViewById(R.id.phoneText);
         sendButton =  findViewById(R.id.sendButton);
-       /* codeText = findViewById(R.id.codeText);
-        verifyButton =  findViewById(R.id.verifyButton);
-        resendButton =  findViewById(R.id.resendButton);
-        signoutButton = findViewById(R.id.signoutButton);
-        statusText =  findViewById(R.id.statusText);*/
         ccp =findViewById(R.id.ccp);
         progressBar=findViewById(R.id.progressBar);
         ccp.registerCarrierNumberEditText(phoneText);
-
-        /*verifyButton.setEnabled(false);
-        resendButton.setEnabled(false);
-        signoutButton.setEnabled(false);*/
-//        statusText.setText("Signed Out");
-
+        isOnline();
         fbAuth = FirebaseAuth.getInstance();
 
 
@@ -192,11 +183,15 @@ public class loginActivity extends AppCompatActivity {
                 resendToken);
     }
 
-    public void signOut(View view) {
-        fbAuth.signOut();
-        statusText.setText("Signed Out");
-        signoutButton.setEnabled(false);
-        sendButton.setEnabled(true);
+
+    void isOnline(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+          Intent intent = new Intent(loginActivity.this, ActivityPrincipal.class);
+          startActivity(intent);
+          finish();
+        }
+
     }
 
 }
