@@ -1,5 +1,6 @@
 package com.example.werayouapp.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,15 +20,23 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.werayouapp.R;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,12 +63,14 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     String sexe;
     String recherche;
     private String userID;
+    private static StorageReference storageReference;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+        storageReference= FirebaseStorage.getInstance ().getReference ();
         profile_image=findViewById(R.id.profile_image);
         imageButton=findViewById(R.id.imageButton);
         ville_user=findViewById(R.id.ville_user);
@@ -81,39 +92,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         userID=user.getCurrentUser().getUid();
         pays_user.setText(country);
         phone_number.setText(user.getCurrentUser().getPhoneNumber());
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String pays=pays_user.getText().toString();
-                String phone =phone_number.getText().toString();
-                String ville=ville_user.getText().toString();
-                String ageUser=age_user.getText().toString();
-                String nom = user_nom.getText().toString();
-                String prenom=user_prenom.getText().toString();
-                Map<String, String> user_data = new HashMap<>();
-                user_data.put ( "nom",nom);
-                user_data.put ( "prenom",prenom);
-                user_data.put ( "pays",pays);
-                user_data.put ( "phone",phone);
-                user_data.put ( "ville", ville );
-                user_data.put ( "age", ageUser );
-                user_data.put ( "sexe",sexe);
-                user_data.put ( "recherche",recherche);
+        getuserdata();
 
 
-                if (sexe.isEmpty()||pays.isEmpty()||phone.isEmpty()||ville.isEmpty()||ageUser.isEmpty()){
-                    toast("veillez remplir tous les champs");
-                }else{
-                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
-                    userDb.setValue(user_data);
-                    Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
-                    startActivity(intent);
-                    finish();
-                }
-
-            }
-        });
 
 
     }
@@ -188,6 +169,91 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+
+    public void getuserdata(){
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ischange) {
+
+                    final StorageReference image_de_profil = storageReference.child ( "image_de_profil" ).child ( userID + " .jpg" );
+                    UploadTask uploadTask = image_de_profil.putBytes(final_image);
+                    Task<Uri> urlTask = uploadTask.continueWithTask (new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful ()) {
+                                throw task.getException ();
+                            }
+                            // Continue with the task to get the download URL
+                            return image_de_profil.getDownloadUrl ();
+                        }
+                    } ).addOnCompleteListener ( new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful ()) {
+                                stockage ( task);
+                            } else {
+
+                            }
+                        }
+                    } );
+                    ////////fin de l'nvoie
+                }else{
+
+                    stockage ( null);
+
+                }
+            }
+        });
+
+
+    }
+
+    public void stockage(@NonNull Task<Uri> task){
+        Uri downloadUri;
+        if (task!=null){
+            downloadUri = task.getResult ();
+        }else{
+            downloadUri=mImageUri;
+        }
+
+        Calendar calendar=Calendar.getInstance ();
+        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+        String saveCurrentDate=currentDate.format ( calendar.getTime () );
+        String randomKey=saveCurrentDate;
+        String pays=pays_user.getText().toString();
+        String phone =phone_number.getText().toString();
+        String ville=ville_user.getText().toString();
+        String ageUser=age_user.getText().toString();
+        String nom = user_nom.getText().toString();
+        String prenom=user_prenom.getText().toString();
+        Map<String, String> user_data = new HashMap<>();
+        user_data.put ( "nom",nom);
+        user_data.put ( "prenom",prenom);
+        user_data.put ( "pays",pays);
+        user_data.put ( "phone",phone);
+        user_data.put ( "ville", ville );
+        user_data.put ( "age", ageUser );
+        user_data.put ( "sexe",sexe);
+        user_data.put ( "recherche",recherche);
+        user_data.put("createdDate",randomKey);
+        user_data.put("image",downloadUri.toString());
+        user_data.put("forfait","gratuit");
+
+
+        if (sexe.isEmpty()||pays.isEmpty()||phone.isEmpty()||ville.isEmpty()||ageUser.isEmpty()){
+            toast("veillez remplir tous les champs");
+        }else{
+            DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
+            userDb.setValue(user_data);
+            Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
+            startActivity(intent);
+            finish();
+        }
+
 
     }
 }
