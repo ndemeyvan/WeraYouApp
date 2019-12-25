@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,8 +23,6 @@ import android.widget.Toast;
 import com.example.werayouapp.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,7 +36,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -60,7 +56,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     String[] genre={"Quel est votre sex ?","Homme","Femme"};
     Uri mImageUri;
     byte[] final_image;
-    private DatabaseReference mUserDatabase;
     ImageButton imageButton;
     boolean ischange=false;
     Button button;
@@ -101,7 +96,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         pays_user.setText(country);
         phone_number.setText(user.getCurrentUser().getPhoneNumber());
         getuserdata();
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
 
 
 
@@ -226,9 +220,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                             }
                         } );*/
 
-
-
-
                         final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
                         UploadTask uploadTask = ref.putFile(mImageUri);
 
@@ -238,7 +229,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                                 if (!task.isSuccessful()) {
                                     throw task.getException();
                                 }
-
                                 // Continue with the task to get the download URL
                                 return ref.getDownloadUrl();
                             }
@@ -246,7 +236,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                             @Override
                             public void onComplete(@NonNull Task<Uri> task) {
                                 if (task.isSuccessful()) {
-                                    Uri downloadUri = task.getResult();
+                                    if (task.isSuccessful()) {
+                                        Uri downloadUri = task.getResult();
+
+                                    } else {
+                                        // Handle failures
+                                        // ...
+                                    }
                                     stockage ( task,nom,prenom,pays,phone,ville,ageUser);
 
                                 } else {
@@ -295,6 +291,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put("id",userID);
 
 
+
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
         userDb.setValue(user_data);
         Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
@@ -302,56 +299,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         finish();
 
 
-    }
-
-    private void saveUserInformation() {
-        final String pays=pays_user.getText().toString();
-        final String phone =phone_number.getText().toString();
-        final String ville=ville_user.getText().toString();
-        final String ageUser=age_user.getText().toString();
-        final String nom = user_nom.getText().toString();
-        final String prenom=user_prenom.getText().toString();
-
-        Map userInfo = new HashMap();
-        userInfo.put("nom", nom);
-        userInfo.put("phone", phone);
-        mUserDatabase.updateChildren(userInfo);
-        if(mImageUri != null){
-            StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userID);
-            Bitmap bitmap = null;
-
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), mImageUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-            byte[] data = baos.toByteArray();
-            UploadTask uploadTask = filepath.putBytes(data);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    finish();
-                }
-            });
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-
-                    Map userInfo = new HashMap();
-                    userInfo.put("profileImageUrl", downloadUrl.toString());
-                    mUserDatabase.updateChildren(userInfo);
-
-                    finish();
-                    return;
-                }
-            });
-        }else{
-            finish();
-        }
     }
 
 }
