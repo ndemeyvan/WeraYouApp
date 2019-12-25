@@ -12,11 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.werayouapp.R;
+import com.example.werayouapp.adapter.ArrayAdapter;
 import com.example.werayouapp.model.Cards;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,7 +38,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     View v;
     Cards cards[];
-    private ArrayAdapter arrayAdapter;
+    private com.example.werayouapp.adapter.ArrayAdapter arrayAdapter;
     private int i;
     private SwipeFlingAdapterView flingContainer;
     String userSex;
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
     FirebaseUser user;
     ListView listView;
     List<Cards> rowsItems;
+    ProgressBar progressBar;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -57,9 +59,10 @@ public class HomeFragment extends Fragment {
         v= inflater.inflate(R.layout.fragment_home2, container, false);
         checkUserSex();
         rowsItems = new ArrayList<Cards>();
-        arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.item,R.id.nameUser, rowsItems);
+        arrayAdapter = new ArrayAdapter(getActivity(), R.layout.item, rowsItems);
         flingContainer=v.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
+        progressBar=v.findViewById(R.id.progressBar);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -88,7 +91,9 @@ public class HomeFragment extends Fragment {
                // al.add("XML ".concat(String.valueOf(i)));
                 /*arrayAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
+
                 i++;*/
+                makeToast(getActivity(), "plus de proposition !");
             }
 
             @Override
@@ -181,6 +186,7 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString());
                     rowsItems.add(item);
+                    progressBar.setVisibility(View.INVISIBLE);
                     arrayAdapter.notifyDataSetChanged();
                 }
             }
