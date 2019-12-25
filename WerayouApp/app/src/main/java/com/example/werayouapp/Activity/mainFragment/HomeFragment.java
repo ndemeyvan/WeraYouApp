@@ -43,10 +43,16 @@ public class HomeFragment extends Fragment {
     private SwipeFlingAdapterView flingContainer;
     String userSex;
     String oppositeUserSex;
-    FirebaseUser user;
+    FirebaseAuth user ;
     ListView listView;
     List<Cards> rowsItems;
     ProgressBar progressBar;
+    //
+    private String currentUser;
+
+    //
+    private DatabaseReference usersDb;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -57,7 +63,11 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v= inflater.inflate(R.layout.fragment_home2, container, false);
+        user=FirebaseAuth.getInstance();
+        currentUser=user.getCurrentUser().getUid();
+
         checkUserSex();
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         rowsItems = new ArrayList<Cards>();
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.item, rowsItems);
         flingContainer=v.findViewById(R.id.frame);
@@ -76,11 +86,17 @@ public class HomeFragment extends Fragment {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
+                Cards obj = (Cards) o;
+                String userId = obj.getId();
+                usersDb.child(oppositeUserSex).child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
                 makeToast(getActivity(), "left!");
             }
 
             @Override
             public void onRightCardExit(Object o) {
+                Cards obj = (Cards) o;
+                String userId = obj.getId();
+                usersDb.child(oppositeUserSex).child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
                 makeToast(getActivity(), "Right!");
 
             }
@@ -113,7 +129,6 @@ public class HomeFragment extends Fragment {
 
     public void checkUserSex(){
         //homme
-        user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference maleDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Homme");
         maleDb.addChildEventListener(new ChildEventListener() {
             @Override
@@ -183,7 +198,7 @@ public class HomeFragment extends Fragment {
         oppositeDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists()) {
+                if (dataSnapshot.exists()&& !dataSnapshot.child("connections").child("refuser").hasChild(currentUser)&& !dataSnapshot.child("connections").child("accepter").hasChild(currentUser)) {
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString());
                     rowsItems.add(item);
                     progressBar.setVisibility(View.INVISIBLE);
