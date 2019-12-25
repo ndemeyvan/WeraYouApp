@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
@@ -31,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Toolbar toolbar;
+    TextView toobarTitle;
 
 
     @Override
@@ -39,6 +41,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_principal);
         toolbar=findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
+        toobarTitle=findViewById(R.id.toobarTitle);
         BottomNavigationView navigation =  findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new HomeFragment());
@@ -54,21 +57,27 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             switch (item.getItemId()) {
                 case R.id.home:
                     toolbar.setTitle("Werayou");
+                    toobarTitle.setText("Werayou");
                     fragment = new HomeFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.friends:
                     toolbar.setTitle("amis");
+                    toobarTitle.setText("Amis");
+
                     fragment = new FriendsFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.message:
                     toolbar.setTitle("messages");
+                    toobarTitle.setText("Messages");
+
                     fragment = new MessageFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.me:
                     toolbar.setTitle("moi");
+                    toobarTitle.setText("Moi");
                     fragment = new MeFragment();
                     loadFragment(fragment);
                     return true;
