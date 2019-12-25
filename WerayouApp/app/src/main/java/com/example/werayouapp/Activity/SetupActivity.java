@@ -181,7 +181,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         button.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View v) {
-
                 ///////////
                 final String pays=pays_user.getText().toString();
                 final String phone =phone_number.getText().toString();
@@ -194,30 +193,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 /////////// envoi des fichier dans la base de donnee
                 if (ischange) {
                     if (!TextUtils.isEmpty ( pays ) && !TextUtils.isEmpty ( phone ) && !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )) {
-
-                       /* final StorageReference image_de_profil = storageReference.child ( "image_de_profil" ).child ( userID + " .jpg" );
-                        UploadTask uploadTask = image_de_profil.putBytes(final_image);
-                        Task<Uri> urlTask = uploadTask.continueWithTask ( new Continuation<UploadTask.TaskSnapshot, Task<Uri>> () {
-                            @Override
-                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                if (!task.isSuccessful ()) {
-                                    throw task.getException ();
-                                }
-                                // Continue with the task to get the download URL
-                                lien = image_de_profil.getDownloadUrl ().toString();
-                                return image_de_profil.getDownloadUrl ();
-                            }
-                        } ).addOnCompleteListener ( new OnCompleteListener<Uri> () {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                if (task.isSuccessful ()) {
-                                    stockage ( task,nom,prenom,pays,phone,ville,ageUser);
-                                } else {
-                                    String error = task.getException ().getMessage ();
-                                    // Toast.makeText ( getApplicationContext (), error, Toast.LENGTH_LONG ).show ();
-                                }
-                            }
-                        } );*/
 
                         final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
                         UploadTask uploadTask = ref.putBytes(final_image);
@@ -266,9 +241,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     public void stockage(@NonNull Task<Uri> task,String nom,String prenom,String pays,String phone,String ville,String ageUser ){
         Uri downloadUri;
         if (task!=null){
+
             downloadUri = task.getResult ();
+
         }else{
+
             downloadUri=mImageUri;
+
         }
 
         Calendar calendar=Calendar.getInstance ();
@@ -288,9 +267,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
-
-
-
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
         userDb.setValue(user_data);

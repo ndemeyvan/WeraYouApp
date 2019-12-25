@@ -136,7 +136,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pays" />
 
     <TextView
-        android:id="@+id/Age"
+        android:id="@+id/age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -153,10 +153,10 @@
         android:layout_marginTop="4dp"
         android:text="Femme "
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/Age"
+        app:layout_constraintEnd_toEndOf="@+id/age"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/Age"
-        app:layout_constraintTop_toBottomOf="@+id/Age" />
+        app:layout_constraintStart_toStartOf="@+id/age"
+        app:layout_constraintTop_toBottomOf="@+id/age" />
 
     <TextView
         android:id="@+id/cherche"
