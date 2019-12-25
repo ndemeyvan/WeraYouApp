@@ -138,7 +138,11 @@ public class HomeFragment extends Fragment {
                 Log.d("LIST", "notified");
 
                 i++;*/
-                messageDeDernierCards.setVisibility(View.VISIBLE);
+               if (i<1){
+                   messageDeDernierCards.setVisibility(View.VISIBLE);
+               }else{
+                   messageDeDernierCards.setVisibility(View.INVISIBLE);
+               }
                 //makeToast(getActivity(), "plus de proposition !");
             }
 
@@ -231,7 +235,7 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser)&& !dataSnapshot.child("connections").child("accepter").hasChild(currentUser)) {
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString());
                     rowsItems.add(item);
-                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+                    messageDeDernierCards.setVisibility(View.GONE);
                     progressBar.setVisibility(View.INVISIBLE);
                     arrayAdapter.notifyDataSetChanged();
                 }
