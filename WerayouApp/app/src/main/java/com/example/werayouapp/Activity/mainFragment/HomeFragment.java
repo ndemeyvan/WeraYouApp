@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.werayouapp.R;
@@ -48,6 +49,7 @@ public class HomeFragment extends Fragment {
     ListView listView;
     List<Cards> rowsItems;
     ProgressBar progressBar;
+    TextView messageDeDernierCards;
     //
     private String currentUser;
 
@@ -66,6 +68,7 @@ public class HomeFragment extends Fragment {
         v= inflater.inflate(R.layout.fragment_home2, container, false);
         user=FirebaseAuth.getInstance();
         currentUser=user.getCurrentUser().getUid();
+        messageDeDernierCards=v.findViewById(R.id.messageDeDernierCards);
 
         checkUserSex();
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -135,6 +138,7 @@ public class HomeFragment extends Fragment {
                 Log.d("LIST", "notified");
 
                 i++;*/
+                messageDeDernierCards.setVisibility(View.VISIBLE);
                 //makeToast(getActivity(), "plus de proposition !");
             }
 
@@ -227,6 +231,7 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser)&& !dataSnapshot.child("connections").child("accepter").hasChild(currentUser)) {
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString());
                     rowsItems.add(item);
+                    messageDeDernierCards.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
                     arrayAdapter.notifyDataSetChanged();
                 }
