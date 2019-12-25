@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.FlingCardListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -97,8 +98,33 @@ public class HomeFragment extends Fragment {
                 Cards obj = (Cards) o;
                 String userId = obj.getId();
                 usersDb.child(oppositeUserSex).child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
+                isConnectionMatch(userId);
                 makeToast(getActivity(), "Right!");
 
+            }
+
+            private void isConnectionMatch(String userId) {
+                DatabaseReference currentUserConnectionsDb = usersDb.child(userSex).child(currentUser).child("connections").child("accepter").child(userId);
+                currentUserConnectionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            Toast.makeText(getActivity(), "new Connection", Toast.LENGTH_LONG).show();
+                            usersDb.child(oppositeUserSex).child(dataSnapshot.getKey()).child("correspondances").child(currentUser).setValue(true);
+                            usersDb.child(userSex).child(currentUser).child("correspondances").child(dataSnapshot.getKey()).setValue(true);
+
+
+                            // String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+
+                           // usersDb.child(dataSnapshot.getKey()).child("connections").child("correspondances").child(currentUser).child("ChatId").setValue(key);
+                           // usersDb.child(currentUser).child("connections").child("matches").child(dataSnapshot.getKey()).child("ChatId").setValue(key);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
             }
 
             @Override
