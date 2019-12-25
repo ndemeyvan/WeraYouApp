@@ -35,7 +35,7 @@ public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
         ImageView image = (ImageView) convertView.findViewById(R.id.imageUser);
         TextView cityUser= convertView.findViewById(R.id.cityUser);
 
-        name.setText(card_item.getNom());
+        name.setText(card_item.getNom() +" " + card_item.getPrenom());
         cityUser.setText(card_item.getPays()+" / "+card_item.getVille());
         /*switch(card_item.getImage()){
             case "default":

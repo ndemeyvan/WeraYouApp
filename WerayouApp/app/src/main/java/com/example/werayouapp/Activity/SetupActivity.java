@@ -286,6 +286,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put("createdDate",randomKey);
         user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
+        user_data.put("id",userID);
+
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
         userDb.setValue(user_data);
