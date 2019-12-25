@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
@@ -33,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Toolbar toolbar;
     TextView toobarTitle;
+    ImageView add_image;
 
 
     @Override
@@ -41,11 +44,21 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_principal);
         toolbar=findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
+        add_image=findViewById(R.id.add_image);
         toobarTitle=findViewById(R.id.toobarTitle);
         BottomNavigationView navigation =  findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new HomeFragment());
-        toolbar.setTitle("Home");
+        add_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gogotoSearch = new Intent(getApplicationContext(),AddPhotoActivity.class);
+                startActivity(gogotoSearch);
+            }
+        });
+
+
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -115,8 +128,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId ();
         if (id == R.id.add_photo) {
-            Intent gogotoSearch = new Intent(getApplicationContext(),AddPhotoActivity.class);
-            startActivity(gogotoSearch);
+
             //finish ();
             return true;
         }

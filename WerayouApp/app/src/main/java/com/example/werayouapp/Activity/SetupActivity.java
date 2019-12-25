@@ -51,6 +51,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     Button button;
     String country;
     FirebaseAuth user ;
+    String sexe;
     String recherche;
     private String userID;
 
@@ -97,12 +98,14 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 user_data.put ( "phone",phone);
                 user_data.put ( "ville", ville );
                 user_data.put ( "age", ageUser );
+                user_data.put ( "sexe",sexe);
                 user_data.put ( "recherche",recherche);
 
-                if (recherche.isEmpty()||pays.isEmpty()||phone.isEmpty()||ville.isEmpty()||ageUser.isEmpty()){
+
+                if (sexe.isEmpty()||pays.isEmpty()||phone.isEmpty()||ville.isEmpty()||ageUser.isEmpty()){
                     toast("veillez remplir tous les champs");
                 }else{
-                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(recherche).child(userID);
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
                     userDb.setValue(user_data);
                     Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
                     startActivity(intent);
@@ -175,7 +178,12 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        recherche=genre[i];
+        sexe=genre[i];
+        if (sexe.equals("Homme")){
+            recherche="Femme";
+        }else{
+            recherche="Homme";
+        }
     }
 
     @Override
