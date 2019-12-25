@@ -46,6 +46,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
         add_image=findViewById(R.id.add_image);
         toobarTitle=findViewById(R.id.toobarTitle);
+        toobarTitle.setText("Werayou");
         BottomNavigationView navigation =  findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new HomeFragment());

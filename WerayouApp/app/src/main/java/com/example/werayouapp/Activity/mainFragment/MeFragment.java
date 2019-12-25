@@ -103,7 +103,7 @@ public class MeFragment extends Fragment {
                                 }
                                 if(map.get("age")!=null){
                                     userAge = map.get("age").toString();
-                                    age.setText(userAge);
+                                    age.setText(userAge +" ans");
                                 }
                                 if(map.get("ville")!=null){
                                     userSex = map.get("ville").toString();

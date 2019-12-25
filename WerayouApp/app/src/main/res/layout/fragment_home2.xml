@@ -26,6 +26,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/frame" />
+    <TextView
+        android:id="@+id/messageDeDernierCards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="il n'y a plus de proposition"
+        app:layout_constraintBottom_toBottomOf="@+id/frame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/frame" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

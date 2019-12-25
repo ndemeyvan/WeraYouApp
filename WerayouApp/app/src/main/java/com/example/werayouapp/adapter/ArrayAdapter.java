@@ -4,10 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.Cards;
@@ -34,12 +36,14 @@ public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
         TextView name = (TextView) convertView.findViewById(R.id.nameUser);
         ImageView image = (ImageView) convertView.findViewById(R.id.imageUser);
         TextView cityUser= convertView.findViewById(R.id.cityUser);
+        CardView card = convertView.findViewById(R.id.card_item);
+        card.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_scale ) );
 
         name.setText(card_item.getNom() +" " + card_item.getPrenom());
         cityUser.setText(card_item.getPays()+" / "+card_item.getVille());
+        Picasso.with(convertView.getContext()).load(card_item.getImage()).into(image);
         /*switch(card_item.getImage()){
             case "default":
-                Picasso.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
                 break;
             default:
 

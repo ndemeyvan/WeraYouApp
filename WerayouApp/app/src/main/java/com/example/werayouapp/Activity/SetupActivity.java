@@ -143,10 +143,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                     Bitmap compressedImage = new Compressor(this)
                             .setMaxWidth(250)
                             .setMaxHeight(250)
-                            .setQuality(40)
+                            .setQuality(80)
                             .compressToBitmap(actualImage);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    compressedImage.compress(Bitmap.CompressFormat.JPEG, 40, baos);
+                    compressedImage.compress(Bitmap.CompressFormat.JPEG, 80, baos);
                     final_image = baos.toByteArray();
                 }catch (Exception e){
 
@@ -267,6 +267,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
+        user_data.put("apropos","ras");
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
         userDb.setValue(user_data);
