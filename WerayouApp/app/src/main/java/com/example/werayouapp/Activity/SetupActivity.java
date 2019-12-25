@@ -138,7 +138,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 mImageUri = result.getUri();
-                FilePathUri = data.getData();
                 File actualImage = new File(mImageUri.getPath());
                 try{
                     Bitmap compressedImage = new Compressor(this)
@@ -221,7 +220,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                         } );*/
 
                         final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
-                        UploadTask uploadTask = ref.putFile(mImageUri);
+                        UploadTask uploadTask = ref.putBytes(final_image);
 
                         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                             @Override
@@ -289,6 +288,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
+
 
 
 
