@@ -68,6 +68,7 @@ public class loginActivity extends AppCompatActivity {
     }
 
     public void sendCode(View view) {
+
         progressBar.setVisibility(View.VISIBLE);
         number = ccp.getFullNumberWithPlus();
         country=ccp.getSelectedCountryName();
@@ -80,11 +81,6 @@ public class loginActivity extends AppCompatActivity {
                 verificationCallbacks);
     }
 
-    public void toast(String msg){
-
-        Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
-
-    }
 
     private void setUpVerificatonCallbacks() {
 
