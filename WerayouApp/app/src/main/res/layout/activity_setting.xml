@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.SetupActivity"
-    android:background="@color/white">
+    tools:context=".Activity.SettingActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -43,7 +41,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -59,6 +57,38 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
+            <EditText
+                android:id="@+id/pays_user"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:ems="10"
+                android:hint="quel est votre pays ?"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+            <EditText
+                android:id="@+id/phone_user"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:ems="10"
+                android:hint="quel est votre pays ?"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/pays_user"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/pays_user"
+                app:layout_constraintTop_toBottomOf="@+id/pays_user" />
 
             <EditText
                 android:id="@+id/ville_user"
@@ -82,9 +112,9 @@
                 android:ems="10"
                 android:hint="quel est votre age ?"
                 android:inputType="number"
-                android:textSize="12sp"
-
                 android:textColor="@color/black"
+
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/ville_user"
                 app:layout_constraintStart_toStartOf="@+id/ville_user"
                 app:layout_constraintTop_toBottomOf="@+id/ville_user"
@@ -98,6 +128,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/apropos"
                 app:layout_constraintStart_toStartOf="@+id/apropos"
                 app:layout_constraintTop_toBottomOf="@+id/apropos" />
+
             <Spinner
                 android:id="@+id/spinnerTwo"
                 android:layout_width="0dp"
@@ -127,8 +158,8 @@
                 android:id="@+id/imageButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:elevation="3dp"
                 android:background="@drawable/background_add_image_profil"
+                android:elevation="3dp"
                 android:src="@drawable/ic_camera"
                 app:layout_constraintBottom_toBottomOf="@+id/profile_image"
                 app:layout_constraintEnd_toEndOf="@+id/profile_image"
@@ -151,61 +182,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pays_user" />
+                app:layout_constraintTop_toBottomOf="@+id/phone_user" />
 
             <EditText
                 android:id="@+id/user_prenom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:ems="10"
-                android:textSize="12sp"
-
                 android:hint="Quel est votre prenom"
+
                 android:inputType="textPersonName"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/user_nom"
                 app:layout_constraintStart_toStartOf="@+id/user_nom"
                 app:layout_constraintTop_toBottomOf="@+id/user_nom" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="28dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_image"
-                app:srcCompat="@drawable/ic_place" />
-
-            <TextView
-                android:id="@+id/place"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text=": Cameroon"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3" />
-
-            <ImageView
-                android:id="@+id/pays_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/phone"
-                app:layout_constraintEnd_toStartOf="@+id/phone"
-                app:layout_constraintTop_toTopOf="@+id/phone"
-                app:srcCompat="@drawable/ic_phone" />
-
-            <TextView
-                android:id="@+id/phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="32dp"
-                android:text=": +237656209008"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
             <EditText
                 android:id="@+id/apropos"
@@ -224,6 +215,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

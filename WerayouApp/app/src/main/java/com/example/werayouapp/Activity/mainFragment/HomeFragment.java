@@ -159,8 +159,8 @@ public class HomeFragment extends Fragment {
 
     public void checkUserSex(){
         //homme
-        DatabaseReference userDb = usersDb.child("Users").child(currentUser);
-        userDb.addChildEventListener(new ChildEventListener() {
+        DatabaseReference db = usersDb.child(currentUser);
+        db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.getKey().equals(user.getUid())){

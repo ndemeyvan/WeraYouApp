@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -104,9 +105,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         phone.setText(user.getCurrentUser().getPhoneNumber());
         getuserdata();
 
-
-
-
     }
 
     void toast(String msg){
@@ -171,8 +169,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         sexe=genre[i];
         interesse=recherche[i];
-
-
     }
 
     @Override
@@ -274,10 +270,14 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put("apropos",apropos);
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        userDb.setValue(user_data);
-        Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
-        startActivity(intent);
-        finish();
+        userDb.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
     }
