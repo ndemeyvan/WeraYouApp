@@ -148,7 +148,6 @@ public class loginActivity extends AppCompatActivity {
                             verifyButton.setEnabled(false);*/
                             progressBar.setVisibility(View.INVISIBLE);
                             FirebaseUser user = task.getResult().getUser();
-                            String phoneNumber = user.getPhoneNumber();
                             Intent intent = new Intent(loginActivity.this, SetupActivity.class);
                             intent.putExtra("country",country);
                             startActivity(intent);
