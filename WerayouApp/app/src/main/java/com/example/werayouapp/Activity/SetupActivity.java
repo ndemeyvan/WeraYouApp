@@ -53,6 +53,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     EditText user_prenom;
     EditText user_nom;
     String[] genre={"Quel est votre sex ?","Homme","Femme"};
+    String[] recherche={"Que recherchez vous ?","Homme","Femme","Les deux"};
+    String interesse;
     Uri mImageUri;
     byte[] final_image;
     ImageButton imageButton;
@@ -61,14 +63,12 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     String country;
     FirebaseAuth user ;
     String sexe;
-    String recherche;
     TextView place;
     TextView phone;
     private String userID;
     private static StorageReference storageReference;
-    private String lien;
-    private Uri FilePathUri;
     EditText Apropos;
+    Spinner spinnerTwo;
 
 
     @Override
@@ -86,13 +86,17 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         place=findViewById(R.id.place);
         user_prenom=findViewById(R.id.user_prenom);
         user_nom=findViewById(R.id.user_nom);
+        spinnerTwo=findViewById(R.id.spinnerTwo);
         spinner.setOnItemSelectedListener(this);
         country=getIntent().getStringExtra("country");
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,genre);
+        ArrayAdapter arrayAdapterTwo = new ArrayAdapter(this,android.R.layout.simple_spinner_item,recherche);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        arrayAdapterTwo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         Apropos=findViewById(R.id.apropos);
         spinner.setAdapter(arrayAdapter);
+        spinnerTwo.setAdapter(arrayAdapterTwo);
         setImage();
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
@@ -166,11 +170,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         sexe=genre[i];
-        if (sexe.equals("Homme")){
-            recherche="Femme";
-        }else{
-            recherche="Homme";
-        }
+        interesse=recherche[i];
+
+
     }
 
     @Override
@@ -264,14 +266,14 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put ( "ville", ville );
         user_data.put ( "age", ageUser );
         user_data.put ( "sexe",sexe);
-        user_data.put ( "recherche",recherche);
+        user_data.put ( "recherche",interesse);
         user_data.put("createdDate",randomKey);
         user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
         user_data.put("apropos",apropos);
 
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(sexe).child(userID);
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         userDb.setValue(user_data);
         Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
         startActivity(intent);

@@ -7,16 +7,18 @@ public class Cards {
     private String id;
     private String pays;
     private String ville;
+    private String apropos;
 
-
-    public Cards(String nom, String prenom, String image, String id, String pays, String ville) {
+    public Cards(String nom, String prenom, String image, String id, String pays, String ville, String apropos) {
         this.nom = nom;
         this.prenom = prenom;
         this.image = image;
         this.id = id;
         this.pays = pays;
         this.ville = ville;
+        this.apropos = apropos;
     }
+
 
     public String getPays() {
         return pays;

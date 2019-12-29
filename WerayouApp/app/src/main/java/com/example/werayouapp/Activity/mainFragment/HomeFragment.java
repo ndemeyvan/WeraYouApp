@@ -43,8 +43,8 @@ public class HomeFragment extends Fragment {
     private com.example.werayouapp.adapter.ArrayAdapter arrayAdapter;
     private int i;
     private SwipeFlingAdapterView flingContainer;
-    String userSex;
-    String oppositeUserSex;
+    String userWant;
+    //String oppositeUserSex;
     FirebaseAuth user ;
     ListView listView;
     List<Cards> rowsItems;
@@ -69,7 +69,6 @@ public class HomeFragment extends Fragment {
         user=FirebaseAuth.getInstance();
         currentUser=user.getCurrentUser().getUid();
         messageDeDernierCards=v.findViewById(R.id.messageDeDernierCards);
-
         checkUserSex();
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         rowsItems = new ArrayList<Cards>();
@@ -92,7 +91,7 @@ public class HomeFragment extends Fragment {
                 //If you want to use it just cast it (String) dataObject
                 Cards obj = (Cards) o;
                 String userId = obj.getId();
-                usersDb.child(oppositeUserSex).child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
+                usersDb.child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
                 makeToast(getActivity(), "left!");
             }
 
@@ -100,25 +99,22 @@ public class HomeFragment extends Fragment {
             public void onRightCardExit(Object o) {
                 Cards obj = (Cards) o;
                 String userId = obj.getId();
-                usersDb.child(oppositeUserSex).child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
+                usersDb.child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
                 isConnectionMatch(userId);
                 makeToast(getActivity(), "Right!");
 
             }
 
             private void isConnectionMatch(String userId) {
-                DatabaseReference currentUserConnectionsDb = usersDb.child(userSex).child(currentUser).child("connections").child("accepter").child(userId);
+                DatabaseReference currentUserConnectionsDb = usersDb.child(currentUser).child("connections").child("accepter").child(userId);
                 currentUserConnectionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
                             Toast.makeText(getActivity(), "new Connection", Toast.LENGTH_LONG).show();
-                            usersDb.child(oppositeUserSex).child(dataSnapshot.getKey()).child("correspondances").child(currentUser).setValue(true);
-                            usersDb.child(userSex).child(currentUser).child("correspondances").child(dataSnapshot.getKey()).setValue(true);
-
-
+                            usersDb.child(dataSnapshot.getKey()).child("correspondances").child(currentUser).setValue(true);
+                            usersDb.child(currentUser).child("correspondances").child(dataSnapshot.getKey()).setValue(true);
                             // String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
-
                            // usersDb.child(dataSnapshot.getKey()).child("connections").child("correspondances").child(currentUser).child("ChatId").setValue(key);
                            // usersDb.child(currentUser).child("connections").child("matches").child(dataSnapshot.getKey()).child("ChatId").setValue(key);
                         }
@@ -163,14 +159,18 @@ public class HomeFragment extends Fragment {
 
     public void checkUserSex(){
         //homme
-        DatabaseReference maleDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Homme");
-        maleDb.addChildEventListener(new ChildEventListener() {
+        DatabaseReference userDb = usersDb.child("Users").child(currentUser);
+        userDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.getKey().equals(user.getUid())){
-                    userSex="Homme";
-                    oppositeUserSex="Femme";
-                    getOppositeSexUsers();
+                    if (dataSnapshot.exists()){
+                        if (dataSnapshot.child("sexe")!=null){
+                            userWant=dataSnapshot.child("recherche").getValue().toString();
+                            //oppositeUserSex=userWant;
+                            getUserWant();
+                        }
+                    }
                 }
             }
 
@@ -194,7 +194,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        //femme
+       /* //femme
         DatabaseReference femmeDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Femme");
         femmeDb.addChildEventListener(new ChildEventListener() {
             @Override
@@ -224,16 +224,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        });*/
     }
 
-    public void getOppositeSexUsers(){
-        DatabaseReference oppositeDb = FirebaseDatabase.getInstance().getReference().child("Users").child(oppositeUserSex);
-        oppositeDb.addChildEventListener(new ChildEventListener() {
+    public void getUserWant(){
+       usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser)&& !dataSnapshot.child("connections").child("accepter").hasChild(currentUser)) {
-                    Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString());
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser)&& !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(userWant)) {
+                    Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString(),dataSnapshot.child("apropos").getValue().toString());
                     rowsItems.add(item);
                     messageDeDernierCards.setVisibility(View.GONE);
                     progressBar.setVisibility(View.INVISIBLE);
