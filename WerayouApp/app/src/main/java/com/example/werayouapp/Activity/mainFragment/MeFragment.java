@@ -45,6 +45,7 @@ public class MeFragment extends Fragment {
     private String profileImageUrl;
     TextView cherche;
     TextView sexe;
+    private String userID;
     private String prenom;
 
 
@@ -63,6 +64,8 @@ public class MeFragment extends Fragment {
         age=v.findViewById(R.id.age);
         user=FirebaseAuth.getInstance();
         cherche=v.findViewById(R.id.cherche);
+        user=FirebaseAuth.getInstance();
+        userID=user.getCurrentUser().getUid();
         sexe=v.findViewById(R.id.sexe);
         checkUserSex();
         getUserInfo();
@@ -77,15 +80,12 @@ public class MeFragment extends Fragment {
 
 
     public void checkUserSex(){
-        //homme
-        DatabaseReference maleDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Homme");
+        DatabaseReference maleDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         maleDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.getKey().equals(user.getUid())){
-                    userSex="Homme";
-                    oppositeUserSex="Femme";
-                    usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userSex).child(user.getUid());
+                    usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
                     usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -156,7 +156,7 @@ public class MeFragment extends Fragment {
             }
         });
 
-        //femme
+       /* //femme
         DatabaseReference femmeDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Femme");
         femmeDb.addChildEventListener(new ChildEventListener() {
             @Override
@@ -234,7 +234,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        });*/
     }
 
     static void makeToast(Context ctx, String s){
