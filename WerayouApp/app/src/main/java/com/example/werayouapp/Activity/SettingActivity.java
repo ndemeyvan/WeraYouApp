@@ -67,17 +67,13 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     ImageButton imageButton;
     boolean ischange=false;
     Button button;
-    String country;
     FirebaseAuth user ;
-    String sexe;
     private String userID;
     private static StorageReference storageReference;
     EditText Apropos;
     private RadioGroup mRadioGroup;
     RadioButton radio_homme;
     RadioButton radio_femme;
-
-
     Spinner spinnerTwo;
     private DatabaseReference usersDb;
     private String nom;
@@ -86,6 +82,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     private String ville;
     private String profileImageUrl;
     ProgressBar progressBar;
+    private String userPays;
 
 
     @Override
@@ -146,7 +143,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                             }
                             if(map.get("age")!=null){
                                 userAge = map.get("age").toString();
-                                age_user.setText(userAge +" ans");
+                                age_user.setText(userAge+"");
                             }
                             if(map.get("ville")!=null){
                                 ville = map.get("ville").toString();
@@ -181,7 +178,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                 //sexe.setText(userSexe);
                             }
                             if(map.get("pays")!=null){
-                                String userPays = map.get("pays").toString();
+                                 userPays = map.get("pays").toString();
                                 pays_user.setText(userPays);
 
                             }
@@ -279,7 +276,6 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                 }catch (Exception e){
 
                 }
-
                 profile_image.setImageURI ( mImageUri );
                 ischange=true;
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -341,7 +337,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                         // Handle failures
                                         // ...
                                     }
-                                    stockage ( task,nom,prenom,ville,ageUser,apropos,sexe);
+                                    stockageWithURI ( task,nom,prenom,ville,ageUser,apropos,sexe);
 
                                 } else {
                                     // Handle failures
@@ -355,23 +351,19 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                     }
                 }else{
 
-                    stockage ( null, nom,prenom,ville, ageUser,apropos,sexe);
+                    stockageWithoutUri (  nom,prenom,ville, ageUser,apropos,sexe);
 
                 }
             }
         });
     }
 
-    public void stockage(@NonNull Task<Uri> task,String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
+    public void stockageWithURI(@NonNull Task<Uri> task,String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
         Uri downloadUri;
         if (task!=null){
-
             downloadUri = task.getResult ();
-
         }else{
-
             downloadUri=mImageUri;
-
         }
 
         Calendar calendar=Calendar.getInstance ();
@@ -381,7 +373,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         Map<String, String> user_data = new HashMap<>();
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
-        user_data.put ( "pays",country);
+        user_data.put ( "pays",userPays);
         user_data.put ( "phone",user.getCurrentUser().getPhoneNumber());
         user_data.put ( "ville", ville );
         user_data.put ( "age", ageUser );
@@ -389,6 +381,41 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         user_data.put ( "recherche",interesse);
         user_data.put("createdDate",randomKey);
         user_data.put("image",downloadUri.toString());
+        user_data.put("forfait","gratuit");
+        user_data.put("id",userID);
+        user_data.put("apropos",apropos);
+
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        userDb.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+    }
+    public void stockageWithoutUri(String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
+        Uri downloadUri;
+        downloadUri=mImageUri;
+
+        Calendar calendar=Calendar.getInstance ();
+        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+        String saveCurrentDate=currentDate.format ( calendar.getTime () );
+        String randomKey=saveCurrentDate;
+        Map<String, String> user_data = new HashMap<>();
+        user_data.put ( "nom",nom);
+        user_data.put ( "prenom",prenom);
+        user_data.put ( "pays",userPays);
+        user_data.put ( "phone",user.getCurrentUser().getPhoneNumber());
+        user_data.put ( "ville", ville );
+        user_data.put ( "age", ageUser );
+        user_data.put ( "sexe",sexe);
+        user_data.put ( "recherche",interesse);
+        user_data.put("createdDate",randomKey);
+//        user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
         user_data.put("apropos",apropos);
