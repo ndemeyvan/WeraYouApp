@@ -72,6 +72,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.toolbar);
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
+        getuserdata();
         setImage();
     }
 
@@ -132,6 +133,7 @@ public class AddPhotoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
+                post_button.setVisibility(View.INVISIBLE);
                 final String description =post_description.getText().toString();
                 /////////// envoi des fichier dans la base de donnee
                 if ( !TextUtils.isEmpty ( description )) {
@@ -171,6 +173,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                     ////////fin de l'envoie dans storage
                 } else {
                     progressBar.setVisibility(View.INVISIBLE);
+                    post_button.setVisibility(View.VISIBLE);
                     Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
                 }
 
