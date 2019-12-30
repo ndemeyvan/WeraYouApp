@@ -14,6 +14,7 @@
         app:itemTextColor="@color/colorPrimary"
         app:itemBackground="@color/white"
         app:itemIconSize="35dp"
+        app:itemHorizontalTranslationEnabled="false"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu"
