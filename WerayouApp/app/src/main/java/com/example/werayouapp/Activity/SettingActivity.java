@@ -392,15 +392,13 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                 Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
                 startActivity(intent);
                 finish();
+                makeToast("enregister");
             }
         });
 
 
     }
     public void stockageWithoutUri(String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
-        Uri downloadUri;
-        downloadUri=mImageUri;
-
         Calendar calendar=Calendar.getInstance ();
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
         String saveCurrentDate=currentDate.format ( calendar.getTime () );
@@ -415,11 +413,9 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         user_data.put ( "sexe",sexe);
         user_data.put ( "recherche",interesse);
         user_data.put("createdDate",randomKey);
-//        user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
         user_data.put("apropos",apropos);
-
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -427,6 +423,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                 Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
                 startActivity(intent);
                 finish();
+                makeToast("enregister");
             }
         });
 

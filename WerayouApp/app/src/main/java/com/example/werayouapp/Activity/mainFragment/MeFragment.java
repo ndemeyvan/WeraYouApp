@@ -79,7 +79,6 @@ public class MeFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
-                Toast.makeText(getActivity(),userID,Toast.LENGTH_LONG).show();
                 getActivity().finish();
             }
         });
