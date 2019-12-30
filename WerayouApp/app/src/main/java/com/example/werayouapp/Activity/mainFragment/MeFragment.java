@@ -63,6 +63,7 @@ public class MeFragment extends Fragment {
     private RecyclerView mRecyclerView;
     List<Post> postList;
     private RecyclerView.Adapter adapter;
+    ProgressBar progressBarTwo;
 
 
 
@@ -84,6 +85,7 @@ public class MeFragment extends Fragment {
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
         sexe=v.findViewById(R.id.sexe);
+        progressBarTwo=v.findViewById(R.id.progressBarTwo);
         mRecyclerView=v.findViewById(R.id.mRecyclerView);
         //
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 3);
@@ -123,6 +125,7 @@ public class MeFragment extends Fragment {
                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                    Post post = postSnapshot.getValue(Post.class);
                    postList.add(post);
+                   progressBarTwo.setVisibility(View.INVISIBLE);
                }
                //creating adapter
                adapter = new PostAdapter(postList, getActivity());
