@@ -313,7 +313,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                 /////////// envoi des fichier dans la base de donnee
                 if (ischange) {
                     if ( !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
-
+                        //debut envoie dans storage
                         final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
                         UploadTask uploadTask = ref.putBytes(final_image);
 
@@ -345,7 +345,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                 }
                             }
                         });
-                        ////////fin de l'envoie
+                        ////////fin de l'envoie dans storage
                     } else {
                         Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
                     }
