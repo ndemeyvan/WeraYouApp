@@ -56,7 +56,6 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     CircleImageView profile_image;
     EditText ville_user;
     EditText age_user;
-    Spinner spinner;
     EditText user_prenom;
     EditText user_nom;
     EditText pays_user;
@@ -75,6 +74,10 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     private static StorageReference storageReference;
     EditText Apropos;
     private RadioGroup mRadioGroup;
+    RadioButton radio_homme;
+    RadioButton radio_femme;
+
+
     Spinner spinnerTwo;
     private DatabaseReference usersDb;
     private String nom;
@@ -94,17 +97,20 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         imageButton=findViewById(R.id.imageButton);
         ville_user=findViewById(R.id.ville_user);
         age_user=findViewById(R.id.age_user);
-        spinner=findViewById(R.id.spinner);
         button=findViewById(R.id.button);
         progressBar=findViewById(R.id.progressBar);
+
         pays_user=pays_user=findViewById(R.id.pays_user);
         user_prenom=findViewById(R.id.user_prenom);
         user_nom=findViewById(R.id.user_nom);
         phone_user=findViewById(R.id.phone_user);
         spinnerTwo=findViewById(R.id.spinnerTwo);
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
-        spinner.setOnItemSelectedListener(this);
+        spinnerTwo.setOnItemSelectedListener(this);
         mRadioGroup = (RadioGroup) findViewById(R.id.spinner);
+        radio_homme = (RadioButton) findViewById(R.id.radio_homme);
+        radio_femme = (RadioButton) findViewById(R.id.radio_femme);
+
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,recherche);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
@@ -155,12 +161,23 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                             // ce que l'utilisateur recher arranger dans le spinner
                             if(map.get("recherche")!=null){
                                 String recherche = map.get("recherche").toString();
-                                //cherche.setText(recherche);
+                                if (recherche.equals("Homme")){
+                                    spinnerTwo.setSelection(1);
+                                }else if (recherche.equals("Femme")){
+                                    spinnerTwo.setSelection(2);
+                                }else if (recherche.equals("Les deux")){
+                                    spinnerTwo.setSelection(3);
+                                }
 
                             }
                             // ce que l'utilisateur recher arranger dans le spinner
                             if(map.get("sexe")!=null){
                                 String userSexe = map.get("sexe").toString();
+                                if (userSexe.equals("Homme")){
+                                    radio_homme.setChecked(true);
+                                }else {
+                                    radio_femme.setChecked(true);
+                                }
                                 //sexe.setText(userSexe);
                             }
                             if(map.get("pays")!=null){
@@ -171,6 +188,11 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                             if(map.get("phone")!=null){
                                 String userPhone = map.get("phone").toString();
                                 phone_user.setText(userPhone);
+
+                            }
+                            if(map.get("apropos")!=null){
+                                String apropos = map.get("apropos").toString();
+                                Apropos.setText(apropos);
 
                             }
 

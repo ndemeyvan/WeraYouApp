@@ -43,7 +43,6 @@ public class HomeFragment extends Fragment {
     private com.example.werayouapp.adapter.ArrayAdapter arrayAdapter;
     private int i;
     private SwipeFlingAdapterView flingContainer;
-    String userWant;
     //String oppositeUserSex;
     FirebaseAuth user ;
     ListView listView;
@@ -69,13 +68,13 @@ public class HomeFragment extends Fragment {
         user=FirebaseAuth.getInstance();
         currentUser=user.getCurrentUser().getUid();
         messageDeDernierCards=v.findViewById(R.id.messageDeDernierCards);
-        checkUserSex();
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         rowsItems = new ArrayList<Cards>();
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.item, rowsItems);
         flingContainer=v.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
         progressBar=v.findViewById(R.id.progressBar);
+        checkUserWant();
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -158,7 +157,7 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
-    public void checkUserSex(){
+    public void checkUserWant(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -166,9 +165,9 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.getKey().equals(user.getUid())){
                     if (dataSnapshot.exists()){
                         if (dataSnapshot.child("sexe")!=null){
-                            userWant=dataSnapshot.child("recherche").getValue().toString();
+                            String searxhSex=dataSnapshot.child("recherche").getValue().toString();
                             //oppositeUserSex=userWant;
-                            getUserWant();
+                            getUserWant(searxhSex);
                         }
                     }
                 }
@@ -194,44 +193,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
-       /* //femme
-        DatabaseReference femmeDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Femme");
-        femmeDb.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.getKey().equals(user.getUid())){
-                    userSex="Femme";
-                    oppositeUserSex="Homme";
-                    getOppositeSexUsers();
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });*/
     }
 
-    public void getUserWant(){
+    public void getUserWant(final String searxhSex){
        usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser)&& !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(userWant)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser)&& !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(searxhSex)) {
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString(),dataSnapshot.child("apropos").getValue().toString());
                     rowsItems.add(item);
                     messageDeDernierCards.setVisibility(View.GONE);
