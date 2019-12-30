@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".Activity.mainFragment.MeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
+        android:layout_height="match_parent">
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
             android:layout_width="match_parent"
@@ -207,13 +206,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mRecyclerView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:clipToPadding="false"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card" />
 
@@ -222,7 +222,9 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            tools:layout_editor_absoluteX="184dp"
-            tools:layout_editor_absoluteY="304dp" />
+            app:layout_constraintBottom_toBottomOf="@+id/mRecyclerView"
+            app:layout_constraintEnd_toEndOf="@+id/mRecyclerView"
+            app:layout_constraintStart_toStartOf="@+id/mRecyclerView"
+            app:layout_constraintTop_toTopOf="@+id/mRecyclerView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
