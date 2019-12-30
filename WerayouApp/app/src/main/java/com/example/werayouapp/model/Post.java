@@ -16,6 +16,7 @@ public class Post {
         this.image = image;
     }
 
+
     public String getDescription() {
         return description;
     }

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -60,7 +62,7 @@ public class MeFragment extends Fragment {
     ProgressBar progressBar;
     private RecyclerView mRecyclerView;
     List<Post> postList;
-    private PostAdapter mPostAdapter;
+    private RecyclerView.Adapter adapter;
 
 
 
@@ -83,6 +85,13 @@ public class MeFragment extends Fragment {
         userID=user.getCurrentUser().getUid();
         sexe=v.findViewById(R.id.sexe);
         mRecyclerView=v.findViewById(R.id.mRecyclerView);
+        //
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 3);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+       // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setNestedScrollingEnabled(false);
+        //
         progressBar=v.findViewById(R.id.progressBar);
         setupButton=v.findViewById(R.id.setupButton);
         setupButton.setOnClickListener(new View.OnClickListener() {
@@ -93,41 +102,43 @@ public class MeFragment extends Fragment {
                 getActivity().finish();
             }
         });
-        setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_simple ) );
-
-        getUserData();
+        setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
         postList=new ArrayList<>();
-        mPostAdapter = new PostAdapter(postList, getActivity());
-        mRecyclerView.setAdapter(mPostAdapter);
-        FetchPost();
+        getUserData();
+        getPost();
+
+       // FetchPost();
         return v;
 
     }
 
+   //recupere tout ce que l'utilisateur a poste
+   void getPost(){
+       //adding an event listener to fetch values
+       DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts");
+       db.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot snapshot) {
+               //iterating through all the values in database
+               for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                   Post post = postSnapshot.getValue(Post.class);
+                   postList.add(post);
+               }
+               //creating adapter
+               adapter = new PostAdapter(postList, getActivity());
+               //adding adapter to recyclerview
+               mRecyclerView.setAdapter(adapter);
+               adapter.notifyDataSetChanged();
+           }
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+           }
+       });
+
+   }
 
 
-    private void FetchPost() {
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Posts");
-        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    Post obj = new Post(dataSnapshot.child("description").getValue().toString(),dataSnapshot.child("id_post").getValue().toString(),dataSnapshot.child("id_user").getValue().toString(),dataSnapshot.child("image").getValue().toString());
-                    postList.add(obj);
-                    mPostAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-
-
+    ///recupere les information de l'utilisateur
     public void getUserData(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         db.addChildEventListener(new ChildEventListener() {
