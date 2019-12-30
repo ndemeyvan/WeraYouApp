@@ -200,6 +200,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         post_data.put ( "description",description);
         post_data.put ( "id_post",key);
         post_data.put("id_user",userID);
+        post_data.put("statut","public");
         post_data.put ( "createdDate",user.getCurrentUser().getPhoneNumber());
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(key);
