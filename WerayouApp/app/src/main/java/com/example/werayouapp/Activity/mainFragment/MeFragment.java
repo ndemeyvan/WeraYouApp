@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -82,6 +83,9 @@ public class MeFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        cardView2.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
+        setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
+
         getUserData();
         return v;
 
