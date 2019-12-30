@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -21,6 +22,7 @@ import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
+import com.example.werayouapp.Utiles.BottomNavigationBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +51,10 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         toobarTitle.setText("Werayou");
         BottomNavigationView navigation =  findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        // attaching bottom sheet behaviour - hide / show on scroll
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationBehavior());
+        //
         loadFragment(new HomeFragment());
         add_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +92,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                 case R.id.message:
                     toolbar.setTitle("messages");
                     toobarTitle.setText("Messages");
-
                     fragment = new MessageFragment();
                     loadFragment(fragment);
                     return true;
