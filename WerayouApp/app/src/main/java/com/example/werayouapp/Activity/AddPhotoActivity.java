@@ -3,6 +3,7 @@ package com.example.werayouapp.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,5 +28,13 @@ public class AddPhotoActivity extends AppCompatActivity {
         post_button=findViewById(R.id.post_button);
         progressBar=findViewById(R.id.progressBar);
         toolbar=findViewById(R.id.toolbar);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
+        startActivity(intent);
+        finish();
     }
 }

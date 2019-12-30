@@ -55,6 +55,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 Intent gogotoSearch = new Intent(getApplicationContext(),AddPhotoActivity.class);
                 startActivity(gogotoSearch);
+                finish();
             }
         });
 
