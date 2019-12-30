@@ -430,4 +430,11 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+        startActivity(intent);
+        finish();
+    }
 }
