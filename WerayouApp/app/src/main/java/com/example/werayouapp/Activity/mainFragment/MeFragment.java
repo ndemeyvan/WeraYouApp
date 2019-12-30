@@ -131,7 +131,7 @@ public class MeFragment extends Fragment {
                adapter = new PostAdapter(postList, getActivity());
                //adding adapter to recyclerview
                mRecyclerView.setAdapter(adapter);
-               adapter.notifyDataSetChanged();
+              // adapter.notifyDataSetChanged();
            }
            @Override
            public void onCancelled(DatabaseError databaseError) {
