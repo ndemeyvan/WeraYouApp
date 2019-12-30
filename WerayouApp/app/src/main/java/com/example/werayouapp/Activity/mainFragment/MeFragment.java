@@ -107,7 +107,7 @@ public class MeFragment extends Fragment {
 
 
     private void FetchPost() {
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Posts");
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Posts");
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
