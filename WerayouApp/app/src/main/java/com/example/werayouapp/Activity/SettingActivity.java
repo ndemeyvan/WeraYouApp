@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +61,6 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     EditText user_nom;
     EditText pays_user;
     EditText phone_user;
-    String[] genre={"Quel est votre sex ?","Homme","Femme"};
     String[] recherche={"Que recherchez vous ?","Homme","Femme","Les deux"};
     String interesse;
     Uri mImageUri;
@@ -73,6 +74,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     private String userID;
     private static StorageReference storageReference;
     EditText Apropos;
+    private RadioGroup mRadioGroup;
     Spinner spinnerTwo;
     private DatabaseReference usersDb;
     private String nom;
@@ -102,28 +104,18 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         spinnerTwo=findViewById(R.id.spinnerTwo);
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         spinner.setOnItemSelectedListener(this);
-        country=getIntent().getStringExtra("country");
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,genre);
-        ArrayAdapter arrayAdapterTwo = new ArrayAdapter(this,android.R.layout.simple_spinner_item,recherche);
+        mRadioGroup = (RadioGroup) findViewById(R.id.spinner);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,recherche);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        arrayAdapterTwo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         Apropos=findViewById(R.id.apropos);
-        spinner.setAdapter(arrayAdapter);
-        spinnerTwo.setAdapter(arrayAdapterTwo);
+        spinnerTwo.setAdapter(arrayAdapter);
         setImage();
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
         getuserdata();
         getData();
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+
     }
 
     public void getData(){
@@ -171,7 +163,6 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                 String userSexe = map.get("sexe").toString();
                                 //sexe.setText(userSexe);
                             }
-
                             if(map.get("pays")!=null){
                                 String userPays = map.get("pays").toString();
                                 pays_user.setText(userPays);
@@ -182,8 +173,6 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                 phone_user.setText(userPhone);
 
                             }
-
-
 
                             //
                         }
@@ -279,7 +268,6 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        sexe=genre[i];
         interesse=recherche[i];
     }
 
@@ -293,6 +281,10 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
             @Override
             public void onClick(View v) {
                 ///////////
+                int selectId = mRadioGroup.getCheckedRadioButtonId();
+
+                final RadioButton radioButton = (RadioButton) findViewById(selectId);
+                final String sexe = radioButton.getText().toString();
                 final String apropos=Apropos.getText().toString();
                 final String ville=ville_user.getText().toString();
                 final String ageUser=age_user.getText().toString();
@@ -327,7 +319,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                         // Handle failures
                                         // ...
                                     }
-                                    stockage ( task,nom,prenom,ville,ageUser,apropos);
+                                    stockage ( task,nom,prenom,ville,ageUser,apropos,sexe);
 
                                 } else {
                                     // Handle failures
@@ -341,14 +333,14 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                     }
                 }else{
 
-                    stockage ( null, nom,prenom,ville, ageUser,apropos);
+                    stockage ( null, nom,prenom,ville, ageUser,apropos,sexe);
 
                 }
             }
         });
     }
 
-    public void stockage(@NonNull Task<Uri> task,String nom,String prenom,String ville,String ageUser,String apropos ){
+    public void stockage(@NonNull Task<Uri> task,String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
         Uri downloadUri;
         if (task!=null){
 

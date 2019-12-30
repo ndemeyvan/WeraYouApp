@@ -119,14 +119,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/ville_user"
                 tools:hint="Quel est votre age" />
 
-            <Spinner
+            <RadioGroup
                 android:id="@+id/spinner"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:layout_constraintEnd_toEndOf="@+id/apropos"
-                app:layout_constraintStart_toStartOf="@+id/apropos"
-                app:layout_constraintTop_toBottomOf="@+id/apropos" />
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/textView3"
+                app:layout_constraintStart_toStartOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Homme" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Femme" />
+            </RadioGroup>
 
             <Spinner
                 android:id="@+id/spinnerTwo"
@@ -141,7 +154,9 @@
                 android:id="@+id/button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="45dp"
                 android:background="@drawable/backgroun_button_validation"
                 android:text="enregistrer"
@@ -221,6 +236,18 @@
                 app:layout_constraintEnd_toEndOf="@+id/profile_image"
                 app:layout_constraintStart_toStartOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="@+id/profile_image" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Quel est votre sexe ?"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/apropos"
+                app:layout_constraintStart_toStartOf="@+id/apropos"
+                app:layout_constraintTop_toBottomOf="@+id/apropos" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
