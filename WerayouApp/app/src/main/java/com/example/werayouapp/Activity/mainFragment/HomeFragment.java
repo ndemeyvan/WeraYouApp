@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment {
         flingContainer=v.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
         progressBar=v.findViewById(R.id.progressBar);
-        checkUserWant();
+        checkUserSex();
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -157,7 +157,7 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
-    public void checkUserWant(){
+   /* public void checkUserWant(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -165,7 +165,10 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.getKey().equals(user.getUid())){
                     if (dataSnapshot.exists()){
                         if (dataSnapshot.child("sexe")!=null){
-                            String searxhSex=dataSnapshot.child("recherche").getValue().toString();
+                            String searxhSex = dataSnapshot.child("recherche").getValue().toString();
+                            makeToast(getContext(),searxhSex);
+                            makeToast(getContext(),currentUser);
+
                             //oppositeUserSex=userWant;
                             getUserWant(searxhSex);
                         }
@@ -193,9 +196,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
-    }
+    }*/
 
-    public void getUserWant(final String searxhSex){
+   /* public void getUserWant(final String searxhSex){
+        makeToast(getContext(),searxhSex);
+        makeToast(getContext(),currentUser);
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -205,6 +210,67 @@ public class HomeFragment extends Fragment {
                         rowsItems.add(item);
                         messageDeDernierCards.setVisibility(View.GONE);
                         progressBar.setVisibility(View.INVISIBLE);
+                        arrayAdapter.notifyDataSetChanged();
+
+
+                    }
+                }
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }*/
+
+    private String userSex;
+    private String oppositeUserSex;
+    public void checkUserSex(){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userDb = usersDb.child(user.getUid());
+        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    if (dataSnapshot.child("sex").getValue() != null){
+                        userSex = dataSnapshot.child("sex").getValue().toString();
+                        switch (userSex){
+                            case "Homme":
+                                oppositeUserSex = "Femme";
+                                break;
+                            case "Femme":
+                                oppositeUserSex = "Homme";
+                                break;
+                        }
+                        getOppositeSexUsers();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getOppositeSexUsers(){
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.child("sex").getValue() != null) {
+                    if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && dataSnapshot.child("sex").getValue().toString().equals(oppositeUserSex)) {
+
+                        Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString(),dataSnapshot.child("apropos").getValue().toString());
+                        rowsItems.add(item);
                         arrayAdapter.notifyDataSetChanged();
                     }
                 }
@@ -224,6 +290,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 
 
     static void makeToast(Context ctx, String s){
