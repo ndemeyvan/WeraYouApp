@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,9 @@ import android.widget.Toast;
 
 import com.example.werayouapp.Activity.SettingActivity;
 import com.example.werayouapp.R;
+import com.example.werayouapp.adapter.PostAdapter;
 import com.example.werayouapp.model.Cards;
+import com.example.werayouapp.model.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -53,6 +58,10 @@ public class MeFragment extends Fragment {
     private String prenom;
     ImageButton setupButton;
     ProgressBar progressBar;
+    private RecyclerView mRecyclerView;
+    List<Post> postList;
+    private PostAdapter mPostAdapter;
+
 
 
     public MeFragment() {
@@ -73,6 +82,7 @@ public class MeFragment extends Fragment {
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
         sexe=v.findViewById(R.id.sexe);
+        mRecyclerView=v.findViewById(R.id.mRecyclerView);
         progressBar=v.findViewById(R.id.progressBar);
         setupButton=v.findViewById(R.id.setupButton);
         setupButton.setOnClickListener(new View.OnClickListener() {
@@ -83,11 +93,36 @@ public class MeFragment extends Fragment {
                 getActivity().finish();
             }
         });
-        cardView2.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
-        setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
+        setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_simple ) );
 
         getUserData();
+        postList=new ArrayList<>();
+        mPostAdapter = new PostAdapter(postList, getActivity());
+        mRecyclerView.setAdapter(mPostAdapter);
+        FetchPost();
         return v;
+
+    }
+
+
+
+    private void FetchPost() {
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Posts");
+        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    Post obj = new Post(dataSnapshot.child("description").getValue().toString(),dataSnapshot.child("id_post").getValue().toString(),dataSnapshot.child("id_user").getValue().toString(),dataSnapshot.child("image").getValue().toString());
+                    postList.add(obj);
+                    mPostAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -122,7 +157,7 @@ public class MeFragment extends Fragment {
                             }
                             if(map.get("image")!=null){
                                 profileImageUrl = map.get("image").toString();
-                                Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
+                                Picasso.with(getActivity()).load(profileImageUrl).placeholder(R.drawable.ic_launcher_background).into(cardView2);
                                 progressBar.setVisibility(View.INVISIBLE);
 
                             }
