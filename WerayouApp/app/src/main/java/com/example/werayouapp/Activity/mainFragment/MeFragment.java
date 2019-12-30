@@ -2,6 +2,7 @@ package com.example.werayouapp.Activity.mainFragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,9 +12,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.werayouapp.Activity.SettingActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.Cards;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +39,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MeFragment extends Fragment {
     FirebaseAuth user ;
     String userSex;
-    String oppositeUserSex;
     CircleImageView cardView2;
     private DatabaseReference usersDb;
     TextView nomUser;
@@ -47,6 +50,8 @@ public class MeFragment extends Fragment {
     TextView sexe;
     private String userID;
     private String prenom;
+    ImageButton setupButton;
+    ProgressBar progressBar;
 
 
     public MeFragment() {
@@ -67,73 +72,77 @@ public class MeFragment extends Fragment {
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
         sexe=v.findViewById(R.id.sexe);
-        checkUserSex();
-        getUserInfo();
+        progressBar=v.findViewById(R.id.progressBar);
+        setupButton=v.findViewById(R.id.setupButton);
+        setupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
+                Toast.makeText(getActivity(),userID,Toast.LENGTH_LONG).show();
+                getActivity().finish();
+            }
+        });
+        getUserData();
         return v;
 
     }
 
-    private void getUserInfo() {
 
 
-    }
-
-
-    public void checkUserSex(){
-        DatabaseReference maleDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        maleDb.addChildEventListener(new ChildEventListener() {
+    public void getUserData(){
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.getKey().equals(user.getUid())){
-                    usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-                    usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
-                                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                                if(map.get("nom")!=null){
-                                    nom = map.get("nom").toString();
-                                    makeToast(getActivity(),nom);
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                            if(map.get("nom")!=null){
+                                nom = map.get("nom").toString();
 
-                                }
-                                if(map.get("prenom")!=null){
-                                    prenom = map.get("prenom").toString();
-                                    nomUser.setText(nom +" " + prenom);
-
-                                }
-                                if(map.get("age")!=null){
-                                    userAge = map.get("age").toString();
-                                    age.setText(userAge +" ans");
-                                }
-                                if(map.get("ville")!=null){
-                                    userSex = map.get("ville").toString();
-                                }
-                                if(map.get("image")!=null){
-                                    profileImageUrl = map.get("image").toString();
-                                    Picasso.with(getActivity()).load(profileImageUrl).placeholder(R.drawable.logo).into(cardView2);
-
-                                }
-                                //
-                                if(map.get("recherche")!=null){
-                                    String recherche = map.get("recherche").toString();
-                                    cherche.setText(recherche);
-
-                                }
-                                if(map.get("sexe")!=null){
-                                    String userSexe = map.get("sexe").toString();
-                                    sexe.setText(userSexe);
-
-                                }
-                                //
                             }
-                        }
+                            if(map.get("prenom")!=null){
+                                prenom = map.get("prenom").toString();
+                                nomUser.setText(nom +" " + prenom);
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            }
+                            if(map.get("age")!=null){
+                                userAge = map.get("age").toString();
+                                age.setText(userAge +" ans");
+                            }
+                            if(map.get("ville")!=null){
+                                userSex = map.get("ville").toString();
+                            }
+                            if(map.get("image")!=null){
+                                profileImageUrl = map.get("image").toString();
+                                Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
+                                progressBar.setVisibility(View.INVISIBLE);
 
+                            }
+                            //
+                            if(map.get("recherche")!=null){
+                                String recherche = map.get("recherche").toString();
+                                cherche.setText(recherche);
+
+                            }
+                            if(map.get("sexe")!=null){
+                                String userSexe = map.get("sexe").toString();
+                                sexe.setText(userSexe);
+
+                            }
+                            //
                         }
-                    });
-                }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override

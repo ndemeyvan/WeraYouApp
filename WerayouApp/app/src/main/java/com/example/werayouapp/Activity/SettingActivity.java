@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,8 +70,6 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     String country;
     FirebaseAuth user ;
     String sexe;
-    TextView place;
-    TextView phone;
     private String userID;
     private static StorageReference storageReference;
     EditText Apropos;
@@ -81,6 +80,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     private String userAge;
     private String ville;
     private String profileImageUrl;
+    ProgressBar progressBar;
 
 
     @Override
@@ -92,9 +92,9 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         imageButton=findViewById(R.id.imageButton);
         ville_user=findViewById(R.id.ville_user);
         age_user=findViewById(R.id.age_user);
-        phone=findViewById(R.id.phone);
         spinner=findViewById(R.id.spinner);
         button=findViewById(R.id.button);
+        progressBar=findViewById(R.id.progressBar);
         pays_user=pays_user=findViewById(R.id.pays_user);
         user_prenom=findViewById(R.id.user_prenom);
         user_nom=findViewById(R.id.user_nom);
@@ -114,10 +114,8 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         setImage();
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
-        place.setText(country);
-        phone.setText(user.getCurrentUser().getPhoneNumber());
         getuserdata();
-        checkUserData();
+        getData();
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,66 +126,74 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         });
     }
 
-    public void checkUserData(){
-
+    public void getData(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.getKey().equals(user.getUid())){
-                    usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
-                                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                                if(map.get("nom")!=null){
-                                    nom = map.get("nom").toString();
-                                    user_nom.setText(nom);
-                                }
-                                if(map.get("prenom")!=null){
-                                    prenom = map.get("prenom").toString();
-                                    user_prenom.setText(prenom);
-
-                                }
-                                if(map.get("age")!=null){
-                                    userAge = map.get("age").toString();
-                                    age_user.setText(userAge+"");
-                                }
-                                if(map.get("ville")!=null){
-                                    ville = map.get("ville").toString();
-                                    ville_user.setText(ville);
-                                }
-                                if(map.get("image")!=null){
-                                    profileImageUrl = map.get("image").toString();
-                                    Picasso.with(SettingActivity.this).load(profileImageUrl).placeholder(R.drawable.logo).into(profile_image);
-
-                                }
-                                //
-                                if(map.get("recherche")!=null){
-                                    String recherche = map.get("recherche").toString();
-                                   // cherche.setText(recherche);
-
-                                }
-                                if(map.get("apropos")!=null){
-                                    String apropos = map.get("apropos").toString();
-                                    Apropos.setText(apropos);
-
-                                }
-                                if(map.get("sexe")!=null){
-                                    String userSexe = map.get("sexe").toString();
-                                   // sexe.setText(userSexe);
-
-                                }
-                                //
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                            if(map.get("nom")!=null){
+                                nom = map.get("nom").toString();
+                                user_nom.setText(nom);
                             }
-                        }
+                            if(map.get("prenom")!=null){
+                                prenom = map.get("prenom").toString();
+                                user_prenom.setText(prenom);
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            }
+                            if(map.get("age")!=null){
+                                userAge = map.get("age").toString();
+                                age_user.setText(userAge +" ans");
+                            }
+                            if(map.get("ville")!=null){
+                                ville = map.get("ville").toString();
+                                ville_user.setText(ville);
+                            }
+                            if(map.get("image")!=null){
+                                profileImageUrl = map.get("image").toString();
+                                Picasso.with(SettingActivity.this).load(profileImageUrl).into(profile_image);
+                                progressBar.setVisibility(View.INVISIBLE);
 
+                            }
+                            // ce que l'utilisateur recher arranger dans le spinner
+                            if(map.get("recherche")!=null){
+                                String recherche = map.get("recherche").toString();
+                                //cherche.setText(recherche);
+
+                            }
+                            // ce que l'utilisateur recher arranger dans le spinner
+                            if(map.get("sexe")!=null){
+                                String userSexe = map.get("sexe").toString();
+                                //sexe.setText(userSexe);
+                            }
+
+                            if(map.get("pays")!=null){
+                                String userPays = map.get("pays").toString();
+                                pays_user.setText(userPays);
+
+                            }
+                            if(map.get("phone")!=null){
+                                String userPhone = map.get("phone").toString();
+                                phone_user.setText(userPhone);
+
+                            }
+
+
+
+                            //
                         }
-                    });
-                }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override
@@ -210,9 +216,10 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
             }
         });
 
+
     }
 
-    void toast(String msg){
+    void makeToast(String msg){
         Toast.makeText(SettingActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 

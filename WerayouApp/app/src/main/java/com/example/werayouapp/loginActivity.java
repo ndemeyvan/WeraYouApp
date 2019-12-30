@@ -109,7 +109,7 @@ public class loginActivity extends AppCompatActivity {
                         } else if (e instanceof FirebaseTooManyRequestsException) {
                             // SMS quota exceeded
                             Log.d(TAG, "SMS Quota exceeded.");
-                        }
+                        };
                     }
 
                     @Override

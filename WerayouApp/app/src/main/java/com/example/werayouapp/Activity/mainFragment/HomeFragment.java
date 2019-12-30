@@ -136,6 +136,7 @@ public class HomeFragment extends Fragment {
                 i++;*/
                if (i<1){
                    messageDeDernierCards.setVisibility(View.VISIBLE);
+                   progressBar.setVisibility(View.INVISIBLE);
                }else{
                    messageDeDernierCards.setVisibility(View.INVISIBLE);
                }
@@ -158,7 +159,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void checkUserSex(){
-        DatabaseReference db = usersDb.child(currentUser);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

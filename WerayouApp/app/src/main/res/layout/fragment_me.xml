@@ -8,7 +8,7 @@
     tools:context=".Activity.mainFragment.MeFragment">
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/setupButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/background_add_image_profil"
@@ -25,7 +25,6 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="32dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -171,5 +170,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/sexe"
         app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="@+id/cardView2"
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
+        app:layout_constraintTop_toTopOf="@+id/cardView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
