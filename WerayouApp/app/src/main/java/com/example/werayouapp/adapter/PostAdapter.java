@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +40,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         String imagelink = postList.get(i).getImage();
         Picasso.with(context).load(imagelink).into(holder.image);
+        holder.progressBar.setVisibility(View.INVISIBLE);
     }
 
 
@@ -50,11 +52,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView image;
+        public ProgressBar progressBar;
 
 
         public ViewHolder(final View itemView) {
             super(itemView);
             image=itemView.findViewById(R.id.image);
+            progressBar=itemView.findViewById(R.id.progressBar);
         }
 
     }
