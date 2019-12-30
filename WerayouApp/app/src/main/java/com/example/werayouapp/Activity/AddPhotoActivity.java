@@ -131,11 +131,13 @@ public class AddPhotoActivity extends AppCompatActivity {
         post_button.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 final String description =post_description.getText().toString();
                 /////////// envoi des fichier dans la base de donnee
                 if ( !TextUtils.isEmpty ( description )) {
                     //debut envoie dans storage
-                    final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
+                    String random =random ();
+                    final StorageReference ref = storageReference.child ( "image_de_posts" ).child ( random + " .jpg" );
                     UploadTask uploadTask = ref.putBytes(final_image);
 
                     Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -168,6 +170,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                     });
                     ////////fin de l'envoie dans storage
                 } else {
+                    progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
                 }
 
@@ -192,7 +195,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         Map<String, Object> post_data = new HashMap<>();
         post_data.put ( "image",downloadUri.toString());
         post_data.put ( "description",description);
-        post_data.put ( "id",key);
+        post_data.put ( "id_post",key);
         post_data.put("id_user",userID);
         post_data.put ( "createdDate",user.getCurrentUser().getPhoneNumber());
 
@@ -200,6 +203,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         userDb.setValue(post_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
                 startActivity(intent);
                 finish();
