@@ -69,9 +69,6 @@ public class DetailPhotoActivity extends AppCompatActivity {
         like_image=findViewById(R.id.like_image);
         like_count=findViewById(R.id.like_count);
         comment_count=findViewById(R.id.comment_count);
-        recyclerView=findViewById(R.id.recyclerView);
-        comment_edittext=findViewById(R.id.comment_edittext);
-        send_comment_button=findViewById(R.id.send_comment_button);
         progressBar=findViewById(R.id.progressBar);
         // set les extras recuperez
         description_view.setText(description);
