@@ -45,6 +45,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final String id_post = postList.get(i).getId_post();
         final String id_user = postList.get(i).getId_user();
         final String description = postList.get(i).getDescription();
+        final String date = postList.get(i).getCreatedDate();
+
         Picasso.with(context).load(imagelink).into(holder.image);
         holder.progressBar.setVisibility(View.INVISIBLE);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +57,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 intent.putExtra("id_user",id_user);
                 intent.putExtra("description",description);
                 intent.putExtra("image",imagelink);
+                intent.putExtra("date",date);
                 context.startActivity(intent);
             }
         });

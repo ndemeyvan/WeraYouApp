@@ -5,17 +5,26 @@ public class Post {
     String id_post;
     String id_user;
     String image;
+    String createdDate;
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public Post() {
     }
 
-    public Post(String description, String id_post, String id_user, String image) {
+    public Post(String description, String id_post, String id_user, String image, String createdDate) {
         this.description = description;
         this.id_post = id_post;
         this.id_user = id_user;
         this.image = image;
+        this.createdDate = createdDate;
     }
-
 
     public String getDescription() {
         return description;

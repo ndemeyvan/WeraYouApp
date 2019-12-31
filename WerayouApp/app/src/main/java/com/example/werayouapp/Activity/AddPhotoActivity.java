@@ -194,14 +194,14 @@ public class AddPhotoActivity extends AppCompatActivity {
         Calendar calendar=Calendar.getInstance ();
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
         String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        String randomKey=saveCurrentDate;
+        String date=saveCurrentDate;
         Map<String, Object> post_data = new HashMap<>();
         post_data.put ( "image",downloadUri.toString());
         post_data.put ( "description",description);
         post_data.put ( "id_post",key);
         post_data.put("id_user",userID);
         post_data.put("statut","public");
-        post_data.put ( "createdDate",user.getCurrentUser().getPhoneNumber());
+        post_data.put ( "createdDate",date);
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(key);
         userDb.setValue(post_data).addOnCompleteListener(new OnCompleteListener<Void>() {

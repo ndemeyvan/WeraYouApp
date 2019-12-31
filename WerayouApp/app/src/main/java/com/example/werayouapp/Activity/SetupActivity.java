@@ -253,7 +253,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         Calendar calendar=Calendar.getInstance ();
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
         String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        String randomKey=saveCurrentDate;
+        String date=saveCurrentDate;
         Map<String, String> user_data = new HashMap<>();
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
@@ -263,7 +263,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put ( "age", ageUser );
         user_data.put ( "sexe",sexe);
         user_data.put ( "recherche",interesse);
-        user_data.put("createdDate",randomKey);
+        user_data.put("createdDate",date);
         user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
