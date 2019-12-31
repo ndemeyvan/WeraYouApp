@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.SettingActivity"></activity>
+        <activity android:name=".Activity.DetailPhotoActivity"></activity>
+        <activity android:name=".Activity.SettingActivity" />
         <activity android:name=".Activity.AddPhotoActivity" />
         <activity android:name=".Activity.ActivityPrincipal" />
         <activity android:name=".Activity.SetupActivity" />

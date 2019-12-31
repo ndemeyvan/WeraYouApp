@@ -1,6 +1,7 @@
 package com.example.werayouapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.werayouapp.Activity.DetailPhotoActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.Post;
 import com.squareup.picasso.Picasso;
@@ -38,9 +41,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
-        String imagelink = postList.get(i).getImage();
+        final String imagelink = postList.get(i).getImage();
+        final String id_post = postList.get(i).getId_post();
+        final String id_user = postList.get(i).getId_user();
+        final String description = postList.get(i).getDescription();
         Picasso.with(context).load(imagelink).into(holder.image);
         holder.progressBar.setVisibility(View.INVISIBLE);
+        holder.card_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailPhotoActivity.class);
+                intent.putExtra("id_post",id_post);
+                intent.putExtra("id_user",id_user);
+                intent.putExtra("description",description);
+                intent.putExtra("image",imagelink);
+                context.startActivity(intent);
+            }
+        });
     }
 
 
@@ -53,12 +70,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         public ImageView image;
         public ProgressBar progressBar;
+        public CardView card_view;
 
 
         public ViewHolder(final View itemView) {
             super(itemView);
             image=itemView.findViewById(R.id.image);
             progressBar=itemView.findViewById(R.id.progressBar);
+            card_view=itemView.findViewById(R.id.card_view);
         }
 
     }
