@@ -111,6 +111,8 @@ public class DetailPhotoActivity extends AppCompatActivity {
                             if(map.get("prenom")!=null){
                                 String prenom = map.get("prenom").toString();
                                 nom_profil.setText(nom +" " + prenom);
+                                toolbar.setTitle(nom);
+
                             }
                             if(map.get("image")!=null){
                                 String profileImageUrl = map.get("image").toString();
