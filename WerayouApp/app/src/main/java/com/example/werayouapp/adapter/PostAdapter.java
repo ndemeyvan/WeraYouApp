@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -49,7 +50,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         Picasso.with(context).load(imagelink).into(holder.image);
         holder.progressBar.setVisibility(View.INVISIBLE);
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
+        holder.card_view.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_scale ) );
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailPhotoActivity.class);
