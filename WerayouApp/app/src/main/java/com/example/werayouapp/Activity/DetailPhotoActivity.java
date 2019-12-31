@@ -3,6 +3,7 @@ package com.example.werayouapp.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
     String nom;
     DatabaseReference usersDb;
     ProgressBar progressBar;
+    Toolbar toolbar;
 
 
 
@@ -61,6 +63,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
         image=getIntent().getStringExtra("image");
         date=getIntent().getStringExtra("date");
         //
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         profil_image=findViewById(R.id.profil_image);
         nom_profil=findViewById(R.id.nom_profil);
         date_publication=findViewById(R.id.date_publication);
@@ -74,6 +77,18 @@ public class DetailPhotoActivity extends AppCompatActivity {
         description_view.setText(description);
         Picasso.with(DetailPhotoActivity.this).load(image).into(imageView);
         date_publication.setText(date);
+        //toolbar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         getUserData();
 
 
