@@ -16,152 +16,136 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/white" />
 
-    <ScrollView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profil_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="0dp"
+        android:layout_height="380dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_view"
+        app:srcCompat="@drawable/ic_launcher_background"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/nom_profil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Audrey abena"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/profil_image"
+        app:layout_constraintTop_toTopOf="@+id/profil_image" />
+
+    <TextView
+        android:id="@+id/date_publication"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="30 Dec. 2019"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/nom_profil"
+        app:layout_constraintTop_toBottomOf="@+id/nom_profil" />
+
+    <TextView
+        android:id="@+id/description_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="J'aime beaucoup cette application , elle est parfaite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profil_image"
+        app:layout_constraintTop_toBottomOf="@+id/profil_image" />
+
+
+    <ImageView
+        android:id="@+id/like_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@+id/image"
+        app:srcCompat="@drawable/ic_like" />
+
+    <TextView
+        android:id="@+id/like_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="20 "
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/like_image"
+        app:layout_constraintStart_toEndOf="@+id/like_image"
+        app:layout_constraintTop_toTopOf="@+id/like_image" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/like_count"
+        app:layout_constraintStart_toEndOf="@+id/like_count"
+        app:layout_constraintTop_toTopOf="@+id/like_count"
+        app:srcCompat="@drawable/ic_comment" />
+
+    <TextView
+        android:id="@+id/comment_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="0"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profil_image"
+        app:layout_constraintEnd_toEndOf="@+id/profil_image"
+        app:layout_constraintStart_toStartOf="@+id/profil_image"
+        app:layout_constraintTop_toTopOf="@+id/profil_image" />
+
+    <Button
+        android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profil_image"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="0dp"
-                android:layout_height="400dp"
-                android:layout_marginTop="24dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description_view"
-                app:srcCompat="@drawable/ic_launcher_background"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/nom_profil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Audrey abena"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/profil_image"
-                app:layout_constraintTop_toTopOf="@+id/profil_image" />
-
-            <TextView
-                android:id="@+id/date_publication"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="30 Dec. 2019"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/nom_profil"
-                app:layout_constraintTop_toBottomOf="@+id/nom_profil" />
-
-            <TextView
-                android:id="@+id/description_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="J'aime beaucoup cette application , elle est parfaite"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/profil_image"
-                app:layout_constraintTop_toBottomOf="@+id/profil_image" />
-
-
-            <ImageView
-                android:id="@+id/like_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="@+id/image"
-                app:layout_constraintTop_toBottomOf="@+id/image"
-                app:srcCompat="@drawable/ic_like" />
-
-            <TextView
-                android:id="@+id/like_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="20 "
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/like_image"
-                app:layout_constraintStart_toEndOf="@+id/like_image"
-                app:layout_constraintTop_toTopOf="@+id/like_image" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                app:layout_constraintBottom_toBottomOf="@+id/like_count"
-                app:layout_constraintStart_toEndOf="@+id/like_count"
-                app:layout_constraintTop_toTopOf="@+id/like_count"
-                app:srcCompat="@drawable/ic_comment" />
-
-            <TextView
-                android:id="@+id/comment_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="0"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView5" />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/like_image" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:layout_constraintBottom_toBottomOf="@+id/profil_image"
-                app:layout_constraintEnd_toEndOf="@+id/profil_image"
-                app:layout_constraintStart_toStartOf="@+id/profil_image"
-                app:layout_constraintTop_toTopOf="@+id/profil_image" />
-
-            <TextView
-                android:id="@+id/message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Commenter le premier "
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/like_image" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/backgroun_button_validation"
+        android:text="ajouter un commentaire"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/like_image" />
 
 
 
 
 
-    <LinearLayout
+   <!-- <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -198,6 +182,6 @@
                 app:layout_constraintTop_toTopOf="@+id/comment_edittext" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    </LinearLayout> -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
