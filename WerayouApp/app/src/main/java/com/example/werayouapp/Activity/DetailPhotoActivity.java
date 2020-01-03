@@ -233,14 +233,13 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 String commentaire = comment_edittext.getText().toString();
                 String key = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child("posts").child(id_post).child("commentaires").push().getKey();
 
-
                 if (!TextUtils.isEmpty ( commentaire )){
                     Calendar calendar=Calendar.getInstance ();
                     SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
                     String saveCurrentDate=currentDate.format ( calendar.getTime () );
                     String date=saveCurrentDate;
                     Map<String, Object> comment_data = new HashMap<>();
-                    comment_data.put ( "id",user.getCurrentUser().getPhoneNumber());
+                    comment_data.put ( "id",user.getUid());
                     comment_data.put ( "commentaire",commentaire);
                     comment_data.put ( "createdDate",date);
                     comment_data.put ( "id_commentaire",key);
@@ -249,7 +248,8 @@ public class DetailPhotoActivity extends AppCompatActivity {
                     userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            makeToast("enregister",DetailPhotoActivity.this);
+                           // makeToast("enregister",DetailPhotoActivity.this);
+                            comment_edittext.setText("");
                         }
                     });
 
