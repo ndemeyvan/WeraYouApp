@@ -39,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -131,6 +132,8 @@ public class DetailPhotoActivity extends AppCompatActivity {
         // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setNestedScrollingEnabled(false);
+        commentList=new ArrayList<>();
+
         getComments();
 
         //
@@ -146,8 +149,8 @@ public class DetailPhotoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    CommentModel post = postSnapshot.getValue(CommentModel.class);
-                    commentList.add(post);
+                    CommentModel comment = postSnapshot.getValue(CommentModel.class);
+                    commentList.add(comment);
                     aucun_commentaires.setVisibility(View.INVISIBLE);
                 }
                 //creating adapter
@@ -221,91 +224,15 @@ public class DetailPhotoActivity extends AppCompatActivity {
             }
         });
 
-       /* //femme
-        DatabaseReference femmeDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Femme");
-        femmeDb.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.getKey().equals(user.getUid())){
-                    userSex="Femme";
-                    oppositeUserSex="Homme";
-                    usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userSex).child(user.getUid());
-                    usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
-                                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                                if(map.get("nom")!=null){
-                                    nom = map.get("nom").toString();
 
-                                    makeToast(getActivity(),nom);
-                                }
-                                if(map.get("prenom")!=null){
-                                     prenom = map.get("prenom").toString();
-                                    nomUser.setText(nom +" " + prenom);
-
-                                }
-                                if(map.get("age")!=null){
-                                    userAge = map.get("age").toString();
-                                    age.setText(userAge +" ans");
-                                }
-                                if(map.get("ville")!=null){
-                                    userSex = map.get("ville").toString();
-                                }
-                                if(map.get("image")!=null){
-                                    profileImageUrl = map.get("image").toString();
-                                    Picasso.with(getActivity()).load(profileImageUrl).placeholder(R.drawable.logo).into(cardView2);
-
-                                }
-                                //
-                                if(map.get("recherche")!=null){
-                                    String recherche = map.get("recherche").toString();
-                                    cherche.setText(recherche);
-
-                                }
-                                if(map.get("sexe")!=null){
-                                    String userSexe = map.get("sexe").toString();
-                                    sexe.setText(userSexe);
-
-                                }
-                                //
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });*/
     }
     public void sendComment(){
         send_comment_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String commentaire = comment_edittext.getText().toString();
+                String key = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child("posts").child(id_post).child("commentaires").push().getKey();
+
 
                 if (!TextUtils.isEmpty ( commentaire )){
                     Calendar calendar=Calendar.getInstance ();
@@ -316,7 +243,9 @@ public class DetailPhotoActivity extends AppCompatActivity {
                     comment_data.put ( "id",user.getCurrentUser().getPhoneNumber());
                     comment_data.put ( "commentaire",commentaire);
                     comment_data.put ( "createdDate",date);
-                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("commentaires");
+                    comment_data.put ( "id_commentaire",key);
+
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("commentaires").child(key);
                     userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
