@@ -113,10 +113,10 @@ public class AddPhotoActivity extends AppCompatActivity {
                     Bitmap compressedImage = new Compressor(this)
                             .setMaxWidth(250)
                             .setMaxHeight(250)
-                            .setQuality(90)
+                            .setQuality(100)
                             .compressToBitmap(actualImage);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    compressedImage.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+                    compressedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     final_image = baos.toByteArray();
                 }catch (Exception e){
 

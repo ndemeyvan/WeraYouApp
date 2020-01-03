@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.werayouapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -33,6 +38,9 @@ public class DetailPhotoActivity extends AppCompatActivity {
     String description;
     String image;
     String date;
+    //
+    FirebaseAuth user ;
+    private String userID;
     //
     CircleImageView profil_image;
     TextView nom_profil;
@@ -63,6 +71,12 @@ public class DetailPhotoActivity extends AppCompatActivity {
         image=getIntent().getStringExtra("image");
         date=getIntent().getStringExtra("date");
         //
+        //
+        user=FirebaseAuth.getInstance();
+        userID=user.getCurrentUser().getUid();
+        //
+        //
+        //
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         profil_image=findViewById(R.id.profil_image);
         nom_profil=findViewById(R.id.nom_profil);
@@ -73,6 +87,8 @@ public class DetailPhotoActivity extends AppCompatActivity {
         like_count=findViewById(R.id.like_count);
         comment_count=findViewById(R.id.comment_count);
         progressBar=findViewById(R.id.progressBar);
+        comment_edittext=findViewById(R.id.comment_edittext);
+        send_comment_button=findViewById(R.id.send_comment_button);
         // set les extras recuperez
         description_view.setText(description);
         Picasso.with(DetailPhotoActivity.this).load(image).into(imageView);
@@ -88,7 +104,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        sendComment();
         getUserData();
 
 
@@ -99,7 +115,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("data");
                 usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -112,7 +128,6 @@ public class DetailPhotoActivity extends AppCompatActivity {
                                 String prenom = map.get("prenom").toString();
                                 nom_profil.setText(nom +" " + prenom);
                                 toolbar.setTitle(nom);
-
                             }
                             if(map.get("image")!=null){
                                 String profileImageUrl = map.get("image").toString();
@@ -229,6 +244,29 @@ public class DetailPhotoActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });*/
+    }
+    public void sendComment(){
+        send_comment_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String commentaire = comment_edittext.getText().toString();
+
+                if (!TextUtils.isEmpty ( commentaire )){
+                    Calendar calendar=Calendar.getInstance ();
+                    SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+                    String saveCurrentDate=currentDate.format ( calendar.getTime () );
+                    String date=saveCurrentDate;
+                    Map<String, Object> comment_data = new HashMap<>();
+                    comment_data.put ( "nom",nom);
+                    comment_data.put ( "id_user",user.getCurrentUser().getPhoneNumber());
+                    comment_data.put ( "commentaire",commentaire);
+                    comment_data.put ( "createdDate",date);
+                }else{
+
+
+                }
+            }
+        });
     }
 
 

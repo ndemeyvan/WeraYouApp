@@ -107,15 +107,17 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         mRadioGroup = (RadioGroup) findViewById(R.id.spinner);
         radio_homme = (RadioButton) findViewById(R.id.radio_homme);
         radio_femme = (RadioButton) findViewById(R.id.radio_femme);
-
+        //
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,recherche);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         Apropos=findViewById(R.id.apropos);
         spinnerTwo.setAdapter(arrayAdapter);
         setImage();
+        //
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
+        //
         getuserdata();
         getData();
 
@@ -402,7 +404,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         Calendar calendar=Calendar.getInstance ();
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
         String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        String randomKey=saveCurrentDate;
+        String date=saveCurrentDate;
         Map<String, Object> user_data = new HashMap<>();
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
@@ -412,7 +414,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         user_data.put ( "age", ageUser );
         user_data.put ( "sexe",sexe);
         user_data.put ( "recherche",interesse);
-        user_data.put("createdDate",randomKey);
+        user_data.put("createdDate",date);
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
         user_data.put("apropos",apropos);
