@@ -55,7 +55,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
     String date;
     //
     FirebaseAuth user ;
-    private String userID;
+    String userID;
     //
     CircleImageView profil_image;
     TextView nom_profil;
@@ -66,9 +66,9 @@ public class DetailPhotoActivity extends AppCompatActivity {
     TextView like_count;
     TextView comment_count;
     TextView aucun_commentaires;
-    private RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
     List<CommentModel> commentList;
-    private RecyclerView.Adapter adapter;
+    RecyclerView.Adapter adapter;
     EditText comment_edittext;
     ImageButton send_comment_button;
     String nom;
@@ -135,7 +135,6 @@ public class DetailPhotoActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setNestedScrollingEnabled(false);
         commentList=new ArrayList<>();
-
         getComments();
 
         //
@@ -167,8 +166,6 @@ public class DetailPhotoActivity extends AppCompatActivity {
         });
 
     }
-
-
     public void getUserData(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
         db.addChildEventListener(new ChildEventListener() {
@@ -269,11 +266,9 @@ public class DetailPhotoActivity extends AppCompatActivity {
             }
         });
     }
-
     void makeToast(String msg , Context context){
         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
     }
-
 
     @Override
     public void onBackPressed() {
