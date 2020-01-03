@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.werayouapp.Activity.SettingActivity;
@@ -60,6 +62,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         String createdDate = commentModelList.get(i).getCreatedDate();
         holder.commentaire.setText(commentaire);
         holder.createdDate.setText(createdDate);
+        holder.layout.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_scale ) );
         getData(holder,id);
 
 
@@ -138,6 +141,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         TextView nom_profil;
         TextView commentaire;
         TextView createdDate;
+        ConstraintLayout layout;
 
 
         public ViewHolder(final View itemView) {
@@ -147,8 +151,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             nom_profil=itemView.findViewById(R.id.nom_profil);
             commentaire=itemView.findViewById(R.id.commentaire);
             createdDate=itemView.findViewById(R.id.createdDate);
-
-
+            layout = itemView.findViewById(R.id.layout);
         }
 
     }

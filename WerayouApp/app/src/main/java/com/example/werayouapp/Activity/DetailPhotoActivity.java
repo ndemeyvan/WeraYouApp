@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -131,6 +132,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setNestedScrollingEnabled(false);
         getComments();
+
         //
 
 
@@ -184,6 +186,8 @@ public class DetailPhotoActivity extends AppCompatActivity {
                             if(map.get("image")!=null){
                                 String profileImageUrl = map.get("image").toString();
                                 Picasso.with(DetailPhotoActivity.this).load(profileImageUrl).placeholder(R.drawable.ic_launcher_background).into(profil_image);
+                                profil_image.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_scale ) );
+
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
 
