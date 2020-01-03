@@ -4,8 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,8 +19,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.werayouapp.R;
+import com.example.werayouapp.adapter.CommentAdapter;
+import com.example.werayouapp.adapter.PostAdapter;
+import com.example.werayouapp.model.CommentModel;
+import com.example.werayouapp.model.Post;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +40,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -50,7 +63,10 @@ public class DetailPhotoActivity extends AppCompatActivity {
     ImageView like_image;
     TextView like_count;
     TextView comment_count;
-    RecyclerView recyclerView;
+    TextView aucun_commentaires;
+    private RecyclerView mRecyclerView;
+    List<CommentModel> commentList;
+    private RecyclerView.Adapter adapter;
     EditText comment_edittext;
     ImageButton send_comment_button;
     String nom;
@@ -89,6 +105,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
         progressBar=findViewById(R.id.progressBar);
         comment_edittext=findViewById(R.id.comment_edittext);
         send_comment_button=findViewById(R.id.send_comment_button);
+        aucun_commentaires=findViewById(R.id.aucun_commentaires);
         // set les extras recuperez
         description_view.setText(description);
         Picasso.with(DetailPhotoActivity.this).load(image).into(imageView);
@@ -106,9 +123,44 @@ public class DetailPhotoActivity extends AppCompatActivity {
         });
         sendComment();
         getUserData();
+        mRecyclerView=findViewById(R.id.mRecyclerView);
+        //
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setNestedScrollingEnabled(false);
+        getComments();
+        //
 
 
     }
+    //recupere tout ce que l'utilisateur a poste
+    void getComments(){
+        //adding an event listener to fetch values
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("commentaires");
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                //iterating through all the values in database
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    CommentModel post = postSnapshot.getValue(CommentModel.class);
+                    commentList.add(post);
+                    aucun_commentaires.setVisibility(View.INVISIBLE);
+                }
+                //creating adapter
+                adapter = new CommentAdapter(commentList, DetailPhotoActivity.this);
+                //adding adapter to recyclerview
+                mRecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+    }
+
 
     public void getUserData(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
@@ -257,16 +309,28 @@ public class DetailPhotoActivity extends AppCompatActivity {
                     String saveCurrentDate=currentDate.format ( calendar.getTime () );
                     String date=saveCurrentDate;
                     Map<String, Object> comment_data = new HashMap<>();
-                    comment_data.put ( "nom",nom);
-                    comment_data.put ( "id_user",user.getCurrentUser().getPhoneNumber());
+                    comment_data.put ( "id",user.getCurrentUser().getPhoneNumber());
                     comment_data.put ( "commentaire",commentaire);
                     comment_data.put ( "createdDate",date);
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("commentaires");
+                    userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            makeToast("enregister",DetailPhotoActivity.this);
+                        }
+                    });
+
+
                 }else{
 
 
                 }
             }
         });
+    }
+
+    void makeToast(String msg , Context context){
+        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
     }
 
 

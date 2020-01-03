@@ -30,16 +30,17 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/like_image"
-                app:layout_constraintVertical_bias="0.432" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profil_image"
@@ -150,6 +151,16 @@
                 app:layout_constraintEnd_toEndOf="@+id/profil_image"
                 app:layout_constraintStart_toStartOf="@+id/profil_image"
                 app:layout_constraintTop_toTopOf="@+id/profil_image" />
+
+            <TextView
+                android:id="@+id/aucun_commentaires"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Commentez le premier ."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/like_image" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
