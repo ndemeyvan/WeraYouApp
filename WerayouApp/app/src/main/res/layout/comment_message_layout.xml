@@ -11,8 +11,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profil_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_launcher_background"
@@ -26,6 +26,7 @@
         android:layout_marginStart="16dp"
         android:text="Audrey abena"
         android:textColor="@color/black"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -36,7 +37,7 @@
         android:id="@+id/commentaire"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="Olalal j'aime bien ta photo elle est trop jolie je jure !!!! Qui te fait les make up stp ? "
@@ -49,8 +50,8 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/profil_image"
         app:layout_constraintEnd_toEndOf="@+id/profil_image"
         app:layout_constraintStart_toStartOf="@+id/profil_image"

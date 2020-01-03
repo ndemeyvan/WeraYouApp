@@ -75,6 +75,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
     DatabaseReference usersDb;
     ProgressBar progressBar;
     Toolbar toolbar;
+    ProgressBar progressBar2;
 
 
 
@@ -108,6 +109,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
         comment_edittext=findViewById(R.id.comment_edittext);
         send_comment_button=findViewById(R.id.send_comment_button);
         aucun_commentaires=findViewById(R.id.aucun_commentaires);
+        progressBar2=findViewById(R.id.progressBar2);
         // set les extras recuperez
         description_view.setText(description);
         Picasso.with(DetailPhotoActivity.this).load(image).into(imageView);
@@ -184,7 +186,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
                             if(map.get("prenom")!=null){
                                 String prenom = map.get("prenom").toString();
                                 nom_profil.setText(nom +" " + prenom);
-                                toolbar.setTitle(nom);
+                                toolbar.setTitle(nom + " " + prenom);
                             }
                             if(map.get("image")!=null){
                                 String profileImageUrl = map.get("image").toString();
@@ -234,6 +236,8 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 String key = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child("posts").child(id_post).child("commentaires").push().getKey();
 
                 if (!TextUtils.isEmpty ( commentaire )){
+                    send_comment_button.setVisibility(View.INVISIBLE);
+                    progressBar2.setVisibility(View.VISIBLE);
                     Calendar calendar=Calendar.getInstance ();
                     SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
                     String saveCurrentDate=currentDate.format ( calendar.getTime () );
@@ -250,12 +254,16 @@ public class DetailPhotoActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                            // makeToast("enregister",DetailPhotoActivity.this);
                             comment_edittext.setText("");
+                            send_comment_button.setVisibility(View.VISIBLE);
+                            progressBar2.setVisibility(View.INVISIBLE);
+
                         }
                     });
 
 
                 }else{
 
+                    makeToast("entrez un texte",DetailPhotoActivity.this);
 
                 }
             }
