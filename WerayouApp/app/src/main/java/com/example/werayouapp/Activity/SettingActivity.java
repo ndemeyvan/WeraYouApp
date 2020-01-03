@@ -126,7 +126,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("data");
                 usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -385,7 +385,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         user_data.put("id",userID);
         user_data.put("apropos",apropos);
 
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("data");
         userDb.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -416,7 +416,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
         user_data.put("apropos",apropos);
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("data");
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

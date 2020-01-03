@@ -269,7 +269,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_data.put("id",userID);
         user_data.put("apropos",apropos);
 
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("data");
         userDb.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

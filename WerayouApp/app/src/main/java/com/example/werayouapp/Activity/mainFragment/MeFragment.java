@@ -143,7 +143,7 @@ public class MeFragment extends Fragment {
 
     ///recupere les information de l'utilisateur
     public void getUserData(){
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("data");
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
