@@ -124,7 +124,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
         });
         sendComment();
         getUserData();
-        mRecyclerView=findViewById(R.id.mRecyclerView);
+        mRecyclerView=findViewById(R.id.recyclerView);
         //
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
