@@ -149,6 +149,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
+                commentList.clear();//vide la liste de la recyclrView pour eviter les doublons
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     CommentModel comment = postSnapshot.getValue(CommentModel.class);
                     commentList.add(comment);
@@ -259,7 +260,6 @@ public class DetailPhotoActivity extends AppCompatActivity {
 
 
                 }else{
-
                     makeToast("entrez un texte",DetailPhotoActivity.this);
 
                 }

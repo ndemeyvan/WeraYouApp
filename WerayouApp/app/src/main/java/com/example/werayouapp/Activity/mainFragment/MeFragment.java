@@ -122,6 +122,7 @@ public class MeFragment extends Fragment {
            @Override
            public void onDataChange(DataSnapshot snapshot) {
                //iterating through all the values in database
+               postList.clear();//vide la liste de la recyclrView pour eviter les doublons
                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                    Post post = postSnapshot.getValue(Post.class);
                    postList.add(post);
