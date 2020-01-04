@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -37,6 +40,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.EmojiPopup;
+import com.vanniktech.emoji.google.GoogleEmojiProvider;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,6 +60,8 @@ public class DetailPhotoActivity extends AppCompatActivity {
     String description;
     String image;
     String date;
+
+
     //
     FirebaseAuth user ;
     String userID;
@@ -62,9 +71,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
     TextView date_publication;
     TextView description_view;
     ImageView imageView;
-    ImageView like_image;
-    TextView like_count;
-    TextView comment_count;
+    TextView likecommentsNumbers;
     TextView aucun_commentaires;
     RecyclerView mRecyclerView;
     List<CommentModel> commentList;
@@ -76,6 +83,11 @@ public class DetailPhotoActivity extends AppCompatActivity {
     ProgressBar progressBar;
     Toolbar toolbar;
     ProgressBar progressBar2;
+    ViewGroup rootView;
+    ImageView like_icon;
+    long likeNumber;
+    long commentNumber;
+    boolean islike=false;
 
 
 
@@ -96,20 +108,21 @@ public class DetailPhotoActivity extends AppCompatActivity {
         //
         //
         //
+        rootView = findViewById(R.id.root_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         profil_image=findViewById(R.id.profil_image);
         nom_profil=findViewById(R.id.nom_profil);
         date_publication=findViewById(R.id.date_publication);
         description_view=findViewById(R.id.description_view);
         imageView=findViewById(R.id.image);
-        like_image=findViewById(R.id.like_image);
-        like_count=findViewById(R.id.like_count);
-        comment_count=findViewById(R.id.comment_count);
+        like_icon=findViewById(R.id.like_icon);
         progressBar=findViewById(R.id.progressBar);
-        comment_edittext=findViewById(R.id.comment_edittext);
         send_comment_button=findViewById(R.id.send_comment_button);
         aucun_commentaires=findViewById(R.id.aucun_commentaires);
         progressBar2=findViewById(R.id.progressBar2);
+        likecommentsNumbers=findViewById(R.id.likecommentsNumbers);
+        //EmojiManager.install(new GoogleEmojiProvider());
+        comment_edittext=findViewById(R.id.comment_edittext);
         // set les extras recuperez
         description_view.setText(description);
         Picasso.with(DetailPhotoActivity.this).load(image).into(imageView);
@@ -136,11 +149,171 @@ public class DetailPhotoActivity extends AppCompatActivity {
         mRecyclerView.setNestedScrollingEnabled(false);
         commentList=new ArrayList<>();
         getComments();
-
         //
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference ref = db.getReference();
+        getCommentCount();
+        setLike();
+
+
 
 
     }
+
+    void getCommentCount(){
+        DatabaseReference comments = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("commentaires");
+        comments.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
+                if (dataSnapshot.exists()){
+                    commentNumber = dataSnapshot.getChildrenCount();
+
+                }else{
+                    commentNumber=0;
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("likes");
+        like.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
+                if (dataSnapshot.exists()){
+                    likeNumber=dataSnapshot.getChildrenCount();
+                    likecommentsNumbers.setText(likeNumber+" Like(s) ," + commentNumber + " Commentaires");
+                }else{
+                    likeNumber=0;
+                    likecommentsNumbers.setText(likeNumber+" Like(s) ," + commentNumber + " Commentaires");
+
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    void setLike(){
+        like_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (islike=false){
+                    String key = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child("posts").child(id_post).child("likes").push().getKey();
+                    send_comment_button.setVisibility(View.INVISIBLE);
+                    progressBar2.setVisibility(View.VISIBLE);
+                    Calendar calendar=Calendar.getInstance ();
+                    SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+                    String saveCurrentDate=currentDate.format ( calendar.getTime () );
+                    String date=saveCurrentDate;
+                    Map<String, Object> comment_data = new HashMap<>();
+                    comment_data.put ( "id",user.getUid());
+                    comment_data.put ( "createdDate",date);
+                    comment_data.put ( "id_like",key);
+
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("likes").child(key);
+                    userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // makeToast("enregister",DetailPhotoActivity.this);
+                            comment_edittext.setText("");
+                            send_comment_button.setVisibility(View.VISIBLE);
+                            progressBar2.setVisibility(View.INVISIBLE);
+
+                        }
+                    });
+
+                }else{
+                        //supprimer le like dans le noeud de la base de donnee
+
+                    }
+                }
+
+
+
+
+
+        });
+
+    }
+
+    void checkifLike(){
+        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("likes");
+        like.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (!dataSnapshot.hasChild(userID)){
+                    islike=true;
+                    //set l'image par la suite
+                }else{
+                    islike=false;
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+
+
     //recupere tout ce que l'utilisateur a poste
     void getComments(){
         //adding an event listener to fetch values
@@ -184,7 +357,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
                             if(map.get("prenom")!=null){
                                 String prenom = map.get("prenom").toString();
                                 nom_profil.setText(nom +" " + prenom);
-                                toolbar.setTitle(nom + " " + prenom);
+                                toolbar.setTitle("Publication de "+nom + " " + prenom);
                             }
                             if(map.get("image")!=null){
                                 String profileImageUrl = map.get("image").toString();

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.DetailPhotoActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/root_view">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -39,7 +40,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/like_image"
+                app:layout_constraintTop_toBottomOf="@+id/likecommentsNumbers"
                 app:layout_constraintVertical_bias="0.0" />
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -79,7 +80,7 @@
                 android:id="@+id/date_publication"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="2dp"
                 android:text="30 Dec. 2019"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="@+id/nom_profil"
@@ -94,52 +95,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/profil_image"
                 app:layout_constraintTop_toBottomOf="@+id/profil_image" />
-
-
-            <ImageView
-                android:id="@+id/like_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="@+id/image"
-                app:layout_constraintTop_toBottomOf="@+id/image"
-                app:srcCompat="@drawable/ic_like" />
-
-            <TextView
-                android:id="@+id/like_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="20 "
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/like_image"
-                app:layout_constraintStart_toEndOf="@+id/like_image"
-                app:layout_constraintTop_toTopOf="@+id/like_image" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/like_count"
-                app:layout_constraintStart_toEndOf="@+id/like_count"
-                app:layout_constraintTop_toTopOf="@+id/like_count"
-                app:srcCompat="@drawable/ic_comment" />
-
-            <TextView
-                android:id="@+id/comment_count"
-                android:layout_width="11dp"
-                android:layout_height="18dp"
-                android:text="0"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView5"
-                tools:layout_editor_absoluteX="192dp" />
 
 
             <ProgressBar
@@ -160,7 +115,29 @@
                 android:text="Commentez le premier ."
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/like_image" />
+                app:layout_constraintTop_toBottomOf="@+id/likecommentsNumbers" />
+
+            <TextView
+                android:id="@+id/likecommentsNumbers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="0 Like(s) , 20 Commentaires"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image" />
+
+            <ImageView
+                android:id="@+id/like_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/nom_profil"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/nom_profil"
+                app:srcCompat="@drawable/ic_heart_none" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

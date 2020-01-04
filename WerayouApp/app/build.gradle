@@ -42,5 +42,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.lorentzos.swipecards:library:1.0.9'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
+    implementation 'com.vanniktech:emoji-google:0.6.0'
+
+
+
+
+
 
 }
