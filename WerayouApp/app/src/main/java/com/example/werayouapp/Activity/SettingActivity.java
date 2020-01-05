@@ -82,6 +82,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     private String ville;
     private String profileImageUrl;
     ProgressBar progressBar;
+    ProgressBar progressBar3;
     private String userPays;
 
 
@@ -96,6 +97,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         age_user=findViewById(R.id.age_user);
         button=findViewById(R.id.button);
         progressBar=findViewById(R.id.progressBar);
+        progressBar3=findViewById(R.id.progressBar3);
 
         pays_user=pays_user=findViewById(R.id.pays_user);
         user_prenom=findViewById(R.id.user_prenom);
@@ -315,6 +317,8 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                 /////////// envoi des fichier dans la base de donnee
                 if (ischange) {
                     if ( !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
+                        button.setVisibility(View.INVISIBLE);
+                        progressBar3.setVisibility(View.VISIBLE);
                         //debut envoie dans storage
                         final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
                         UploadTask uploadTask = ref.putBytes(final_image);
@@ -336,12 +340,18 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                         Uri downloadUri = task.getResult();
 
                                     } else {
+                                        button.setVisibility(View.VISIBLE);
+                                        progressBar3.setVisibility(View.INVISIBLE);
+                                        makeToast("Erro , ry later");
                                         // Handle failures
                                         // ...
                                     }
                                     stockageWithURI ( task,nom,prenom,ville,ageUser,apropos,sexe);
 
                                 } else {
+                                    button.setVisibility(View.VISIBLE);
+                                    progressBar3.setVisibility(View.INVISIBLE);
+                                    makeToast("Erro , ry later");
                                     // Handle failures
                                     // ...
                                 }
@@ -349,7 +359,9 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                         });
                         ////////fin de l'envoie dans storage
                     } else {
-                        Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
+                        button.setVisibility(View.VISIBLE);
+                        progressBar3.setVisibility(View.INVISIBLE);
+                        makeToast("Remplir tous les champs");
                     }
                 }else{
 

@@ -60,11 +60,13 @@ public class MeFragment extends Fragment {
     private String prenom;
     ImageButton setupButton;
     ProgressBar progressBar;
+    TextView paysView;
     private RecyclerView mRecyclerView;
     List<Post> postList;
     private RecyclerView.Adapter adapter;
     ProgressBar progressBarTwo;
     TextView aucun_post;
+    TextView villeView;
 
 
 
@@ -89,6 +91,8 @@ public class MeFragment extends Fragment {
         progressBarTwo=v.findViewById(R.id.progressBarTwo);
         mRecyclerView=v.findViewById(R.id.mRecyclerView);
         aucun_post=v.findViewById(R.id.aucun_post);
+        paysView=v.findViewById(R.id.paysView);
+        villeView=v.findViewById(R.id.villeView);
         //
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -174,7 +178,9 @@ public class MeFragment extends Fragment {
                                 age.setText(userAge +" ans");
                             }
                             if(map.get("ville")!=null){
-                                userSex = map.get("ville").toString();
+                                String ville = map.get("ville").toString();
+                                villeView.setText(ville);
+
                             }
                             if(map.get("image")!=null){
                                 profileImageUrl = map.get("image").toString();
@@ -191,6 +197,11 @@ public class MeFragment extends Fragment {
                             if(map.get("sexe")!=null){
                                 String userSexe = map.get("sexe").toString();
                                 sexe.setText(userSexe);
+
+                            }
+                            if(map.get("pays")!=null){
+                                String pays = map.get("pays").toString();
+                                paysView.setText(pays);
 
                             }
                             //

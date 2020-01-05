@@ -101,6 +101,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
         date=getIntent().getStringExtra("date");
         //
         //
+
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
         //
@@ -119,7 +120,6 @@ public class DetailPhotoActivity extends AppCompatActivity {
         aucun_commentaires=findViewById(R.id.aucun_commentaires);
         progressBar2=findViewById(R.id.progressBar2);
         likecommentsNumbers=findViewById(R.id.likecommentsNumbers);
-        //EmojiManager.install(new GoogleEmojiProvider());
         comment_edittext=findViewById(R.id.comment_edittext);
         // set les extras recuperez
         description_view.setText(description);
@@ -211,6 +211,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
                         appleSnapshot.getRef().removeValue();
                         like_icon.setImageResource(R.drawable.ic_heart_empty);
                         islike=false;
+                        getLikeCount();
                     }
                 }
                 @Override
@@ -351,7 +352,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
 
 
     }
-    //
+    //envoie le commentaire dans la bd
     public void sendComment(){
         send_comment_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -392,11 +393,11 @@ public class DetailPhotoActivity extends AppCompatActivity {
             }
         });
     }
-    //
+    //fait un toast
     void makeToast(String msg , Context context){
         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
     }
-    //
+    //Quand on
     @Override
     public void onBackPressed() {
         super.onBackPressed();

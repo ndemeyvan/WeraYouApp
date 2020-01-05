@@ -131,7 +131,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
                 <TextView
-                    android:id="@+id/pays"
+                    android:id="@+id/paysView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -142,16 +142,16 @@
                     tools:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/Ville"
+                    android:id="@+id/villeView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Xxxxx"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="@+id/pays"
+                    app:layout_constraintEnd_toEndOf="@+id/paysView"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/pays"
-                    app:layout_constraintTop_toBottomOf="@+id/pays" />
+                    app:layout_constraintStart_toStartOf="@+id/paysView"
+                    app:layout_constraintTop_toBottomOf="@+id/paysView" />
 
                 <TextView
                     android:id="@+id/age"
@@ -160,9 +160,9 @@
                     android:layout_marginTop="4dp"
                     android:text="Xxxx"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="@+id/Ville"
-                    app:layout_constraintStart_toStartOf="@+id/Ville"
-                    app:layout_constraintTop_toBottomOf="@+id/Ville" />
+                    app:layout_constraintEnd_toEndOf="@+id/villeView"
+                    app:layout_constraintStart_toStartOf="@+id/villeView"
+                    app:layout_constraintTop_toBottomOf="@+id/villeView" />
 
                 <TextView
                     android:id="@+id/sexe"
