@@ -225,5 +225,18 @@
             app:layout_constraintEnd_toEndOf="@+id/mRecyclerView"
             app:layout_constraintStart_toStartOf="@+id/mRecyclerView"
             app:layout_constraintTop_toTopOf="@+id/mRecyclerView" />
+
+        <TextView
+            android:id="@+id/aucun_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vous n'avez rien publier pour l'instant"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/mRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/mRecyclerView"
+            app:layout_constraintTop_toTopOf="@+id/mRecyclerView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

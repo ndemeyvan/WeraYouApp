@@ -400,6 +400,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
 
 
     }
+
     public void stockageWithoutUri(String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
         Calendar calendar=Calendar.getInstance ();
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );

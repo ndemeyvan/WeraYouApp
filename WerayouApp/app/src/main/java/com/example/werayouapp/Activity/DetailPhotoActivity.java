@@ -163,7 +163,6 @@ public class DetailPhotoActivity extends AppCompatActivity {
     }
 
     void getLikeCount(){
-
         final DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes");
         like.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -171,10 +170,9 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
                     Log.e("nombreLike",snap.getChildrenCount() + "");
                     likeNumber=snap.getChildrenCount();
-
+                    likecommentsNumbers.setText((likeNumber-1) +" Like(s) , " + commentNumber + " Commentaires");
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

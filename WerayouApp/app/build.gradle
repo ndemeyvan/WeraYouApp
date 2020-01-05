@@ -45,8 +45,4 @@ dependencies {
     implementation 'com.vanniktech:emoji-google:0.6.0'
 
 
-
-
-
-
 }

@@ -18,6 +18,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,12 +51,11 @@ import id.zelory.compressor.Compressor;
 
 public class SetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     CircleImageView profile_image;
+    ProgressBar progressBar;
     EditText ville_user;
     EditText age_user;
-    Spinner spinner;
     EditText user_prenom;
     EditText user_nom;
-    String[] genre={"Quel est votre sex ?","Homme","Femme"};
     String[] recherche={"Que recherchez vous ?","Homme","Femme","Les deux"};
     String interesse;
     Uri mImageUri;
@@ -64,6 +66,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     String country;
     FirebaseAuth user ;
     String sexe;
+    private RadioGroup mRadioGroup;
+    private RadioButton radioButton;
+
     TextView place;
     TextView phone;
     private String userID;
@@ -82,21 +87,19 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         ville_user=findViewById(R.id.ville_user);
         age_user=findViewById(R.id.age_user);
         phone=findViewById(R.id.phone);
-        spinner=findViewById(R.id.spinner);
         button=findViewById(R.id.button);
         place=findViewById(R.id.place);
         user_prenom=findViewById(R.id.user_prenom);
         user_nom=findViewById(R.id.user_nom);
         spinnerTwo=findViewById(R.id.spinnerTwo);
-        spinner.setOnItemSelectedListener(this);
+        spinnerTwo.setOnItemSelectedListener(this);
+        mRadioGroup = (RadioGroup) findViewById(R.id.spinner);
         country=getIntent().getStringExtra("country");
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,genre);
         ArrayAdapter arrayAdapterTwo = new ArrayAdapter(this,android.R.layout.simple_spinner_item,recherche);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         arrayAdapterTwo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         Apropos=findViewById(R.id.apropos);
-        spinner.setAdapter(arrayAdapter);
+        progressBar=findViewById(R.id.progressBar);
         spinnerTwo.setAdapter(arrayAdapterTwo);
         setImage();
         user=FirebaseAuth.getInstance();
@@ -167,7 +170,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        sexe=genre[i];
         interesse=recherche[i];
     }
 
@@ -182,17 +184,27 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         button.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View v) {
+
                 ///////////
                 final String apropos=Apropos.getText().toString();
                 final String ville=ville_user.getText().toString();
                 final String ageUser=age_user.getText().toString();
                 final String nom = user_nom.getText().toString();
                 final String prenom=user_prenom.getText().toString();
+                int selectedId = mRadioGroup.getCheckedRadioButtonId();
+
+                // find the radiobutton by returned id
+                radioButton = (RadioButton) findViewById(selectedId);
+                sexe = radioButton.getText().toString();
+
 
                 //////////
                 /////////// envoi des fichier dans la base de donnee
                 if (ischange) {
                     if ( !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
+
+                        button.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.VISIBLE);
 
                         final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
                         UploadTask uploadTask = ref.putBytes(final_image);
@@ -220,6 +232,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                                     stockage ( task,nom,prenom,ville,ageUser,apropos);
 
                                 } else {
+                                    button.setVisibility(View.VISIBLE);
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    Toast.makeText ( getApplicationContext (), "Erreur , try later ", Toast.LENGTH_LONG ).show ();
                                     // Handle failures
                                     // ...
                                 }
@@ -227,6 +242,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                         });
                         ////////fin de l'nvoie
                     } else {
+                        button.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
                     }
                 }else{
