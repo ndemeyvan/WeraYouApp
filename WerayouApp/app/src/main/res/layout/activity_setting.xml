@@ -271,6 +271,7 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/button"
                 app:layout_constraintEnd_toEndOf="@+id/button"
                 app:layout_constraintStart_toStartOf="@+id/button"

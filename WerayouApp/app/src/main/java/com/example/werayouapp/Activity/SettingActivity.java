@@ -124,7 +124,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         getData();
 
     }
-
+    //
     public void getData(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         db.addChildEventListener(new ChildEventListener() {
@@ -230,12 +230,11 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
 
 
     }
-
+    //
     void makeToast(String msg){
         Toast.makeText(SettingActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
-
-
+    //
     void setImage(){
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,7 +258,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         });
 
     }
-
+    //
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult ( requestCode, resultCode, data );
@@ -287,24 +286,23 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
             }
         }
     }
-
+    //
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         interesse=recherche[i];
     }
-
+    //
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
+    //
     public void getuserdata(){
         button.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View v) {
                 ///////////
                 int selectId = mRadioGroup.getCheckedRadioButtonId();
-
                 final RadioButton radioButton = (RadioButton) findViewById(selectId);
                 final String sexe = radioButton.getText().toString();
                 final String apropos=Apropos.getText().toString();
@@ -351,7 +349,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                 } else {
                                     button.setVisibility(View.VISIBLE);
                                     progressBar3.setVisibility(View.INVISIBLE);
-                                    makeToast("Erro , ry later");
+                                    makeToast("Error , ry later");
                                     // Handle failures
                                     // ...
                                 }
@@ -371,7 +369,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
             }
         });
     }
-
+    //
     public void stockageWithURI(@NonNull Task<Uri> task,String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
         Uri downloadUri;
         if (task!=null){
@@ -412,7 +410,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
 
 
     }
-
+    //
     public void stockageWithoutUri(String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
         Calendar calendar=Calendar.getInstance ();
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
@@ -444,7 +442,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
 
 
     }
-
+    //
     @Override
     public void onBackPressed() {
         super.onBackPressed();
