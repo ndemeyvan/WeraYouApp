@@ -87,7 +87,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
     ImageView like_icon;
     long likeNumber;
     long commentNumber;
-    boolean islike=false;
+    boolean islike;
 
 
 
@@ -152,138 +152,92 @@ public class DetailPhotoActivity extends AppCompatActivity {
         //
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference();
-        getCommentCount();
-        setLike();
-
-
-
-
-    }
-
-    void getCommentCount(){
-        DatabaseReference comments = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("commentaires");
-        comments.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
-                if (dataSnapshot.exists()){
-                    commentNumber = dataSnapshot.getChildrenCount();
-
-                }else{
-                    commentNumber=0;
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("likes");
-        like.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
-                if (dataSnapshot.exists()){
-                    likeNumber=dataSnapshot.getChildrenCount();
-                    likecommentsNumbers.setText(likeNumber+" Like(s) ," + commentNumber + " Commentaires");
-                }else{
-                    likeNumber=0;
-                    likecommentsNumbers.setText(likeNumber+" Like(s) ," + commentNumber + " Commentaires");
-
-                }
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    void setLike(){
+        getLikeCount();
+        checkifLike();
         like_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (islike=false){
-                    String key = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child("posts").child(id_post).child("likes").push().getKey();
-                    send_comment_button.setVisibility(View.INVISIBLE);
-                    progressBar2.setVisibility(View.VISIBLE);
-                    Calendar calendar=Calendar.getInstance ();
-                    SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-                    String saveCurrentDate=currentDate.format ( calendar.getTime () );
-                    String date=saveCurrentDate;
-                    Map<String, Object> comment_data = new HashMap<>();
-                    comment_data.put ( "id",user.getUid());
-                    comment_data.put ( "createdDate",date);
-                    comment_data.put ( "id_like",key);
-
-                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("likes").child(key);
-                    userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            // makeToast("enregister",DetailPhotoActivity.this);
-                            comment_edittext.setText("");
-                            send_comment_button.setVisibility(View.VISIBLE);
-                            progressBar2.setVisibility(View.INVISIBLE);
-
-                        }
-                    });
-
-                }else{
-                        //supprimer le like dans le noeud de la base de donnee
-
-                    }
-                }
-
-
-
-
-
+                setLike();
+            }
         });
-
     }
 
+    void getLikeCount(){
+
+        final DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes");
+        like.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap: dataSnapshot.getChildren()) {
+                    Log.e("nombreLike",snap.getChildrenCount() + "");
+                    likeNumber=snap.getChildrenCount();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    // ajout le like dans la bd
+    void setLike(){
+        if (islike==false){
+            //String key = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes").push().getKey();
+            Calendar calendar=Calendar.getInstance ();
+            SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+            String saveCurrentDate=currentDate.format ( calendar.getTime () );
+            String date=saveCurrentDate;
+            Map<String, Object> comment_data = new HashMap<>();
+            comment_data.put ( "id",user.getUid());
+            comment_data.put ( "createdDate",date);
+           // comment_data.put ( "id_like",key);
+            DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes").child(userID);
+            userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    like_icon.setImageResource(R.drawable.ic_heart_like);
+                    islike=true;
+
+                }
+            });
+
+        }else{
+
+            //remove value
+            DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes").child(userID);
+            userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                        appleSnapshot.getRef().removeValue();
+                        like_icon.setImageResource(R.drawable.ic_heart_empty);
+                        islike=false;
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+            //remove value
+
+
+        }
+    }
+    // cherche a savoir si l'utilisateur a actuel a deja likez
     void checkifLike(){
-        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("likes");
+        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes");
         like.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (!dataSnapshot.hasChild(userID)){
+                if (dataSnapshot.hasChild(userID)){
                     islike=true;
-                    //set l'image par la suite
+                    like_icon.setImageResource(R.drawable.ic_heart_empty);
+
                 }else{
+                    like_icon.setImageResource(R.drawable.ic_heart_like);
+
                     islike=false;
                 }
             }
@@ -310,10 +264,6 @@ public class DetailPhotoActivity extends AppCompatActivity {
         });
 
     }
-
-
-
-
     //recupere tout ce que l'utilisateur a poste
     void getComments(){
         //adding an event listener to fetch values
@@ -328,6 +278,10 @@ public class DetailPhotoActivity extends AppCompatActivity {
                     commentList.add(comment);
                     aucun_commentaires.setVisibility(View.INVISIBLE);
                 }
+                Log.e("size",commentList.size()+"");
+                commentNumber=commentList.size();
+                likecommentsNumbers.setText(likeNumber +" Like(s) , " + commentNumber + " Commentaires");
+
                 //creating adapter
                 adapter = new CommentAdapter(commentList, DetailPhotoActivity.this);
                 //adding adapter to recyclerview
@@ -340,6 +294,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
         });
 
     }
+    //
     public void getUserData(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
         db.addChildEventListener(new ChildEventListener() {
@@ -399,6 +354,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
 
 
     }
+    //
     public void sendComment(){
         send_comment_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -439,10 +395,11 @@ public class DetailPhotoActivity extends AppCompatActivity {
             }
         });
     }
+    //
     void makeToast(String msg , Context context){
         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
     }
-
+    //
     @Override
     public void onBackPressed() {
         super.onBackPressed();
