@@ -12,6 +12,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +27,7 @@ import com.example.werayouapp.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,7 +47,7 @@ import java.util.Random;
 
 import id.zelory.compressor.Compressor;
 
-public class AddPhotoActivity extends AppCompatActivity {
+public class AddPhotoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static  final int MAX_LENGTH =100;
 
     ImageView image;
@@ -72,8 +76,51 @@ public class AddPhotoActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.toolbar);
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         getuserdata();
         setImage();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.post_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.image:
+               setImage();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.image:
+                setImage();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -237,6 +284,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         }
         return randomStringBuilder.toString();
     }
+
 
 
 }

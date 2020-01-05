@@ -60,8 +60,6 @@ public class DetailPhotoActivity extends AppCompatActivity {
     String description;
     String image;
     String date;
-
-
     //
     FirebaseAuth user ;
     String userID;
@@ -197,6 +195,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     like_icon.setImageResource(R.drawable.ic_heart_like);
                     islike=true;
+                    getLikeCount();
 
                 }
             });

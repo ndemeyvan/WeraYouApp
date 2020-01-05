@@ -55,7 +55,7 @@
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="0dp"
-                android:layout_height="390dp"
+                android:layout_height="420dp"
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="30 Dec. 2019"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/nom_profil"
                 app:layout_constraintTop_toBottomOf="@+id/nom_profil" />
 
