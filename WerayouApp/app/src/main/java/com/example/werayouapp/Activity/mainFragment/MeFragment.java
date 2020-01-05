@@ -126,15 +126,12 @@ public class MeFragment extends Fragment {
                //iterating through all the values in database
                postList.clear();//vide la liste de la recyclrView pour eviter les doublons
                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                   if (snapshot.getChildrenCount()==0){
-                       aucun_post.setVisibility(View.VISIBLE);
-                       progressBarTwo.setVisibility(View.INVISIBLE);
-                   }else{
-                       aucun_post.setVisibility(View.INVISIBLE);
-                       progressBarTwo.setVisibility(View.VISIBLE);
-                   }
                    Post post = postSnapshot.getValue(Post.class);
                    postList.add(post);
+                   progressBarTwo.setVisibility(View.INVISIBLE);
+               }
+               if (postList.size()==0){
+                   aucun_post.setVisibility(View.VISIBLE);
                    progressBarTwo.setVisibility(View.INVISIBLE);
                }
                //creating adapter
