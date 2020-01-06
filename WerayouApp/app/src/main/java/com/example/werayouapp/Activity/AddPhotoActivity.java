@@ -90,6 +90,12 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         });
         getuserdata();
         setImage();
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setImage();
+            }
+        });
     }
 
     @Override
