@@ -307,14 +307,13 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                 //final String sexe = radioButton.getText().toString();
                 final String apropos=Apropos.getText().toString();
                 final String ville=ville_user.getText().toString();
-                final String ageUser=age_user.getText().toString();
                 final String nom = user_nom.getText().toString();
                 final String prenom=user_prenom.getText().toString();
 
                 //////////
                 /////////// envoi des fichier dans la base de donnee
                 if (ischange) {
-                    if ( !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
+                    if ( !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
                         button.setVisibility(View.INVISIBLE);
                         progressBar3.setVisibility(View.VISIBLE);
                         //debut envoie dans storage
@@ -344,7 +343,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                         // Handle failures
                                         // ...
                                     }
-                                    stockageWithURI ( task,nom,prenom,ville,ageUser,apropos);
+                                    stockageWithURI ( task,nom,prenom,ville,apropos);
 
                                 } else {
                                     button.setVisibility(View.VISIBLE);
@@ -363,14 +362,14 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                     }
                 }else{
 
-                    stockageWithoutUri (  nom,prenom,ville, ageUser,apropos);
+                    stockageWithoutUri (  nom,prenom,ville,apropos);
 
                 }
             }
         });
     }
     //
-    public void stockageWithURI(@NonNull Task<Uri> task,String nom,String prenom,String ville,String ageUser,String apropos ){
+    public void stockageWithURI(@NonNull Task<Uri> task,String nom,String prenom,String ville,String apropos ){
         Uri downloadUri;
         if (task!=null){
             downloadUri = task.getResult ();
@@ -386,7 +385,6 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
         user_data.put ( "ville", ville );
-        user_data.put ( "age", ageUser );
         user_data.put ( "recherche",interesse);
         user_data.put("UpdatedDate",randomKey);
         user_data.put("image",downloadUri.toString());
@@ -408,7 +406,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
 
     }
     //
-    public void stockageWithoutUri(String nom,String prenom,String ville,String ageUser,String apropos){
+    public void stockageWithoutUri(String nom,String prenom,String ville,String apropos){
         Calendar calendar=Calendar.getInstance ();
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
         String saveCurrentDate=currentDate.format ( calendar.getTime () );
@@ -417,7 +415,6 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
         user_data.put ( "ville", ville );
-        user_data.put ( "age", ageUser );
         user_data.put ( "recherche",interesse);
         user_data.put("UpdatedDate",date);
         user_data.put("forfait","gratuit");
