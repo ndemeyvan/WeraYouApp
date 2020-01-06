@@ -72,6 +72,7 @@
                 android:layout_marginStart="8dp"
                 android:text="Audrey abena"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/profil_image"
                 app:layout_constraintTop_toTopOf="@+id/profil_image" />
@@ -92,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="J'aime beaucoup cette application , elle est parfaite"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/profil_image"
                 app:layout_constraintTop_toBottomOf="@+id/profil_image" />

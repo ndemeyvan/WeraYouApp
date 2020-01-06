@@ -170,7 +170,7 @@ public class MeFragment extends Fragment {
                             }
                             if(map.get("prenom")!=null){
                                 prenom = map.get("prenom").toString();
-                                nomUser.setText(nom +" " + prenom);
+                                nomUser.setText(prenom +" " + nom);
 
                             }
                             if(map.get("age")!=null){

@@ -71,9 +71,9 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     private String userID;
     private static StorageReference storageReference;
     EditText Apropos;
-    private RadioGroup mRadioGroup;
+    /*private RadioGroup mRadioGroup;
     RadioButton radio_homme;
-    RadioButton radio_femme;
+    RadioButton radio_femme;*/
     Spinner spinnerTwo;
     private DatabaseReference usersDb;
     private String nom;
@@ -106,9 +106,9 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         spinnerTwo=findViewById(R.id.spinnerTwo);
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         spinnerTwo.setOnItemSelectedListener(this);
-        mRadioGroup = (RadioGroup) findViewById(R.id.spinner);
+       /* mRadioGroup = (RadioGroup) findViewById(R.id.spinner);
         radio_homme = (RadioButton) findViewById(R.id.radio_homme);
-        radio_femme = (RadioButton) findViewById(R.id.radio_femme);
+        radio_femme = (RadioButton) findViewById(R.id.radio_femme);*/
         //
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,recherche);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -171,7 +171,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                 }
 
                             }
-                            // ce que l'utilisateur recher arranger dans le spinner
+                           /* // ce que l'utilisateur recher arranger dans le spinner
                             if(map.get("sexe")!=null){
                                 String userSexe = map.get("sexe").toString();
                                 if (userSexe.equals("Homme")){
@@ -180,7 +180,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                     radio_femme.setChecked(true);
                                 }
                                 //sexe.setText(userSexe);
-                            }
+                            }*/
                             if(map.get("pays")!=null){
                                  userPays = map.get("pays").toString();
                                 pays_user.setText(userPays);
@@ -302,9 +302,9 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
             @Override
             public void onClick(View v) {
                 ///////////
-                int selectId = mRadioGroup.getCheckedRadioButtonId();
-                final RadioButton radioButton = (RadioButton) findViewById(selectId);
-                final String sexe = radioButton.getText().toString();
+                //int selectId = mRadioGroup.getCheckedRadioButtonId();
+               // final RadioButton radioButton = (RadioButton) findViewById(selectId);
+                //final String sexe = radioButton.getText().toString();
                 final String apropos=Apropos.getText().toString();
                 final String ville=ville_user.getText().toString();
                 final String ageUser=age_user.getText().toString();
@@ -344,7 +344,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                                         // Handle failures
                                         // ...
                                     }
-                                    stockageWithURI ( task,nom,prenom,ville,ageUser,apropos,sexe);
+                                    stockageWithURI ( task,nom,prenom,ville,ageUser,apropos);
 
                                 } else {
                                     button.setVisibility(View.VISIBLE);
@@ -363,14 +363,14 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                     }
                 }else{
 
-                    stockageWithoutUri (  nom,prenom,ville, ageUser,apropos,sexe);
+                    stockageWithoutUri (  nom,prenom,ville, ageUser,apropos);
 
                 }
             }
         });
     }
     //
-    public void stockageWithURI(@NonNull Task<Uri> task,String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
+    public void stockageWithURI(@NonNull Task<Uri> task,String nom,String prenom,String ville,String ageUser,String apropos ){
         Uri downloadUri;
         if (task!=null){
             downloadUri = task.getResult ();
@@ -385,13 +385,10 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         Map<String, String> user_data = new HashMap<>();
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
-        user_data.put ( "pays",userPays);
-        user_data.put ( "phone",user.getCurrentUser().getPhoneNumber());
         user_data.put ( "ville", ville );
         user_data.put ( "age", ageUser );
-        user_data.put ( "sexe",sexe);
         user_data.put ( "recherche",interesse);
-        user_data.put("createdDate",randomKey);
+        user_data.put("UpdatedDate",randomKey);
         user_data.put("image",downloadUri.toString());
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
@@ -411,7 +408,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
 
     }
     //
-    public void stockageWithoutUri(String nom,String prenom,String ville,String ageUser,String apropos ,String sexe){
+    public void stockageWithoutUri(String nom,String prenom,String ville,String ageUser,String apropos){
         Calendar calendar=Calendar.getInstance ();
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
         String saveCurrentDate=currentDate.format ( calendar.getTime () );
@@ -419,13 +416,10 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         Map<String, Object> user_data = new HashMap<>();
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
-        user_data.put ( "pays",userPays);
-        user_data.put ( "phone",user.getCurrentUser().getPhoneNumber());
         user_data.put ( "ville", ville );
         user_data.put ( "age", ageUser );
-        user_data.put ( "sexe",sexe);
         user_data.put ( "recherche",interesse);
-        user_data.put("createdDate",date);
+        user_data.put("UpdatedDate",date);
         user_data.put("forfait","gratuit");
         user_data.put("id",userID);
         user_data.put("apropos",apropos);

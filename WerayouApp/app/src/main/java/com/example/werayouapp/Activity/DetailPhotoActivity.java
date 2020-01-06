@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -94,6 +95,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_photo);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         id_post=getIntent().getStringExtra("id_post");
         id_user=getIntent().getStringExtra("id_user");
         description=getIntent().getStringExtra("description");
@@ -168,7 +170,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
                     Log.e("nombreLike",snap.getChildrenCount() + "");
                     likeNumber=snap.getChildrenCount();
-                    likecommentsNumbers.setText((likeNumber-1) +" Like(s) , " + commentNumber + " Commentaires");
+                    likecommentsNumbers.setText((likeNumber-1) +" Like(s) - " + commentNumber + " Commentaires");
                 }
             }
             @Override
@@ -278,7 +280,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 }
                 Log.e("size",commentList.size()+"");
                 commentNumber=commentList.size();
-                likecommentsNumbers.setText(likeNumber +" Like(s) , " + commentNumber + " Commentaires");
+                likecommentsNumbers.setText((likeNumber-1) +" Like(s) - " + commentNumber + " Commentaires");
 
                 //creating adapter
                 adapter = new CommentAdapter(commentList, DetailPhotoActivity.this);
