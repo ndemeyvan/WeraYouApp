@@ -68,8 +68,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     FirebaseAuth user ;
     String sexe;
     private RadioGroup mRadioGroup;
-    private RadioButton radioButton;
-
+    RadioButton radio_homme;
+    RadioButton radio_femme;
     TextView place;
     TextView phone;
     private String userID;
@@ -97,6 +97,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         spinnerTwo=findViewById(R.id.spinnerTwo);
         spinnerTwo.setOnItemSelectedListener(this);
         mRadioGroup = (RadioGroup) findViewById(R.id.spinner);
+        radio_homme = (RadioButton) findViewById(R.id.radio_homme);
+        radio_femme = (RadioButton) findViewById(R.id.radio_femme);
         country=getIntent().getStringExtra("country");
         ArrayAdapter arrayAdapterTwo = new ArrayAdapter(this,android.R.layout.simple_spinner_item,recherche);
         arrayAdapterTwo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -195,60 +197,78 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 final String nom = user_nom.getText().toString();
                 final String prenom=user_prenom.getText().toString();
                 int selectedId = mRadioGroup.getCheckedRadioButtonId();
+                if (radio_femme.isChecked()){
+                    // find the radiobutton by returned id
+                    radio_femme = (RadioButton) findViewById(selectedId);
+                    sexe = radio_femme.getText().toString();
+                }else if (radio_homme.isChecked()){
+                    radio_homme = (RadioButton) findViewById(selectedId);
+                    sexe = radio_homme.getText().toString();
 
-                // find the radiobutton by returned id
-                radioButton = (RadioButton) findViewById(selectedId);
-                sexe = radioButton.getText().toString();
+                }else {
+                    toast("choisir votre sexe svp ");
+                }
+
 
 
                 //////////
                 /////////// envoi des fichier dans la base de donnee
                 if (ischange) {
-                    if ( !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
+                    if (!interesse.equals("Que recherchez vous ?")){
+                        //
+                        if ( !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( ageUser )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
 
-                        button.setVisibility(View.INVISIBLE);
-                        progressBar.setVisibility(View.VISIBLE);
+                            button.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.VISIBLE);
 
-                        final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
-                        UploadTask uploadTask = ref.putBytes(final_image);
+                            final StorageReference ref = storageReference.child ( "image_de_profile" ).child ( userID + " .jpg" );
+                            UploadTask uploadTask = ref.putBytes(final_image);
 
-                        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                            @Override
-                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                if (!task.isSuccessful()) {
-                                    throw task.getException();
+                            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                @Override
+                                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                    if (!task.isSuccessful()) {
+                                        throw task.getException();
+                                    }
+                                    // Continue with the task to get the download URL
+                                    return ref.getDownloadUrl();
                                 }
-                                // Continue with the task to get the download URL
-                                return ref.getDownloadUrl();
-                            }
-                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                if (task.isSuccessful()) {
+                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
                                     if (task.isSuccessful()) {
-                                        Uri downloadUri = task.getResult();
+                                        if (task.isSuccessful()) {
+                                            Uri downloadUri = task.getResult();
+
+                                        } else {
+                                            // Handle failures
+                                            // ...
+                                        }
+
+                                        stockage ( task,nom,prenom,ville,ageUser,apropos);
 
                                     } else {
+                                        button.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                        Toast.makeText ( getApplicationContext (), "Erreur , try later ", Toast.LENGTH_LONG ).show ();
                                         // Handle failures
                                         // ...
                                     }
-                                    stockage ( task,nom,prenom,ville,ageUser,apropos);
-
-                                } else {
-                                    button.setVisibility(View.VISIBLE);
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    Toast.makeText ( getApplicationContext (), "Erreur , try later ", Toast.LENGTH_LONG ).show ();
-                                    // Handle failures
-                                    // ...
                                 }
-                            }
-                        });
-                        ////////fin de l'nvoie
-                    } else {
-                        button.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
+                            });
+                            ////////fin de l'nvoie
+
+                        } else {
+                            button.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
+                        }
+                        //
+
+                    }else{
+                        toast("Que recherchez vous ?");
                     }
+
                 }else{
 
                     stockage ( null, nom,prenom,ville, ageUser,apropos);
@@ -269,36 +289,43 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             downloadUri=mImageUri;
 
         }
+        if (downloadUri!=null){
+            Calendar calendar=Calendar.getInstance ();
+            SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+            String saveCurrentDate=currentDate.format ( calendar.getTime () );
+            String date=saveCurrentDate;
+            Map<String, String> user_data = new HashMap<>();
+            user_data.put ( "nom",nom);
+            user_data.put ( "prenom",prenom);
+            user_data.put ( "pays",country);
+            user_data.put ( "phone",user.getCurrentUser().getPhoneNumber());
+            user_data.put ( "ville", ville );
+            user_data.put ( "age", ageUser );
+            user_data.put ( "sexe",sexe);
+            user_data.put ( "recherche",interesse);
+            user_data.put("UpdatedDate",date);
+            user_data.put("image",downloadUri.toString());
+            user_data.put("forfait","gratuit");
+            user_data.put("id",userID);
+            user_data.put("apropos",apropos);
 
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        String date=saveCurrentDate;
-        Map<String, String> user_data = new HashMap<>();
-        user_data.put ( "nom",nom);
-        user_data.put ( "prenom",prenom);
-        user_data.put ( "pays",country);
-        user_data.put ( "phone",user.getCurrentUser().getPhoneNumber());
-        user_data.put ( "ville", ville );
-        user_data.put ( "age", ageUser );
-        user_data.put ( "sexe",sexe);
-        user_data.put ( "recherche",interesse);
-        user_data.put("UpdatedDate",date);
-        user_data.put("image",downloadUri.toString());
-        user_data.put("forfait","gratuit");
-        user_data.put("id",userID);
-        user_data.put("apropos",apropos);
+            DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("data");
+            userDb.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
+                    startActivity(intent);
+                    //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+                    finish();
+                }
+            });
 
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("data");
-        userDb.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
-                startActivity(intent);
-                //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-                finish();
-            }
-        });
+
+        }else {
+            toast("choisir une image");
+        }
+
+
 
 
     }
