@@ -55,7 +55,7 @@
                 android:layout_width="170dp"
                 android:layout_height="170dp"
                 android:layout_marginTop="24dp"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@drawable/holder_add_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
