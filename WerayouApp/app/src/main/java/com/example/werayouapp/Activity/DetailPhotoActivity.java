@@ -170,9 +170,12 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
                     Log.e("nombreLike",snap.getChildrenCount() + "");
                     likeNumber=snap.getChildrenCount();
-                    if (likeNumber<0){
+                    if (likeNumber<=0){
+                        likecommentsNumbers.setText((likeNumber) +" Like(s) - " + commentNumber + " Commentaires");
                     }else {
                         likecommentsNumbers.setText((likeNumber-1) +" Like(s) - " + commentNumber + " Commentaires");
+                        //likecommentsNumbers.setText((likeNumber) +" Like(s) - " + commentNumber + " Commentaires");
+
                     }
                 }
             }
@@ -283,10 +286,11 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 }
                 Log.e("size",commentList.size()+"");
                 commentNumber=commentList.size();
-                if (likeNumber<0){
-
+                if (likeNumber<=0){
+                    likecommentsNumbers.setText((likeNumber) +" Like(s) - " + commentNumber + " Commentaires");
                 }else {
-                    likecommentsNumbers.setText((likeNumber-1) +" Like(s) - " + commentNumber + " Commentaires");
+                    //likecommentsNumbers.setText((likeNumber-1) +" Like(s) - " + commentNumber + " Commentaires");
+                    likecommentsNumbers.setText((likeNumber) +" Like(s) - " + commentNumber + " Commentaires");
 
                 }
 

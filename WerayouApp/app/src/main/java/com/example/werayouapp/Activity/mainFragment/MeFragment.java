@@ -171,7 +171,7 @@ public class MeFragment extends Fragment {
                             }
                             if(map.get("prenom")!=null){
                                 prenom = map.get("prenom").toString();
-                               String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
+                                String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
                                 nomUser.setText(prenomFinal +" " + nomFinal);
 
@@ -187,7 +187,7 @@ public class MeFragment extends Fragment {
                             }
                             if(map.get("image")!=null){
                                 profileImageUrl = map.get("image").toString();
-                                Picasso.with(getActivity()).load(profileImageUrl).placeholder(R.drawable.ic_launcher_background).into(cardView2);
+                                Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
                                 progressBar.setVisibility(View.INVISIBLE);
 
                             }
