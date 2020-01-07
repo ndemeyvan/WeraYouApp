@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -90,6 +91,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         storageReference= FirebaseStorage.getInstance ().getReference ();
         profile_image=findViewById(R.id.profile_image);
         imageButton=findViewById(R.id.imageButton);
@@ -391,7 +393,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
         String saveCurrentDate=currentDate.format ( calendar.getTime () );
         String randomKey=saveCurrentDate;
-        Map<String, String> user_data = new HashMap<>();
+        Map<String, Object> user_data = new HashMap<>();
         user_data.put ( "nom",nom);
         user_data.put ( "prenom",prenom);
         user_data.put ( "ville", ville );
@@ -403,7 +405,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         user_data.put("apropos",apropos);
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("data");
-        userDb.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
