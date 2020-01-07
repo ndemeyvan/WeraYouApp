@@ -323,8 +323,10 @@ public class DetailPhotoActivity extends AppCompatActivity {
                             }
                             if(map.get("prenom")!=null){
                                 String prenom = map.get("prenom").toString();
-                                nom_profil.setText(nom +" " + prenom);
-                                toolbar.setTitle("Publication de "+nom + " " + prenom);
+                                String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
+                                String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
+                                nom_profil.setText(prenomFinal + " " + nomFinal);
+                                toolbar.setTitle("Publication de "+prenomFinal + " " + nomFinal);
                             }
                             if(map.get("image")!=null){
                                 String profileImageUrl = map.get("image").toString();

@@ -178,11 +178,13 @@ public class MeFragment extends Fragment {
                             }
                             if(map.get("age")!=null){
                                 userAge = map.get("age").toString();
-                                age.setText(userAge +" ans");
+                                String ageFinal = userAge.substring(0, 1).toUpperCase() + userAge.substring(1);
+                                age.setText(ageFinal +" ans");
                             }
                             if(map.get("ville")!=null){
                                 String ville = map.get("ville").toString();
-                                villeView.setText(ville);
+                                String villeFinal = ville.substring(0, 1).toUpperCase() + ville.substring(1);
+                                villeView.setText(villeFinal);
 
                             }
                             if(map.get("image")!=null){
@@ -194,7 +196,10 @@ public class MeFragment extends Fragment {
                             //
                             if(map.get("recherche")!=null){
                                 String recherche = map.get("recherche").toString();
-                                cherche.setText(recherche);
+                                String rechercheFinal = recherche.substring(0, 1).toUpperCase() + recherche.substring(1);
+                                cherche.setText(rechercheFinal);
+
+
 
                             }
                             if(map.get("sexe")!=null){
@@ -204,7 +209,8 @@ public class MeFragment extends Fragment {
                             }
                             if(map.get("pays")!=null){
                                 String pays = map.get("pays").toString();
-                                paysView.setText(pays);
+                                String paysFinal = pays.substring(0, 1).toUpperCase() + pays.substring(1);
+                                paysView.setText(paysFinal);
 
                             }
                             //
