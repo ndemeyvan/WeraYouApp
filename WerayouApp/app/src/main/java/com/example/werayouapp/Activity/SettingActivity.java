@@ -312,7 +312,8 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
 
                 //////////
                 /////////// envoi des fichier dans la base de donnee
-                if (ischange) {
+                if (ischange==true) {
+
                     if ( !TextUtils.isEmpty ( ville )&& mImageUri != null && !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
                         button.setVisibility(View.INVISIBLE);
                         progressBar3.setVisibility(View.VISIBLE);
@@ -361,8 +362,17 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
                         makeToast("Remplir tous les champs");
                     }
                 }else{
+                    if ( !TextUtils.isEmpty ( ville )&& !TextUtils.isEmpty ( nom )&& !TextUtils.isEmpty ( prenom )&& !TextUtils.isEmpty ( apropos )) {
+                        button.setVisibility(View.INVISIBLE);
+                        progressBar3.setVisibility(View.VISIBLE);
+                        stockageWithoutUri (nom,prenom,ville,apropos);
+                        ////////fin de l'envoie dans storage
+                    } else {
+                        button.setVisibility(View.VISIBLE);
+                        progressBar3.setVisibility(View.INVISIBLE);
+                        makeToast("Remplir tous les champs");
+                    }
 
-                    stockageWithoutUri (  nom,prenom,ville,apropos);
 
                 }
             }

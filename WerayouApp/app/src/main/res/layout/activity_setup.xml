@@ -145,7 +145,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:elevation="3dp"
-                android:background="@drawable/background_add_image_profil"
+                android:background="@drawable/edit_background"
                 android:src="@drawable/ic_camera"
                 app:layout_constraintBottom_toBottomOf="@+id/profile_image"
                 app:layout_constraintEnd_toEndOf="@+id/profile_image"
