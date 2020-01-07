@@ -295,7 +295,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onComplete(@NonNull Task<Void> task) {
                 Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+                //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
             }
         });

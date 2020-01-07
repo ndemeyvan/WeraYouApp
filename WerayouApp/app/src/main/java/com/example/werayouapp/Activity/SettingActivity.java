@@ -410,7 +410,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
             public void onComplete(@NonNull Task<Void> task) {
                 Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+               // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
                 makeToast("enregister");
             }
@@ -439,7 +439,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
             public void onComplete(@NonNull Task<Void> task) {
                 Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+               // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
                 makeToast("enregister");
             }
@@ -453,7 +453,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         super.onBackPressed();
         Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
         finish();
     }
 }
