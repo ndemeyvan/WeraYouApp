@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MeFragment extends Fragment {
     FirebaseAuth user ;
     String userSex;
-    CircleImageView cardView2;
+    ImageView cardView2;
     private DatabaseReference usersDb;
     TextView nomUser;
     private String nom;
@@ -170,7 +171,9 @@ public class MeFragment extends Fragment {
                             }
                             if(map.get("prenom")!=null){
                                 prenom = map.get("prenom").toString();
-                                nomUser.setText(prenom +" " + nom);
+                               String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
+                                String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
+                                nomUser.setText(prenomFinal +" " + nomFinal);
 
                             }
                             if(map.get("age")!=null){
