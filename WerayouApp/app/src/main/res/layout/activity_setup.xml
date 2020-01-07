@@ -250,17 +250,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:background="@drawable/edit_background"
                 android:ems="10"
                 android:hint="Dire quelque a propos de vous ."
                 android:inputType="textMultiLine"
+                android:padding="10dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:background="@drawable/edit_background"
-                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="@+id/age_user"
                 app:layout_constraintStart_toStartOf="@+id/age_user"
-                app:layout_constraintTop_toBottomOf="@+id/age_user"
-                tools:textSize="12sp" />
+                app:layout_constraintTop_toBottomOf="@+id/age_user" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
