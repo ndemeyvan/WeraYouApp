@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/wesplash" />
+        app:srcCompat="@drawable/wesplash"
+        android:scaleType="centerCrop"/>
 
     <ProgressBar
         android:id="@+id/progressBar4"
