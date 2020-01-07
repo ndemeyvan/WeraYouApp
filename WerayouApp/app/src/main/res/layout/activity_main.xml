@@ -231,7 +231,7 @@
         android:text="m'inscrire"
         android:textAllCaps="false"
         android:textColor="#FFF"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
