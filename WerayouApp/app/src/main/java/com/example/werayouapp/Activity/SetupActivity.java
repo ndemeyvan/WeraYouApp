@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -51,7 +52,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import id.zelory.compressor.Compressor;
 
 public class SetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
-    CircleImageView profile_image;
+    ImageView profile_image;
     ProgressBar progressBar;
     EditText ville_user;
     EditText age_user;
