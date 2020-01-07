@@ -202,6 +202,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
             userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
+                    like_icon.setAnimation ( AnimationUtils.loadAnimation ( DetailPhotoActivity.this,R.anim.fade_scale ) );
                     like_icon.setImageResource(R.drawable.ic_heart_like);
                     islike=true;
                     getLikeCount();
@@ -218,6 +219,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
                         appleSnapshot.getRef().removeValue();
+                        //like_icon.setAnimation ( AnimationUtils.loadAnimation ( DetailPhotoActivity.this,R.anim.fade_scale ) );
                         like_icon.setImageResource(R.drawable.ic_heart_empty);
                         islike=false;
                         getLikeCount();
@@ -240,11 +242,9 @@ public class DetailPhotoActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.hasChild(userID)){
                     islike=true;
-                    like_icon.setAnimation ( AnimationUtils.loadAnimation ( DetailPhotoActivity.this,R.anim.fade_scale ) );
-                    like_icon.setImageResource(R.drawable.ic_heart_empty);
 
+                    like_icon.setImageResource(R.drawable.ic_heart_empty);
                 }else{
-                    like_icon.setAnimation ( AnimationUtils.loadAnimation ( DetailPhotoActivity.this,R.anim.fade_scale ) );
                     like_icon.setImageResource(R.drawable.ic_heart_like);
 
                     islike=false;
