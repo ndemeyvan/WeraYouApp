@@ -184,6 +184,7 @@ public class loginActivity extends AppCompatActivity {
         if (user != null) {
           Intent intent = new Intent(loginActivity.this, ActivityPrincipal.class);
           startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
           finish();
         }
 

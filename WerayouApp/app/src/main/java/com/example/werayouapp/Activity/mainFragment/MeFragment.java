@@ -108,6 +108,7 @@ public class MeFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 getActivity().finish();
             }
         });
@@ -244,85 +245,7 @@ public class MeFragment extends Fragment {
             }
         });
 
-       /* //femme
-        DatabaseReference femmeDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Femme");
-        femmeDb.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.getKey().equals(user.getUid())){
-                    userSex="Femme";
-                    oppositeUserSex="Homme";
-                    usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userSex).child(user.getUid());
-                    usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
-                                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                                if(map.get("nom")!=null){
-                                    nom = map.get("nom").toString();
 
-                                    makeToast(getActivity(),nom);
-                                }
-                                if(map.get("prenom")!=null){
-                                     prenom = map.get("prenom").toString();
-                                    nomUser.setText(nom +" " + prenom);
-
-                                }
-                                if(map.get("age")!=null){
-                                    userAge = map.get("age").toString();
-                                    age.setText(userAge +" ans");
-                                }
-                                if(map.get("ville")!=null){
-                                    userSex = map.get("ville").toString();
-                                }
-                                if(map.get("image")!=null){
-                                    profileImageUrl = map.get("image").toString();
-                                    Picasso.with(getActivity()).load(profileImageUrl).placeholder(R.drawable.logo).into(cardView2);
-
-                                }
-                                //
-                                if(map.get("recherche")!=null){
-                                    String recherche = map.get("recherche").toString();
-                                    cherche.setText(recherche);
-
-                                }
-                                if(map.get("sexe")!=null){
-                                    String userSexe = map.get("sexe").toString();
-                                    sexe.setText(userSexe);
-
-                                }
-                                //
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });*/
     }
 
     static void makeToast(Context ctx, String s){
