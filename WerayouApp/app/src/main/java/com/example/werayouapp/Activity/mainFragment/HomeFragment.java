@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
         usersDb = FirebaseDatabase.getInstance().getReference();
         checkUserSex();
         right=v.findViewById(R.id.right);
-        right=v.findViewById(R.id.leftButton);
+        left=v.findViewById(R.id.leftButton);
         rowsItems = new ArrayList<Cards>();
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.item, rowsItems);
         flingContainer=v.findViewById(R.id.frame);
@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onAdapterAboutToEmpty(int i) {
-               if (i<1){
+               if (i<=0){
                    messageDeDernierCards.setVisibility(View.VISIBLE);
                    progressBar.setVisibility(View.INVISIBLE);
                    right.setEnabled(false);
