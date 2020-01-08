@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -52,6 +54,8 @@ public class HomeFragment extends Fragment {
     ProgressBar progressBar;
     TextView messageDeDernierCards;
     DatabaseReference db;
+    ImageView right;
+    ImageView left;
     //
     private String userSex;
     private String oppositeUserSex;
@@ -60,6 +64,7 @@ public class HomeFragment extends Fragment {
 
     //
     private DatabaseReference usersDb;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -76,6 +81,8 @@ public class HomeFragment extends Fragment {
         messageDeDernierCards=v.findViewById(R.id.messageDeDernierCards);
         usersDb = FirebaseDatabase.getInstance().getReference();
         checkUserSex();
+        right=v.findViewById(R.id.right);
+        right=v.findViewById(R.id.leftButton);
         rowsItems = new ArrayList<Cards>();
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.item, rowsItems);
         flingContainer=v.findViewById(R.id.frame);
@@ -98,7 +105,7 @@ public class HomeFragment extends Fragment {
                 Cards obj = (Cards) o;
                 String userId = obj.getId();
                 usersDb.child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
-                makeToast(getActivity(), "left!");
+                //makeToast(getActivity(), "left!");
             }
 
             @Override
@@ -107,7 +114,7 @@ public class HomeFragment extends Fragment {
                 String userId = obj.getId();
                 usersDb.child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
                 isConnectionMatch(userId);
-                makeToast(getActivity(), "Right!");
+                //makeToast(getActivity(), "Right!");
 
             }
 
@@ -154,13 +161,29 @@ public class HomeFragment extends Fragment {
                 makeToast(getContext(), "Clicked!");
             }
         });
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flingContainer.getTopCardListener().selectRight();
+            }
+        });
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flingContainer.getTopCardListener().selectLeft();
+            }
+        });
+
+
 
         return v;
     }
 
+
+
     public void checkUserSex(){
         Log.i("currentUser",currentUser);
-        db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("data");
+        db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -196,15 +219,12 @@ public class HomeFragment extends Fragment {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                if (dataSnapshot.child("sexe").getValue() != null) {
-                    if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)) {
-                        //
-                        Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString(),dataSnapshot.child("apropos").getValue().toString());
-                        rowsItems.add(item);
-                        arrayAdapter.notifyDataSetChanged();
-                        //
-                    }
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)) {
+                    //
+                    Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString(),dataSnapshot.child("apropos").getValue().toString());
+                    rowsItems.add(item);
+                    arrayAdapter.notifyDataSetChanged();
+                    //
                 }
 
             }
