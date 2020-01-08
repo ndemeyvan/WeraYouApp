@@ -36,6 +36,8 @@ import com.example.werayouapp.model.CommentModel;
 import com.example.werayouapp.model.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -43,6 +45,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.vanniktech.emoji.EmojiEditText;
@@ -192,14 +195,218 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.delete:
-
+                //deletePost();
                 return true;
             case R.id.edit:
-
+                editDesc();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    void deletePost(){
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post);
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                    appleSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("info", "impossible de supprimer ", databaseError.toException());
+            }
+        });
+    }
+
+    void editDesc(){
+        ///
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(DetailPhotoActivity.this);
+        View parientView = getLayoutInflater().inflate(R.layout.bottom_sheet_layout,null);
+        bottomSheetDialog.setContentView(parientView);
+        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View)parientView.getParent());
+        //bottomSheetBehavior.setPeekHeight((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,100,getResources().getDisplayMetrics()));
+        bottomSheetBehavior.setPeekHeight(410);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+        bottomSheetDialog.show();
+        final ProgressBar progressBar3= parientView.findViewById(R.id.progressBar3);
+
+        /*ImageView close_bottom_sheet=parientView.findViewById(R.id.close_bottom_sheet);
+        final EditText post_detail_comment=parientView.findViewById(R.id.post_detail_comment);
+        final Button post_detail_add_comment_btn=parientView.findViewById(R.id.post_detail_add_comment_btn);
+        final TextView comment_empty_text=parientView.findViewById(R.id.comment_empty_text);
+        RecyclerView rv_comment=parientView.findViewById(R.id.rv_comment);
+        commentaires_modelList=new ArrayList<>();
+        commentaire_adapter=new Commentaire_Adapter(commentaires_modelList,DetailActivity.this);
+        rv_comment.setAdapter(commentaire_adapter);
+        rv_comment.setLayoutManager(new LinearLayoutManager(DetailActivity.this,LinearLayoutManager.VERTICAL,false));
+        firebaseFirestore.collection ( "publication" ).document ("categories").collection (categories ).document (iddupost).collection("commentaires").addSnapshotListener ( DetailActivity.this,new EventListener<QuerySnapshot> () {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (queryDocumentSnapshots.isEmpty ()){
+                    comment_empty_text.setVisibility(VISIBLE);
+                }
+            }
+        } );*/
+        /*close_bottom_sheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });*/
+
+       /* post_detail_add_comment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!post_detail_comment.getText().toString().equals("")){
+                    ////////
+                    Date date=new Date();
+                    Calendar calendarOne=Calendar.getInstance ();
+                    SimpleDateFormat currentDateOne=new SimpleDateFormat (" dd MMM yyyy hh:mm" );
+                    String saveCurrentDateOne=currentDateOne.format ( calendarOne.getTime () );
+                    String randomKey=saveCurrentDateOne;
+                    final Map <String,Object> notification_map = new HashMap ();
+                    notification_map.put ( "nom_du_produit",titreDuProduit );
+                    notification_map.put ( "decription_du_produit",description );
+                    notification_map.put ( "prix_du_produit",prix_produit );
+                    notification_map.put ( "date_du_like",randomKey );
+                    notification_map.put ( "image_du_produit",lien_image);
+                    notification_map.put("categories",categories);
+                    notification_map.put("id_de_utilisateur",utilisateur_actuel);
+                    notification_map.put("id_du_post",iddupost);
+                    notification_map.put("post_id",iddupost);
+                    notification_map.put("action","commantaire");
+                    notification_map.put("commantaire",post_detail_comment.getText().toString());
+                    notification_map.put("is_new_notification","true");
+                    notification_map.put("collection",choix);
+
+                    /////
+                    firebaseFirestore.collection("mes donnees utilisateur").document(current_user_id).get().addOnCompleteListener(DetailActivity.this,new OnCompleteListener<DocumentSnapshot> () {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()){
+                                if (task.getResult ().exists ()){
+                                    String prenom=task.getResult ().getString ( "user_prenom" );
+                                    String name_user= task.getResult ().getString ( "user_name" );
+                                    String image_user=task.getResult ().getString ( "user_profil_image" );
+                                    if (!current_user_id.equals ( utilisateur_actuel )){
+                                        /////////////
+                                        String TOPIC = "/topics/"+user_id_message; //topic has to match what the receiver subscribed to
+                                        JSONObject notification = new JSONObject();
+                                        JSONObject notifcationBody = new JSONObject ();
+                                        try {
+                                            notifcationBody.put("title", "nouvelle reaction");
+                                            notifcationBody.put("message",name_user +" "+prenom +" reagi sur votre post") ;
+                                            notifcationBody.put("id", user_id_message);
+                                            notifcationBody.put ( "viens_de_detail","faux" );
+                                            notifcationBody.put ( "id_recepteur",user_id_message );
+                                            notifcationBody.put ( "image_en_vente",lien_image );
+                                            notification.put("to", TOPIC);
+                                            notification.put("categories_name", categories);
+                                            notification.put("data", notifcationBody);
+                                            notifcationBody.put ( "viens_de_detail","vrai" );
+
+                                        } catch (JSONException e) {
+                                            Log.e(TAG, "onCreate: " + e.getMessage() );
+                                        }
+                                        //sendNotification(notification);
+                                        /////////////
+                                    }
+
+
+                                    ////end test noti
+
+                                    //////////////////////////////
+
+                                    if (!utilisateur_actuel.equals ( current_user_id )){
+                                        firebaseFirestore.collection ( "mes donnees utilisateur" ).document (current_user_id).collection ( "mes notification" ).document(iddupost).set(notification_map).addOnSuccessListener(DetailActivity.this,new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void documentReference) {
+
+                                            }
+
+                                        }).addOnFailureListener ( DetailActivity.this, new OnFailureListener () {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                            }
+                                        } );
+
+                                        DocumentReference user = firebaseFirestore.collection("mes donnees utilisateur" ).document(current_user_id);
+                                        user.update("has_notification", "true")
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                    }
+                                                });
+                                    }
+
+                                    ///////////////////////////
+                                }
+                            }else {
+                                String error=task.getException().getMessage();
+                                Toast.makeText ( getApplicationContext (), error, Toast.LENGTH_LONG ).show ();
+
+                            }
+                        }
+                    });
+
+
+
+                    post_detail_add_comment_btn.setVisibility(INVISIBLE);
+                    progressBar3.setVisibility(VISIBLE);
+                    SimpleDateFormat sdf= new SimpleDateFormat("d/MM/y H:mm:ss");
+                    Calendar calendar=Calendar.getInstance ();
+                    SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy H:mm" );
+                    String saveCurrentDate=currentDate.format ( calendar.getTime () );
+                    final Map<String,Object> user_comment = new HashMap();
+                    comment = post_detail_comment.getText().toString();
+                    user_comment.put ( "contenu",comment );
+                    user_comment.put ( "heure",saveCurrentDate );
+                    user_comment.put ( "id_user",utilisateur_actuel );
+                    firebaseFirestore.collection ( "publication" ).document ("categories").collection (categories ).document (iddupost).collection("commentaires").add(user_comment).addOnSuccessListener(DetailActivity.this, new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            String id_commentaire = documentReference.getId();
+                            firebaseFirestore.collection ( "publication" ).document ("categories").collection ("nouveaux" ).document (iddupost).collection("commentaires").document(id_commentaire).set(user_comment).addOnSuccessListener(DetailActivity.this,new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                }
+                            });
+
+                            firebaseFirestore.collection ( "publication" ).document ("post utilisateur").collection ( current_user_id ).document(iddupost).collection("commentaires").document(id_commentaire).set(user_comment).addOnSuccessListener(DetailActivity.this, new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    post_detail_comment.setText("");
+                                    comment_empty_text.setVisibility(INVISIBLE);
+                                    progressBar3.setVisibility(INVISIBLE);
+                                    post_detail_add_comment_btn.setVisibility(VISIBLE);
+                                }
+                            });
+                        }
+                    });
+                }else{
+                    Toast.makeText(getApplicationContext(),"vide",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        commentaire();*/
+
+        ////
+
+
+
+
+
     }
 
     void getLikeCount(){
