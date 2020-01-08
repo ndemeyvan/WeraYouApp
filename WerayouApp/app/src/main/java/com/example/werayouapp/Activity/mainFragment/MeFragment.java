@@ -165,6 +165,7 @@ public class MeFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         data(dataSnapshot);
+                        getPost();
                     }
 
                     @Override
@@ -177,6 +178,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     data(dataSnapshot);
+                    getPost();
             }
 
             @Override

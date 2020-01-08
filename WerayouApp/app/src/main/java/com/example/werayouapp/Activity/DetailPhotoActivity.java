@@ -101,12 +101,8 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         image=getIntent().getStringExtra("image");
         date=getIntent().getStringExtra("date");
         //
-        //
-
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
-        //
-        //
         //
         rootView = findViewById(R.id.root_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -175,7 +171,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.delete:
-                //deletePost();
+                deletePost();
                 return true;
             case R.id.edit:
                 editDesc();
@@ -189,7 +185,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.delete:
-                //deletePost();
+                deletePost();
                 return true;
             case R.id.edit:
                 editDesc();
@@ -206,6 +202,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
                     appleSnapshot.getRef().removeValue();
+                    finish();
                 }
             }
 
