@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth user ;
     ListView listView;
     List<Cards> rowsItems;
-    //ProgressBar progressBar;
+    ProgressBar progressBar;
     TextView messageDeDernierCards;
     DatabaseReference db;
     ImageView right;
@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
         v= inflater.inflate(R.layout.fragment_home2, container, false);
         user=FirebaseAuth.getInstance();
         currentUser=user.getCurrentUser().getUid();
-        //messageDeDernierCards=v.findViewById(R.id.messageDeDernierCards);
+        messageDeDernierCards=v.findViewById(R.id.messageDeDernierCards);
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         checkUserSex();
         right=v.findViewById(R.id.right);
@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.item, rowsItems);
         flingContainer=v.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
-        //progressBar=v.findViewById(R.id.progressBar);
+        progressBar=v.findViewById(R.id.progressBar);
 
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
@@ -143,12 +143,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onAdapterAboutToEmpty(int i) {
                if (i<=0){
-                   //messageDeDernierCards.setVisibility(View.VISIBLE);
-//                   progressBar.setVisibility(View.INVISIBLE);
+                   messageDeDernierCards.setVisibility(View.VISIBLE);
+                   progressBar.setVisibility(View.INVISIBLE);
                    right.setEnabled(false);
                    left.setEnabled(false);
                }else{
-                  // messageDeDernierCards.setVisibility(View.INVISIBLE);
+                   messageDeDernierCards.setVisibility(View.INVISIBLE);
                    right.setEnabled(true);
                    left.setEnabled(true);
                }
