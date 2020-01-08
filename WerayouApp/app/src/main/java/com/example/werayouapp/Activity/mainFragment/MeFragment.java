@@ -160,7 +160,7 @@ public class MeFragment extends Fragment {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("data");
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
                 usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
