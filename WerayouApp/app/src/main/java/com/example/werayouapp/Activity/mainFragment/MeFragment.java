@@ -109,7 +109,7 @@ public class MeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
                 //getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-                getActivity().finish();
+                //getActivity().finish();
             }
         });
         setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
@@ -164,58 +164,7 @@ public class MeFragment extends Fragment {
                 usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
-                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                            if(map.get("nom")!=null){
-                                nom = map.get("nom").toString();
-
-                            }
-                            if(map.get("prenom")!=null){
-                                prenom = map.get("prenom").toString();
-                                String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
-                                String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
-                                nomUser.setText(prenomFinal +" " + nomFinal);
-
-                            }
-                            if(map.get("age")!=null){
-                                userAge = map.get("age").toString();
-                                String ageFinal = userAge.substring(0, 1).toUpperCase() + userAge.substring(1);
-                                age.setText(ageFinal +" ans");
-                            }
-                            if(map.get("ville")!=null){
-                                String ville = map.get("ville").toString();
-                                String villeFinal = ville.substring(0, 1).toUpperCase() + ville.substring(1);
-                                villeView.setText(villeFinal);
-
-                            }
-                            if(map.get("image")!=null){
-                                profileImageUrl = map.get("image").toString();
-                                Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
-                                progressBar.setVisibility(View.INVISIBLE);
-
-                            }
-                            //
-                            if(map.get("recherche")!=null){
-                                String recherche = map.get("recherche").toString();
-                                String rechercheFinal = recherche.substring(0, 1).toUpperCase() + recherche.substring(1);
-                                cherche.setText(rechercheFinal);
-
-
-
-                            }
-                            if(map.get("sexe")!=null){
-                                String userSexe = map.get("sexe").toString();
-                                sexe.setText(userSexe);
-
-                            }
-                            if(map.get("pays")!=null){
-                                String pays = map.get("pays").toString();
-                                String paysFinal = pays.substring(0, 1).toUpperCase() + pays.substring(1);
-                                paysView.setText(paysFinal);
-
-                            }
-                            //
-                        }
+                        data(dataSnapshot);
                     }
 
                     @Override
@@ -227,7 +176,7 @@ public class MeFragment extends Fragment {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                    data(dataSnapshot);
             }
 
             @Override
@@ -245,6 +194,62 @@ public class MeFragment extends Fragment {
             }
         });
 
+
+    }
+
+    void data(DataSnapshot dataSnapshot){
+        if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+            if(map.get("nom")!=null){
+                nom = map.get("nom").toString();
+
+            }
+            if(map.get("prenom")!=null){
+                prenom = map.get("prenom").toString();
+                String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
+                String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
+                nomUser.setText(prenomFinal +" " + nomFinal);
+
+            }
+            if(map.get("age")!=null){
+                userAge = map.get("age").toString();
+                String ageFinal = userAge.substring(0, 1).toUpperCase() + userAge.substring(1);
+                age.setText(ageFinal +" ans");
+            }
+            if(map.get("ville")!=null){
+                String ville = map.get("ville").toString();
+                String villeFinal = ville.substring(0, 1).toUpperCase() + ville.substring(1);
+                villeView.setText(villeFinal);
+
+            }
+            if(map.get("image")!=null){
+                profileImageUrl = map.get("image").toString();
+                Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
+                progressBar.setVisibility(View.INVISIBLE);
+
+            }
+            //
+            if(map.get("recherche")!=null){
+                String recherche = map.get("recherche").toString();
+                String rechercheFinal = recherche.substring(0, 1).toUpperCase() + recherche.substring(1);
+                cherche.setText(rechercheFinal);
+
+
+
+            }
+            if(map.get("sexe")!=null){
+                String userSexe = map.get("sexe").toString();
+                sexe.setText(userSexe);
+
+            }
+            if(map.get("pays")!=null){
+                String pays = map.get("pays").toString();
+                String paysFinal = pays.substring(0, 1).toUpperCase() + pays.substring(1);
+                paysView.setText(paysFinal);
+
+            }
+            //
+        }
 
     }
 

@@ -438,8 +438,8 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                startActivity(intent);
+                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                //startActivity(intent);
                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
                 makeToast("enregister");
@@ -452,8 +452,8 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-        startActivity(intent);
+        //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+        //startActivity(intent);
         //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
         finish();
     }

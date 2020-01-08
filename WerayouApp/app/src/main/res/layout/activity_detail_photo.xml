@@ -189,7 +189,7 @@
                 app:layout_constraintTop_toTopOf="@+id/comment_edittext" />
 
             <ProgressBar
-                android:id="@+id/progressBar2"
+                android:id="@+id/progressBar3"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
