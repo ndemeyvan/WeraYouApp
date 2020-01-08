@@ -15,6 +15,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -33,6 +36,7 @@ import com.example.werayouapp.model.CommentModel;
 import com.example.werayouapp.model.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -55,7 +59,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DetailPhotoActivity extends AppCompatActivity {
+public class DetailPhotoActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     String id_post;
     String id_user;
     String description;
@@ -161,6 +165,41 @@ public class DetailPhotoActivity extends AppCompatActivity {
                 setLike();
             }
         });
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.detail_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.delete:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.delete:
+
+                return true;
+            case R.id.edit:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     void getLikeCount(){
