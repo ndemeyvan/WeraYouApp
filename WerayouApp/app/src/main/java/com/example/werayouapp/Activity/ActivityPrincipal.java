@@ -6,10 +6,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,26 +19,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
-import com.example.werayouapp.Utiles.BottomNavigationBehavior;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavigation.OnTabSelectedListener{
 
-public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    private Toolbar toolbar;
-    TextView toobarTitle;
+    AHBottomNavigation bottomNavigation;
     ImageView add_image;
 
 
@@ -44,18 +36,11 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        toolbar=findViewById(R.id.toolbar2);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        bottomNavigation= (AHBottomNavigation) findViewById(R.id.bottomNavigationView);
+        bottomNavigation.setOnTabSelectedListener(this);
         add_image=findViewById(R.id.add_image);
-        toobarTitle=findViewById(R.id.toobarTitle);
-        toobarTitle.setText("Werayou");
-        BottomNavigationView navigation =  findViewById(R.id.bottomNavigationView);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        // attaching bottom sheet behaviour - hide / show on scroll
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());
-        //
-        loadFragment(new HomeFragment());
         add_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,84 +50,50 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                 //finish();
             }
         });
-
-
+        this.createNavItems();
 
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private void createNavItems() {
+        //CREATE ITEMS
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem("", R.drawable.ic_home, R.color.colorPrimary);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("", R.drawable.ic_aadd_friend, R.color.white);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem("", R.drawable.ic_conversation, R.color.green);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem("", R.drawable.ic_account, R.color.black);
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment fragment;
-            switch (item.getItemId()) {
-                case R.id.home:
-                    toolbar.setTitle("Werayou");
-                    toobarTitle.setText("Werayou");
-                    fragment = new HomeFragment();
-                    loadFragment(fragment);
-                    return true;
-                case R.id.friends:
-                    toolbar.setTitle("amis");
-                    toobarTitle.setText("Amis");
+        // Add items
+        bottomNavigation.addItem(item1);
+        bottomNavigation.addItem(item2);
+        bottomNavigation.addItem(item3);
+        bottomNavigation.addItem(item4);
+        //PROPERTIES
+        bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FEFEFE"));
+        bottomNavigation.setCurrentItem(0);
 
-                    fragment = new FriendsFragment();
-                    loadFragment(fragment);
-                    return true;
-                case R.id.message:
-                    toolbar.setTitle("messages");
-                    toobarTitle.setText("Messages");
-                    fragment = new MessageFragment();
-                    loadFragment(fragment);
-                    return true;
-                case R.id.me:
-                    toolbar.setTitle("moi");
-                    toobarTitle.setText("Moi");
-                    fragment = new MeFragment();
-                    loadFragment(fragment);
-                    return true;
-            }
-            return false;
+    }
+
+
+    @Override
+    public boolean onTabSelected(int position, boolean wasSelected) {
+        if(position==0) {
+            HomeFragment home=new HomeFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,home).commit();
+            return true;
+        }else if(position==1) {
+            FriendsFragment friend=new FriendsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,friend).commit();
+            return true;
+        }else if(position==2) {
+            MessageFragment message=new MessageFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,message).commit();
+            return true;
         }
-    };
-
-
-
-
-
-
-    private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameLayout, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        getMenuInflater ().inflate ( R.menu.toolbar_menu, (Menu) menuItem);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId ();
-        if (id == R.id.add_photo) {
-
-            //finish ();
+        else if(position==3) {
+            MeFragment me=new MeFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,me).commit();
             return true;
         }
 
-        return super.onOptionsItemSelected ( item );
+        return false;
     }
-
-
 }
