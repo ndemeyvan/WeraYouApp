@@ -262,8 +262,8 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
+                startActivity(intent);*/
                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
                 makeToast("publier");
@@ -276,8 +276,8 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
+        startActivity(intent);*/
         //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
         finish();
     }
