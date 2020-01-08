@@ -9,4 +9,10 @@
     <color name="grey">#fafafa</color>
     <color name="darkgrey">#DDDDDD</color>
     <color name="green">#4caf50</color>
+
+    <color name="color_tab_1">#455C65</color>
+    <color name="color_tab_2">#00886A</color>
+    <color name="color_tab_3">#8B6B62</color>
+    <color name="color_tab_4">#6C4A42</color>
+    <color name="color_tab_5">#F63D2B</color>
 </resources>

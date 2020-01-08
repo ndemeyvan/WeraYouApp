@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
@@ -56,10 +57,11 @@ public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavi
 
     private void createNavItems() {
         //CREATE ITEMS
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem("", R.drawable.ic_home, R.color.colorPrimary);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem("", R.drawable.ic_aadd_friend, R.color.white);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem("", R.drawable.ic_conversation, R.color.green);
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem("", R.drawable.ic_account, R.color.black);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem("", R.drawable.ic_home, R.color.color_tab_1);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("", R.drawable.ic_aadd_friend, R.color.color_tab_2);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem("", R.drawable.ic_conversation, R.color.color_tab_3);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem("", R.drawable.ic_account, R.color.color_tab_4);
+
 
         // Add items
         bottomNavigation.addItem(item1);
@@ -67,8 +69,37 @@ public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavi
         bottomNavigation.addItem(item3);
         bottomNavigation.addItem(item4);
         //PROPERTIES
-        bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FEFEFE"));
+        bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FFFFFF"));
         bottomNavigation.setCurrentItem(0);
+        bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
+        bottomNavigation.setBehaviorTranslationEnabled(false);
+
+// Change colors
+        bottomNavigation.setAccentColor(Color.parseColor("#ff2e55"));
+        bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
+
+// Force to tint the drawable (useful for font with icon for example)
+        //bottomNavigation.setForceTint(true);
+
+// Display color under navigation bar (API 21+)
+// Don't forget these lines in your style-v21
+// <item name="android:windowTranslucentNavigation">true</item>
+//<item name="android:fitsSystemWindows">true</item>
+        //bottomNavigation.setTranslucentNavigationEnabled(true);
+        //bottomNavigation.setColored(true);
+        bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#ff2e55"));
+        //
+        // Add or remove notification for each item
+        //bottomNavigation.setNotification("1", 0);*/
+// OR
+       AHNotification notification = new AHNotification.Builder()
+                .setText("new")
+                .setBackgroundColor(ContextCompat.getColor(ActivityPrincipal.this, R.color.colorPrimary))
+                .setTextColor(ContextCompat.getColor(ActivityPrincipal.this, R.color.white))
+                .build();
+        bottomNavigation.setNotification(notification, 1);
+        //
+
 
     }
 

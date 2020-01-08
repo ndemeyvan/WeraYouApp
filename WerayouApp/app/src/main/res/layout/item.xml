@@ -21,7 +21,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="350dp"
-            android:layout_height="425dp">
+            android:layout_height="420dp">
 
             <ImageView
                 android:id="@+id/imageView2"
