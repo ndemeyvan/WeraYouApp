@@ -2,6 +2,7 @@ package com.example.werayouapp.Activity.mainFragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,11 +20,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.werayouapp.Activity.ActivityPrincipal;
+import com.example.werayouapp.Activity.SetupActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.ArrayAdapter;
 import com.example.werayouapp.adapter.PostAdapter;
 import com.example.werayouapp.model.Cards;
 import com.example.werayouapp.model.Post;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -36,7 +41,9 @@ import com.lorentzos.flingswipe.FlingCardListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -105,7 +112,16 @@ public class HomeFragment extends Fragment {
                 //If you want to use it just cast it (String) dataObject
                  obj = (Cards) o;
                 String userId = obj.getId();
-                usersDb.child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
+                //usersDb.child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
+                Map<String, String> data = new HashMap<>();
+                data.put("id",userId);
+                DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("refuser").child(currentUser);
+                userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
                 //makeToast(getActivity(), "left!");
             }
 
@@ -113,7 +129,16 @@ public class HomeFragment extends Fragment {
             public void onRightCardExit(Object o) {
                  obj = (Cards) o;
                 String userId = obj.getId();
-                usersDb.child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
+                Map<String, String> data = new HashMap<>();
+                data.put("id",userId);
+                DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("accepter").child(currentUser);
+                userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
+                //usersDb.child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
                 isConnectionMatch(userId);
                 //makeToast(getActivity(), "Right!");
 
@@ -171,7 +196,15 @@ public class HomeFragment extends Fragment {
                 try {
                     flingContainer.getTopCardListener().selectRight();
                     String userId = obj.getId();
-                    usersDb.child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
+                    Map<String, String> data = new HashMap<>();
+                    data.put("id",userId);
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("accepter").child(currentUser);
+                    userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -184,7 +217,15 @@ public class HomeFragment extends Fragment {
                 try {
                     flingContainer.getTopCardListener().selectLeft();
                     String userId = obj.getId();
-                    usersDb.child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
+                    Map<String, String> data = new HashMap<>();
+                    data.put("id",userId);
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("refuser").child(currentUser);
+                    userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

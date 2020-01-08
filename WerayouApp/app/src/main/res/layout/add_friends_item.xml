@@ -55,6 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/nom_profil" />
 
     <TextView
+        android:id="@+id/seeProfilText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Voir profil"
@@ -63,26 +64,29 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/addFirendButton"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="24dp"
         android:background="@drawable/add_firend_buttton_background"
         android:text="Accepter"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/nom_profil"
         app:layout_constraintTop_toTopOf="@+id/nom_profil" />
 
     <Button
+        android:id="@+id/deniedFirendButton"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:background="@drawable/backgroun_button_validation"
         android:text="Refuser"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/button2"
+        app:layout_constraintBottom_toBottomOf="@+id/addFirendButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
+        app:layout_constraintStart_toEndOf="@+id/addFirendButton"
+        app:layout_constraintTop_toTopOf="@+id/addFirendButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

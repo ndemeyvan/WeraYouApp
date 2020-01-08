@@ -3,6 +3,7 @@ package com.example.werayouapp.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.content.Intent;
@@ -86,6 +87,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     ProgressBar progressBar;
     ProgressBar progressBar3;
     private String userPays;
+    Toolbar toolbar;
 
 
     @Override
@@ -101,7 +103,7 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         button=findViewById(R.id.button);
         progressBar=findViewById(R.id.progressBar);
         progressBar3=findViewById(R.id.progressBar3);
-
+        toolbar=findViewById(R.id.toolbar);
         pays_user=pays_user=findViewById(R.id.pays_user);
         user_prenom=findViewById(R.id.user_prenom);
         user_nom=findViewById(R.id.user_nom);
@@ -122,6 +124,19 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         //
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
+        //
+        //toolbar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+                finish();
+            }
+        });
         //
         getuserdata();
         getData();
