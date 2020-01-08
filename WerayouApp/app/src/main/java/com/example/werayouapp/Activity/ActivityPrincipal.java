@@ -31,17 +31,21 @@ public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavi
 
     AHBottomNavigation bottomNavigation;
     ImageView add_image;
+    Toolbar toolbar;
+    TextView toobarTitle;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         bottomNavigation= (AHBottomNavigation) findViewById(R.id.bottomNavigationView);
         bottomNavigation.setOnTabSelectedListener(this);
         add_image=findViewById(R.id.add_image);
+         toolbar=findViewById(R.id.toolbar);
+        toobarTitle=findViewById(R.id.toobarTitle);
         add_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,19 +113,23 @@ public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavi
         if(position==0) {
             HomeFragment home=new HomeFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,home).commit();
+            toobarTitle.setText("Werayou");
             return true;
         }else if(position==1) {
             FriendsFragment friend=new FriendsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,friend).commit();
+            toobarTitle.setText("+ d'amies");
             return true;
         }else if(position==2) {
             MessageFragment message=new MessageFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,message).commit();
+            toobarTitle.setText("Messages");
             return true;
         }
         else if(position==3) {
             MeFragment me=new MeFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,me).commit();
+            toobarTitle.setText("Moi");
             return true;
         }
 
