@@ -56,6 +56,7 @@ public class HomeFragment extends Fragment {
     DatabaseReference db;
     ImageView right;
     ImageView left;
+    Cards obj;
     //
     private String userSex;
     private String oppositeUserSex;
@@ -102,7 +103,7 @@ public class HomeFragment extends Fragment {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                Cards obj = (Cards) o;
+                 obj = (Cards) o;
                 String userId = obj.getId();
                 usersDb.child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
                 //makeToast(getActivity(), "left!");
@@ -110,7 +111,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onRightCardExit(Object o) {
-                Cards obj = (Cards) o;
+                 obj = (Cards) o;
                 String userId = obj.getId();
                 usersDb.child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
                 isConnectionMatch(userId);
@@ -144,8 +145,12 @@ public class HomeFragment extends Fragment {
                if (i<1){
                    messageDeDernierCards.setVisibility(View.VISIBLE);
                    progressBar.setVisibility(View.INVISIBLE);
+                   right.setEnabled(false);
+                   left.setEnabled(false);
                }else{
                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+                   right.setEnabled(true);
+                   left.setEnabled(true);
                }
                 //makeToast(getActivity(), "plus de proposition !");
             }
@@ -164,13 +169,27 @@ public class HomeFragment extends Fragment {
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flingContainer.getTopCardListener().selectRight();
+                try {
+                    flingContainer.getTopCardListener().selectRight();
+                    String userId = obj.getId();
+                    usersDb.child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         });
+
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flingContainer.getTopCardListener().selectLeft();
+                try {
+                    flingContainer.getTopCardListener().selectLeft();
+                    String userId = obj.getId();
+                    usersDb.child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
