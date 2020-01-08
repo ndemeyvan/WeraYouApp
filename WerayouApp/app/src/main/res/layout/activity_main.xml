@@ -228,7 +228,7 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/backgroun_button_validation"
         android:onClick="sendCode"
-        android:text="m'inscrire"
+        android:text="Connexion"
         android:textAllCaps="false"
         android:textColor="#FFF"
         android:textSize="16sp"
