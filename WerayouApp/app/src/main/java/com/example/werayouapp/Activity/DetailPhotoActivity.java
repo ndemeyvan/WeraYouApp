@@ -462,7 +462,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("data");
+                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
                 Db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
