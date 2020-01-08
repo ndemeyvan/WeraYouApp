@@ -144,7 +144,6 @@ public class HomeFragment extends Fragment {
             public void onAdapterAboutToEmpty(int i) {
                if (i<=0){
                    messageDeDernierCards.setVisibility(View.VISIBLE);
-                   progressBar.setVisibility(View.INVISIBLE);
                    right.setEnabled(false);
                    left.setEnabled(false);
                }else{
@@ -241,6 +240,7 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString(),dataSnapshot.child("apropos").getValue().toString());
+                    progressBar.setVisibility(View.INVISIBLE);
                     rowsItems.add(item);
                     arrayAdapter.notifyDataSetChanged();
                     //
