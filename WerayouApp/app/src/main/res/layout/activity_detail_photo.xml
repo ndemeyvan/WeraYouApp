@@ -49,6 +49,7 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:src="@drawable/wesplash"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +63,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description_view"
-                app:srcCompat="@drawable/ic_launcher_background"
+                app:srcCompat="@drawable/wesplash"
                 tools:ignore="MissingConstraints" />
 
             <TextView

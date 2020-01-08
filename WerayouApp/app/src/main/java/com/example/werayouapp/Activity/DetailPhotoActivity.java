@@ -456,7 +456,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         });
 
     }
-    //
+    //recuperer les information de l'utilisateur
     public void getUserData(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
         db.addChildEventListener(new ChildEventListener() {
@@ -563,7 +563,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
     void makeToast(String msg , Context context){
         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
     }
-    //Quand on
+    //Quand on rentre en arriere
     @Override
     public void onBackPressed() {
         super.onBackPressed();

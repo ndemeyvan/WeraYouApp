@@ -20,7 +20,7 @@
             android:layout_height="140dp"
             android:clickable="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/wesplash" />
 
         <ProgressBar
             android:id="@+id/progressBar"
