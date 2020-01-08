@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment {
         user=FirebaseAuth.getInstance();
         currentUser=user.getCurrentUser().getUid();
         //messageDeDernierCards=v.findViewById(R.id.messageDeDernierCards);
-        usersDb = FirebaseDatabase.getInstance().getReference();
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         checkUserSex();
         right=v.findViewById(R.id.right);
         left=v.findViewById(R.id.leftButton);
@@ -163,7 +163,7 @@ public class HomeFragment extends Fragment {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                makeToast(getContext(), "Clicked!");
+                //makeToast(getContext(), "Clicked!");
             }
         });
         right.setOnClickListener(new View.OnClickListener() {
