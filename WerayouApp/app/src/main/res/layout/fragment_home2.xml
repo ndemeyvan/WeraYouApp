@@ -58,7 +58,7 @@
             android:id="@+id/leftButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/heart"
+            android:src="@drawable/close"
             tools:layout_editor_absoluteX="208dp"
             tools:layout_editor_absoluteY="620dp" />
 
@@ -67,7 +67,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="100dp"
-            android:src="@drawable/close"
+            android:src="@drawable/heart"
             tools:layout_editor_absoluteX="96dp"
             tools:layout_editor_absoluteY="620dp" />
     </LinearLayout>
