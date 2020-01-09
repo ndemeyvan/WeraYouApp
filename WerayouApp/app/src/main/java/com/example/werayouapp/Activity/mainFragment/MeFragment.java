@@ -103,6 +103,7 @@ public class MeFragment extends Fragment {
         //
         progressBar=v.findViewById(R.id.progressBar);
         setupButton=v.findViewById(R.id.setupButton);
+        //setupButton.setVisibility(View.INVISIBLE);
         setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,7 +113,6 @@ public class MeFragment extends Fragment {
                 //getActivity().finish();
             }
         });
-        setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
         postList=new ArrayList<>();
         getUserData();
         getPost();
@@ -232,6 +232,8 @@ public class MeFragment extends Fragment {
                 profileImageUrl = map.get("image").toString();
                 Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
                 progressBar.setVisibility(View.INVISIBLE);
+                setupButton.setVisibility(View.VISIBLE);
+                setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
 
             }
             //

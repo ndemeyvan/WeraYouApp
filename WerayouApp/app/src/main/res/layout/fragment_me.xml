@@ -48,7 +48,8 @@
                             android:elevation="3dp"
                             android:src="@drawable/ic_edit"
                             app:layout_constraintBottom_toBottomOf="@+id/cardView2"
-                            app:layout_constraintEnd_toEndOf="@+id/cardView2" />
+                            app:layout_constraintEnd_toEndOf="@+id/cardView2"
+                            />
 
                         <ImageView
                             android:id="@+id/cardView2"
@@ -59,7 +60,8 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/wesplash" />
+                            app:srcCompat="@drawable/wesplash"
+                          />
 
                         <ProgressBar
                             android:id="@+id/progressBar"
