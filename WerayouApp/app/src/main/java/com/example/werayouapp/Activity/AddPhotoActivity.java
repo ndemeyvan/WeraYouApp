@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.werayouapp.LoginActivity;
 import com.example.werayouapp.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -186,6 +188,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         post_button.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View v) {
+
                 progressBar.setVisibility(View.VISIBLE);
                 post_button.setVisibility(View.INVISIBLE);
                 final String description =post_description.getText().toString();
@@ -219,6 +222,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                                 stockageWithURI ( task,description);
 
                             } else {
+
                                 // Handle failures
                                 // ...
                             }
@@ -230,10 +234,23 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                     post_button.setVisibility(View.VISIBLE);
                     Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
                 }
+                //test sur la connexion
+                new Handler(  ).postDelayed (new Runnable () {
+                    @Override
+                    public void run() {
+                        makeToast("verifier votre connexion");
+                    }
+                }, 6000 );
 
             }
+
+
         });
+
+
     }
+
+
 
     void stockageWithURI(@NonNull Task<Uri> task,String description){
         Uri downloadUri;
