@@ -226,6 +226,13 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         final ProgressBar progressBar3= parientView.findViewById(R.id.progressBar3);
         final EditText descEditText= parientView.findViewById(R.id.comment_edittext);
         final ImageButton button= parientView.findViewById(R.id.send_comment_button);
+        final ImageView close_bottom = parientView.findViewById(R.id.close_bottom);
+        close_bottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
