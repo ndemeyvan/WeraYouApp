@@ -178,8 +178,8 @@ public class MeFragment extends Fragment {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     data(dataSnapshot);
-                    getPost();
                 if (postList.size()==0){
+                    getPost();
                     aucun_post.setVisibility(View.VISIBLE);
                     progressBarTwo.setVisibility(View.INVISIBLE);
                 }
