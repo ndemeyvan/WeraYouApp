@@ -28,12 +28,16 @@ import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
-public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavigation.OnTabSelectedListener{
+import com.example.werayouapp.Utiles.BottomNavigationBehavior;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+public class ActivityPrincipal extends AppCompatActivity {
 
     AHBottomNavigation bottomNavigation;
     ImageView add_image;
     Toolbar toolbar;
     TextView toobarTitle;
+    //implements AHBottomNavigation.OnTabSelectedListener
 
 
     @Override
@@ -42,10 +46,15 @@ public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavi
         setContentView(R.layout.activity_principal);
          toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        bottomNavigation= (AHBottomNavigation) findViewById(R.id.bottomNavigationView);
-        bottomNavigation.setOnTabSelectedListener(this);
+       // bottomNavigation= (AHBottomNavigation) findViewById(R.id.bottomNavigationView);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationBehavior());
+        loadFragment(new HomeFragment());
+        //bottomNavigation.setOnTabSelectedListener(this);
         add_image=findViewById(R.id.add_image);
-         toolbar=findViewById(R.id.toolbar);
+        toolbar=findViewById(R.id.toolbar);
         toobarTitle=findViewById(R.id.toobarTitle);
         add_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,11 +66,58 @@ public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavi
             }
         });
 
-        this.createNavItems();
+       // this.createNavItems();
 
     }
 
-    private void createNavItems() {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment fragment;
+            switch (item.getItemId()) {
+                case R.id.home:
+                    toolbar.setTitle("Werayou");
+                    fragment = new HomeFragment();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.friends:
+                    toolbar.setTitle("+ d'amis");
+                    fragment = new FriendsFragment();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.message:
+                    toolbar.setTitle("Message");
+                    fragment = new MessageFragment();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.me:
+                    toolbar.setTitle("Moi");
+                    fragment = new MeFragment();
+                    loadFragment(fragment);
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frameLayout, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    /*private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frameLayout, fragment);
+        transaction.addToBackStack(null);
+
+
+       // private void createNavItems() {
         //CREATE ITEMS
         AHBottomNavigationItem item1 = new AHBottomNavigationItem("", R.drawable.ic_home, R.color.color_tab_1);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem("", R.drawable.ic_aadd_friend, R.color.color_tab_2);
@@ -98,19 +154,19 @@ public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavi
         // Add or remove notification for each item
         //bottomNavigation.setNotification("1", 0);*/
 // OR
-       AHNotification notification = new AHNotification.Builder()
+      /* AHNotification notification = new AHNotification.Builder()
                 .setText("new")
                 .setBackgroundColor(ContextCompat.getColor(ActivityPrincipal.this, R.color.colorPrimary))
                 .setTextColor(ContextCompat.getColor(ActivityPrincipal.this, R.color.white))
                 .build();
         bottomNavigation.setNotification(notification, 1);
-        //
+        //*/
 
 
     }
 
 
-    @Override
+  /*  @Override
     public boolean onTabSelected(int position, boolean wasSelected) {
         if(position==0) {
             HomeFragment home=new HomeFragment();
@@ -136,5 +192,5 @@ public class ActivityPrincipal extends AppCompatActivity implements AHBottomNavi
         }
 
         return false;
-    }
-}
+    }*/
+
