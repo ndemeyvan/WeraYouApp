@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.FriendsAdapteur;
@@ -41,6 +42,7 @@ public class FriendsFragment extends Fragment {
     private RecyclerView.Adapter adapter;
     private String userID;
     FirebaseAuth user ;
+    TextView message;
 
 
     public FriendsFragment() {
@@ -56,6 +58,7 @@ public class FriendsFragment extends Fragment {
         mRecyclerView=v.findViewById(R.id.recyclerView);
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
+        message=v.findViewById(R.id.message);
         // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
         ///
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -67,7 +70,7 @@ public class FriendsFragment extends Fragment {
         ///
         friendsModelList=new ArrayList<>();
         getAsk();
-
+        checkIfEmpty();
 
         return  v;
     }
@@ -85,12 +88,10 @@ public class FriendsFragment extends Fragment {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     FriendsModel ask = postSnapshot.getValue(FriendsModel.class);
                     friendsModelList.add(ask);
+                    checkIfEmpty();
                     //progressBar.setVisibility(View.INVISIBLE);
                 }
-                if (friendsModelList.size()==0){
-                   // aucune_demande.setVisibility(View.VISIBLE);
-                   // progressBar.setVisibility(View.INVISIBLE);
-                }
+
                 //creating adapter
                 adapter = new FriendsAdapteur(friendsModelList, getActivity());
                 //adding adapter to recyclerview
@@ -102,6 +103,13 @@ public class FriendsFragment extends Fragment {
             }
         });
 
+    }
+    void checkIfEmpty(){
+        if (friendsModelList.size()<=0){
+            message.setVisibility(View.VISIBLE);
+        }else {
+            message.setVisibility(View.INVISIBLE);
+        }
     }
 
 
