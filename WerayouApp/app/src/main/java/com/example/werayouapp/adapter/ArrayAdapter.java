@@ -37,11 +37,14 @@ public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
         ImageView image = (ImageView) convertView.findViewById(R.id.imageUser);
         TextView cityUser= convertView.findViewById(R.id.cityUser);
         CardView card = convertView.findViewById(R.id.card_item);
+        TextView description = convertView.findViewById(R.id.description);
+
 //        card.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_scale ) );
 
         name.setText(card_item.getNom() +" " + card_item.getPrenom());
         cityUser.setText(card_item.getPays()+" / "+card_item.getVille());
         Picasso.with(convertView.getContext()).load(card_item.getImage()).into(image);
+        description.setText(card_item.getApropos());
         /*switch(card_item.getImage()){
             case "default":
                 break;

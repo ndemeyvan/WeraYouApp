@@ -19,6 +19,13 @@ public class Cards {
         this.apropos = apropos;
     }
 
+    public String getApropos() {
+        return apropos;
+    }
+
+    public void setApropos(String apropos) {
+        this.apropos = apropos;
+    }
 
     public String getPays() {
         return pays;

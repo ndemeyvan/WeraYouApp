@@ -253,11 +253,12 @@
                 android:layout_marginTop="24dp"
                 android:background="@drawable/edit_background"
                 android:ems="10"
-                android:hint="Dire quelque a propos de vous ."
+                android:hint="Dire quelque chose a propos de vous . ( 118 caractere maximum )"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
+                android:maxLength="118"
                 app:layout_constraintEnd_toEndOf="@+id/age_user"
                 app:layout_constraintStart_toStartOf="@+id/age_user"
                 app:layout_constraintTop_toBottomOf="@+id/age_user" />
