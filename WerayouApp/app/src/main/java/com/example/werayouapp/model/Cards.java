@@ -8,8 +8,17 @@ public class Cards {
     private String pays;
     private String ville;
     private String apropos;
+    private String age;
 
-    public Cards(String nom, String prenom, String image, String id, String pays, String ville, String apropos) {
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public Cards(String nom, String prenom, String image, String id, String pays, String ville, String apropos, String age) {
         this.nom = nom;
         this.prenom = prenom;
         this.image = image;
@@ -17,6 +26,7 @@ public class Cards {
         this.pays = pays;
         this.ville = ville;
         this.apropos = apropos;
+        this.age = age;
     }
 
     public String getApropos() {
