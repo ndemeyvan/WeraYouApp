@@ -55,6 +55,7 @@ public class ActivityPrincipal extends AppCompatActivity {
         //bottomNavigation.setOnTabSelectedListener(this);
         add_image=findViewById(R.id.add_image);
         toolbar=findViewById(R.id.toolbar);
+        toobarTitle.setText("Werayou");
         toobarTitle=findViewById(R.id.toobarTitle);
         add_image.setOnClickListener(new View.OnClickListener() {
             @Override
