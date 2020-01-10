@@ -234,13 +234,6 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                     post_button.setVisibility(View.VISIBLE);
                     Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
                 }
-                //test sur la connexion
-                new Handler(  ).postDelayed (new Runnable () {
-                    @Override
-                    public void run() {
-                        makeToast("verifier votre connexion");
-                    }
-                }, 6000 );
 
             }
 
