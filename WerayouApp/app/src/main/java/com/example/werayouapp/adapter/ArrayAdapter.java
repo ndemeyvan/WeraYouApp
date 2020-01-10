@@ -40,8 +40,10 @@ public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
         TextView description = convertView.findViewById(R.id.description);
 
 //        card.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_scale ) );
+        String prenomFinal = card_item.getPrenom().substring(0, 1).toUpperCase() + card_item.getPrenom().substring(1);
+        String nomFinal = card_item.getNom().substring(0, 1).toUpperCase() + card_item.getNom().substring(1);
 
-        name.setText(card_item.getNom() +" " + card_item.getPrenom());
+        name.setText(prenomFinal +" " + nomFinal);
         cityUser.setText(card_item.getPays()+" / "+card_item.getVille());
         Picasso.with(convertView.getContext()).load(card_item.getImage()).into(image);
         description.setText(card_item.getApropos());
