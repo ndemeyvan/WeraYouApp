@@ -298,6 +298,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 getOppositeSexUsers();
+                makeToast(getActivity(),"nouvel ajout");
             }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
