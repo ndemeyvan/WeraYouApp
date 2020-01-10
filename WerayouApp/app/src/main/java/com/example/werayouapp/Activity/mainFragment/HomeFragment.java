@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.werayouapp.Activity.ActivityPrincipal;
 import com.example.werayouapp.Activity.SetupActivity;
+import com.example.werayouapp.LoginActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.ArrayAdapter;
 import com.example.werayouapp.adapter.PostAdapter;
@@ -98,8 +100,7 @@ public class HomeFragment extends Fragment {
         flingContainer=v.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
         progressBar=v.findViewById(R.id.progressBar);
-         dialog = ProgressDialog.show(getActivity(), "",
-                "Loading. Please wait...", true);
+        dialog = ProgressDialog.show(getActivity(), "","Loading. Please wait...", true);
 
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
@@ -239,6 +240,7 @@ public class HomeFragment extends Fragment {
 
 
 
+
         return v;
     }
 
@@ -295,6 +297,7 @@ public class HomeFragment extends Fragment {
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                getOppositeSexUsers();
             }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
@@ -308,6 +311,10 @@ public class HomeFragment extends Fragment {
             }
         });
         //
+        if (rowsItems.size()<=0){
+            dialog.dismiss();
+            progressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
 
