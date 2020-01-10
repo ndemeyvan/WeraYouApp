@@ -73,7 +73,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id).child("data");
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
                 usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
