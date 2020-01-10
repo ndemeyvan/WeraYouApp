@@ -78,22 +78,22 @@ public class ActivityPrincipal extends AppCompatActivity {
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.home:
-                    toolbar.setTitle("Werayou");
+                    toobarTitle.setText("Werayou");
                     fragment = new HomeFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.friends:
-                    toolbar.setTitle("+ d'amis");
+                    toobarTitle.setText("+ d'amis");
                     fragment = new FriendsFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.message:
-                    toolbar.setTitle("Message");
+                    toobarTitle.setText("Message");
                     fragment = new MessageFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.me:
-                    toolbar.setTitle("Moi");
+                    toobarTitle.setText("Moi");
                     fragment = new MeFragment();
                     loadFragment(fragment);
                     return true;
