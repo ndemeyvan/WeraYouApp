@@ -109,8 +109,9 @@ public class MeFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
+
                 //getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-                //getActivity().finish();
+                getActivity().finish();
             }
         });
         postList=new ArrayList<>();
