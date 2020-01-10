@@ -156,11 +156,11 @@ public class HomeFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
                             Toast.makeText(getActivity(), "new Connection", Toast.LENGTH_LONG).show();
-                            usersDb.child(dataSnapshot.getKey()).child("correspondances").child(currentUser).setValue(true);
-                            usersDb.child(currentUser).child("correspondances").child(dataSnapshot.getKey()).setValue(true);
+                            usersDb.child(dataSnapshot.getKey()).child("connections").child(currentUser).setValue(true);
+                            usersDb.child(currentUser).child("connections").child(dataSnapshot.getKey()).setValue(true);
                             // String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
-                           // usersDb.child(dataSnapshot.getKey()).child("connections").child("correspondances").child(currentUser).child("ChatId").setValue(key);
-                           // usersDb.child(currentUser).child("connections").child("matches").child(dataSnapshot.getKey()).child("ChatId").setValue(key);
+                            //usersDb.child(dataSnapshot.getKey()).child("connections").child("correspondances").child(currentUser).child("ChatId").setValue(key);
+                            //usersDb.child(currentUser).child("connections").child("matches").child(dataSnapshot.getKey()).child("ChatId").setValue(key);
                         }
                     }
 
@@ -284,6 +284,7 @@ public class HomeFragment extends Fragment {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString(),dataSnapshot.child("apropos").getValue().toString(),dataSnapshot.child("age").getValue().toString());
@@ -297,7 +298,9 @@ public class HomeFragment extends Fragment {
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                getOppositeSexUsers();
+                //pas vraiment neccesaire pour l'instant
+                //rowsItems.clear();
+               // getOppositeSexUsers();
             }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
