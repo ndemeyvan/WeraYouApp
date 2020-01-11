@@ -445,7 +445,6 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
                     like_icon.setImageResource(R.drawable.ic_heart_empty);
                 }else{
                     like_icon.setImageResource(R.drawable.ic_heart_like);
-
                     islike=false;
                 }
             }
