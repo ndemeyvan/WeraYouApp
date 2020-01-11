@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Activity.SetupActivity"
     android:background="@color/white">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -47,6 +48,51 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView5">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView5"
+                    app:srcCompat="@drawable/ic_place" />
+
+                <TextView
+                    android:id="@+id/place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=": Cameroon" />
+
+                <ImageView
+                    android:id="@+id/pays_user2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/phone"
+                    app:layout_constraintEnd_toStartOf="@+id/phone"
+                    app:layout_constraintTop_toTopOf="@+id/phone"
+                    app:srcCompat="@drawable/ic_phone" />
+
+                <TextView
+                    android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=": +237656209008"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView5" />
+
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView5"
@@ -189,7 +235,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/place" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
             <EditText
                 android:id="@+id/user_prenom"
@@ -205,46 +251,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/user_nom"
                 app:layout_constraintStart_toStartOf="@+id/user_nom"
                 app:layout_constraintTop_toBottomOf="@+id/user_nom" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView5"
-                app:srcCompat="@drawable/ic_place" />
-
-            <TextView
-                android:id="@+id/place"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text=": Cameroon"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3" />
-
-            <ImageView
-                android:id="@+id/pays_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/phone"
-                app:layout_constraintEnd_toStartOf="@+id/phone"
-                app:layout_constraintTop_toTopOf="@+id/phone"
-                app:srcCompat="@drawable/ic_phone" />
-
-            <TextView
-                android:id="@+id/phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="32dp"
-                android:text=": +237656209008"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView5" />
 
             <EditText
                 android:id="@+id/apropos"
