@@ -3,6 +3,7 @@ package com.example.werayouapp.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -11,18 +12,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
@@ -30,10 +29,11 @@ import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
 import com.example.werayouapp.Utiles.BottomNavigationBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
-public class ActivityPrincipal extends AppCompatActivity {
+public class ActivityPrincipal extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener   {
 
-    AHBottomNavigation bottomNavigation;
+    //AHBottomNavigation bottomNavigation;
     ImageView add_image;
     Toolbar toolbar;
     TextView toobarTitle;
@@ -53,19 +53,9 @@ public class ActivityPrincipal extends AppCompatActivity {
         layoutParams.setBehavior(new BottomNavigationBehavior());
         loadFragment(new HomeFragment());
         //bottomNavigation.setOnTabSelectedListener(this);
-        add_image=findViewById(R.id.add_image);
         toolbar=findViewById(R.id.toolbar);
         toobarTitle=findViewById(R.id.toobarTitle);
         toobarTitle.setText("Werayou");
-        add_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent gogotoSearch = new Intent(getApplicationContext(),AddPhotoActivity.class);
-                startActivity(gogotoSearch);
-                //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-                //finish();
-            }
-        });
 
        // this.createNavItems();
 
@@ -115,6 +105,52 @@ public class ActivityPrincipal extends AppCompatActivity {
         transaction.replace(R.id.frameLayout, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.add_photo:
+                Intent gogotoSearch = new Intent(getApplicationContext(),AddPhotoActivity.class);
+                startActivity(gogotoSearch);
+                //finish
+                return true;
+            case R.id.setting:
+                Intent intent = new Intent(ActivityPrincipal.this, SettingActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.add_photo:
+                Intent gogotoSearch = new Intent(getApplicationContext(),AddPhotoActivity.class);
+                startActivity(gogotoSearch);
+                //finish
+                return true;
+            case R.id.edit:
+                Intent intent = new Intent(ActivityPrincipal.this, SettingActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /*private void loadFragment(Fragment fragment) {
@@ -168,6 +204,10 @@ public class ActivityPrincipal extends AppCompatActivity {
                 .build();
         bottomNavigation.setNotification(notification, 1);
         //*/
+
+
+
+
 
 
     }

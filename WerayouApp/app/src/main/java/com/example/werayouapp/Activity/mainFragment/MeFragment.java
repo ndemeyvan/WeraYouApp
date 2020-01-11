@@ -59,7 +59,7 @@ public class MeFragment extends Fragment {
     TextView sexe;
     private String userID;
     private String prenom;
-    ImageButton setupButton;
+    //ImageButton setupButton;
     ProgressBar progressBar;
     TextView paysView;
     private RecyclerView mRecyclerView;
@@ -102,9 +102,9 @@ public class MeFragment extends Fragment {
         mRecyclerView.setNestedScrollingEnabled(false);
         //
         progressBar=v.findViewById(R.id.progressBar);
-        setupButton=v.findViewById(R.id.setupButton);
+       // setupButton=v.findViewById(R.id.setupButton);
         //setupButton.setVisibility(View.INVISIBLE);
-        setupButton.setOnClickListener(new View.OnClickListener() {
+       /* setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
@@ -113,7 +113,7 @@ public class MeFragment extends Fragment {
                 //getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 getActivity().finish();
             }
-        });
+        });*/
         postList=new ArrayList<>();
         getUserData();
         getPost();
@@ -209,14 +209,12 @@ public class MeFragment extends Fragment {
             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
             if(map.get("nom")!=null){
                 nom = map.get("nom").toString();
-
             }
             if(map.get("prenom")!=null){
                 prenom = map.get("prenom").toString();
                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
                 nomUser.setText(prenomFinal +" " + nomFinal);
-
             }
             if(map.get("age")!=null){
                 userAge = map.get("age").toString();
@@ -233,8 +231,8 @@ public class MeFragment extends Fragment {
                 profileImageUrl = map.get("image").toString();
                 Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
                 progressBar.setVisibility(View.INVISIBLE);
-                setupButton.setVisibility(View.VISIBLE);
-                setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
+                //setupButton.setVisibility(View.VISIBLE);
+                //setupButton.setAnimation ( AnimationUtils.loadAnimation ( getActivity(),R.anim.fade_scale ) );
 
             }
             //

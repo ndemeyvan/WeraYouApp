@@ -47,9 +47,9 @@
                             android:background="@drawable/edit_background"
                             android:elevation="3dp"
                             android:src="@drawable/ic_edit"
+                            android:visibility="invisible"
                             app:layout_constraintBottom_toBottomOf="@+id/cardView2"
-                            app:layout_constraintEnd_toEndOf="@+id/cardView2"
-                            />
+                            app:layout_constraintEnd_toEndOf="@+id/cardView2" />
 
                         <ImageView
                             android:id="@+id/cardView2"
@@ -95,7 +95,6 @@
                             android:id="@+id/nomUser"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:text="Xxxxxx xxxx"
                             android:textColor="@color/colorPrimary"
                             android:textSize="20sp"
@@ -113,7 +112,7 @@
                             android:layout_height="wrap_content"
                             android:text="Pays :"
                             android:textColor="@color/black"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -122,7 +121,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:text="Xxxxxx"
-                            tools:textSize="12sp" />
+                            tools:textSize="13sp" />
 
                     </LinearLayout>
 
@@ -139,7 +138,7 @@
                             android:text="Ville :"
 
                             android:textColor="@color/black"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -150,7 +149,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="4dp"
                             android:text="Xxxxx"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
@@ -167,7 +166,7 @@
                             android:text="Age :"
                             android:textColor="@color/black"
 
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -178,7 +177,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="4dp"
                             android:text="Xxxx"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -194,7 +193,7 @@
                             android:text="Sexe : "
                             android:textColor="@color/black"
 
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -204,7 +203,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="4dp"
                             android:text="Xxxxxxx"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
@@ -222,7 +221,7 @@
 
                             android:text="Cherche :"
                             android:textColor="@color/black"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -232,7 +231,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="4dp"
                             android:text="Xxxxxxx"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
 
                     </LinearLayout>
                 </LinearLayout>
