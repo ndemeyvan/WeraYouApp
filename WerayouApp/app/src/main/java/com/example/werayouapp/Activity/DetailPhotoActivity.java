@@ -269,7 +269,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         up_bottomshet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
         descEditText.setText(description);
