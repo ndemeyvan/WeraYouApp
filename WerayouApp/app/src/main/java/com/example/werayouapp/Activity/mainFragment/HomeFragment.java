@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment {
                 String userId = obj.getId();
                 //usersDb.child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
                 Map<String, String> data = new HashMap<>();
-                data.put("id",userId);
+                data.put("id",currentUser);
                 DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("refuser").child(currentUser);
                 userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment {
                  obj = (Cards) o;
                 String userId = obj.getId();
                 Map<String, String> data = new HashMap<>();
-                data.put("id",userId);
+                data.put("id",currentUser);
                 DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("accepter").child(currentUser);
                 userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -202,7 +202,7 @@ public class HomeFragment extends Fragment {
                     flingContainer.getTopCardListener().selectRight();
                     String userId = obj.getId();
                     Map<String, String> data = new HashMap<>();
-                    data.put("id",userId);
+                    data.put("id",currentUser);
                     DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("accepter").child(currentUser);
                     userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -223,7 +223,7 @@ public class HomeFragment extends Fragment {
                     flingContainer.getTopCardListener().selectLeft();
                     String userId = obj.getId();
                     Map<String, String> data = new HashMap<>();
-                    data.put("id",userId);
+                    data.put("id",currentUser);
                     DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("refuser").child(currentUser);
                     userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

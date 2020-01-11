@@ -230,7 +230,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
     }
 
     void deletePost(){
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post);
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -277,7 +277,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
                     button.setVisibility(View.INVISIBLE);
                     Map<String, Object> post_data = new HashMap<>();
                     post_data.put ( "description",desc);
-                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post);
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_post).child("posts").child(id_post);
                     userDb.updateChildren(post_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -303,11 +303,11 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
     }
     //recuprer la nouvelle description
     public void getNewDesc(){
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post);
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post);
+                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post);
                 Db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -465,7 +465,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
     //recupere tout ce que l'utilisateur a poste
     void getComments(){
         //adding an event listener to fetch values
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("commentaires");
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("commentaires");
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -566,7 +566,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
             @Override
             public void onClick(View view) {
                 String commentaire = comment_edittext.getText().toString();
-                String key = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child("posts").child(id_post).child("commentaires").push().getKey();
+                String key = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child("posts").child(id_post).child("commentaires").push().getKey();
 
                 if (!TextUtils.isEmpty ( commentaire )){
                     send_comment_button.setVisibility(View.INVISIBLE);
@@ -581,7 +581,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
                     comment_data.put ( "createdDate",date);
                     comment_data.put ( "id_commentaire",key);
 
-                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("commentaires").child(key);
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("commentaires").child(key);
                     userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

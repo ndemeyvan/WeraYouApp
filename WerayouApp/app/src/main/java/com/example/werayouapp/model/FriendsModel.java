@@ -3,6 +3,9 @@ package com.example.werayouapp.model;
 public class FriendsModel {
     String id;
 
+    public FriendsModel() {
+    }
+
     public FriendsModel(String id) {
         this.id = id;
     }

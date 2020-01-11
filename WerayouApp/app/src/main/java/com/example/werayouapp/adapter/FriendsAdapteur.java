@@ -36,12 +36,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHolder>  {
      String id_user;
-
     List<FriendsModel> friendsModelList;
     Context context;
     private String nom;
     private String prenom;
-    private String profileImageUrl;
     private DatabaseReference usersDb;
 
     public FriendsAdapteur(List<FriendsModel> friendsModelList, Context context) {
@@ -62,7 +60,7 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
     @Override
     public void onBindViewHolder(@NonNull FriendsAdapteur.ViewHolder holder, int i) {
        id_user = friendsModelList.get(i).getId();
-        getUserData(holder);
+        getUserData(holder,id_user);
         holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,16 +70,23 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
 
             }
         });
+        holder.profil_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ProfilActivity.class);
+                intent.putExtra("id",id_user);
+                context.startActivity(intent);
+            }
+        });
     }
 
 
-    public void getUserData(final ViewHolder holder){
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+    public void getUserData(final ViewHolder holder , String id){
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
-                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
@@ -97,8 +102,8 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
                             }
 
                             if(map.get("image")!=null){
-                                profileImageUrl = map.get("image").toString();
-                                Picasso.with(context).load(profileImageUrl).into(holder.profil_image);
+                                String image = map.get("image").toString();
+                                Picasso.with(context).load(image).into(holder.profil_image);
                                 holder.progressBar.setVisibility(View.INVISIBLE);
 
                             }
@@ -157,7 +162,7 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            profil_image=itemView.findViewById(R.id.image);
+            profil_image=itemView.findViewById(R.id.profil_image);
             progressBar=itemView.findViewById(R.id.progressBar);
             nom_profil=itemView.findViewById(R.id.nom_profil);
             seeProfilText=itemView.findViewById(R.id.seeProfilText);

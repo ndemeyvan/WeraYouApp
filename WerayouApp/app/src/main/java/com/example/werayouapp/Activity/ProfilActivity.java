@@ -3,6 +3,7 @@ package com.example.werayouapp.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +56,7 @@ public class ProfilActivity extends AppCompatActivity {
     TextView aucun_post;
     TextView villeView;
     private String id_user;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class ProfilActivity extends AppCompatActivity {
         aucun_post=findViewById(R.id.aucun_post);
         paysView=findViewById(R.id.paysView);
         villeView=findViewById(R.id.villeView);
+        toolbar=findViewById(R.id.toolbar);
         //
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ProfilActivity.this, 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -80,6 +83,17 @@ public class ProfilActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setNestedScrollingEnabled(false);
         //
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+                finish();
+            }
+        });
         progressBar=findViewById(R.id.progressBar);
         postList=new ArrayList<>();
         getUserData();
@@ -173,6 +187,7 @@ public class ProfilActivity extends AppCompatActivity {
                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
                 nomUser.setText(prenomFinal +" " + nomFinal);
+                toolbar.setTitle(prenomFinal +" " + nomFinal);
 
             }
             if(map.get("age")!=null){
