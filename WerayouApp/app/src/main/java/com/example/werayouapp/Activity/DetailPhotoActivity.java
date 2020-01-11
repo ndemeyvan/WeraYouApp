@@ -265,6 +265,13 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         final EditText descEditText= parientView.findViewById(R.id.comment_edittext);
         final ImageButton button= parientView.findViewById(R.id.send_comment_button);
         final ImageView close_bottom = parientView.findViewById(R.id.close_bottom);
+        final ImageView up_bottomshet= parientView.findViewById(R.id.up_bottomshet);
+        up_bottomshet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+            }
+        });
         descEditText.setText(description);
         close_bottom.setOnClickListener(new View.OnClickListener() {
             @Override

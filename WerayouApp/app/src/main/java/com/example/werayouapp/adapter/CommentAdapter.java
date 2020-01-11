@@ -62,7 +62,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         String createdDate = commentModelList.get(i).getCreatedDate();
         holder.commentaire.setText(commentaire);
         holder.createdDate.setText(createdDate);
-        holder.layout.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_scale ) );
+        holder.layout.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_simple ) );
         getData(holder,id);
 
 
