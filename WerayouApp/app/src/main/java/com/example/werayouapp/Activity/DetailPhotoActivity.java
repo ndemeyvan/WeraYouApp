@@ -164,7 +164,11 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.detail_menu, menu);
+        if (userID.equals(id_user)){
+            inflater.inflate(R.menu.detail_menu, menu);
+        }else{
+
+        }
         return true;
     }
 
@@ -391,7 +395,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
             userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    like_icon.setAnimation ( AnimationUtils.loadAnimation ( DetailPhotoActivity.this,R.anim.fade_scale ) );
+                    //like_icon.setAnimation ( AnimationUtils.loadAnimation ( DetailPhotoActivity.this,R.anim.fade_scale ) );
                     like_icon.setImageResource(R.drawable.ic_heart_like);
                     islike=true;
                     getLikeCount();
@@ -425,13 +429,12 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
     }
     // cherche a savoir si l'utilisateur a actuel a deja likez
     void checkifLike(){
-        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes");
+        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("likes");
         like.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.hasChild(userID)){
                     islike=true;
-
                     like_icon.setImageResource(R.drawable.ic_heart_empty);
                 }else{
                     like_icon.setImageResource(R.drawable.ic_heart_like);
