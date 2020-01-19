@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.PostAdapter;
+import com.example.werayouapp.model.Cards;
 import com.example.werayouapp.model.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -57,6 +59,11 @@ public class ProfilActivity extends AppCompatActivity {
     TextView villeView;
     private String id_user;
     Toolbar toolbar;
+    private String currentUser;
+    Button addButton;
+    Button deniedButton;
+    boolean isFriend;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +75,7 @@ public class ProfilActivity extends AppCompatActivity {
         user=FirebaseAuth.getInstance();
         cherche=findViewById(R.id.cherche);
         user=FirebaseAuth.getInstance();
+        currentUser=user.getCurrentUser().getUid();
         id_user=getIntent().getStringExtra("id");
         sexe=findViewById(R.id.sexe);
         progressBarTwo=findViewById(R.id.progressBarTwo);
@@ -76,6 +84,8 @@ public class ProfilActivity extends AppCompatActivity {
         paysView=findViewById(R.id.paysView);
         villeView=findViewById(R.id.villeView);
         toolbar=findViewById(R.id.toolbar);
+        addButton=findViewById(R.id.addButton);
+        deniedButton=findViewById(R.id.deniedButton);
         //
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ProfilActivity.this, 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -96,8 +106,35 @@ public class ProfilActivity extends AppCompatActivity {
         });
         progressBar=findViewById(R.id.progressBar);
         postList=new ArrayList<>();
+        CheckifIsFriend();
         getUserData();
         getPost();
+        //action d'ecrire ou accepter
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isFriend==true){
+                    makeToast("vous etes amies");
+                }else{
+
+                }
+            }
+        });
+        //action de bloquer ou refuser
+        deniedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isFriend==false){
+                    makeToast("vous n'etes pas amies");
+
+                }else{
+
+                }
+            }
+        });
+
+
+
     }
 
     //recupere tout ce que l'utilisateur a poste
@@ -234,5 +271,48 @@ public class ProfilActivity extends AppCompatActivity {
 
     static void makeToast(Context ctx, String s){
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
+    }
+
+
+    void CheckifIsFriend(){
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("mesAmis");
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()&&dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) ) {
+                    deniedButton.setText("Bloquer");
+                    addButton.setText("Ecrire");
+                    isFriend=true;
+                }else{
+                    isFriend=false;
+                    deniedButton.setText("Accepter");
+                    addButton.setText("Refuser");
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    void makeToast(String msg){
+        Toast.makeText(ProfilActivity.this,msg,Toast.LENGTH_LONG).show();
     }
 }

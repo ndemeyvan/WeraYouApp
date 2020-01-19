@@ -279,6 +279,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
     public void getOppositeSexUsers(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
         db.addChildEventListener(new ChildEventListener() {
