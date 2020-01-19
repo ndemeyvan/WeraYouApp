@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -104,6 +105,9 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         holder.constraintLayout.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_simple ) );
 
     }
+    void makeToast(String msg){
+        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+    }
     //accepter une demande
     void accpet(){
         Calendar calendar=Calendar.getInstance ();
@@ -184,8 +188,8 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-                /*DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
-                boquer.setValue(user_data);*/
+
+                makeToast("vous ne verez plus jamais cette personne");
 
 
             }
