@@ -77,6 +77,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
+
                 friendsModelList.clear();//vide la liste de la recyclrView pour eviter les doublons
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     FriendsModel ask = postSnapshot.getValue(FriendsModel.class);

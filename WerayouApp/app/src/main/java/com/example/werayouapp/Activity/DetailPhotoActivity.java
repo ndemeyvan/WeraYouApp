@@ -288,7 +288,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
                     button.setVisibility(View.INVISIBLE);
                     Map<String, Object> post_data = new HashMap<>();
                     post_data.put ( "description",desc);
-                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_post).child("posts").child(id_post);
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post);
                     userDb.updateChildren(post_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

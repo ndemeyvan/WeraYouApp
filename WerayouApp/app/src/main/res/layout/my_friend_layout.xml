@@ -60,7 +60,7 @@
         android:id="@+id/writeButton"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/add_firend_buttton_background"
         android:text="Ecrire"
         android:textAllCaps="false"

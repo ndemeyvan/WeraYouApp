@@ -55,12 +55,11 @@ public class MyFriendFragment extends Fragment {
         user=FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
         message=v.findViewById(R.id.message);
-        mRecyclerView=v.findViewById(R.id.recyclerView);
+        mRecyclerView=v.findViewById(R.id.recyclerview);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setNestedScrollingEnabled(false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         ///
         friendsModelList=new ArrayList<>();
@@ -71,7 +70,7 @@ public class MyFriendFragment extends Fragment {
     //recupere tout ce que l'utilisateur a poste
     void getAsk(){
         //adding an event listener to fetch values
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("accepter");
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis");
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -99,9 +98,9 @@ public class MyFriendFragment extends Fragment {
 
     void checkIfEmpty(){
         if (friendsModelList.size()<=0){
-           // message.setVisibility(View.VISIBLE);
+           message.setVisibility(View.VISIBLE);
         }else {
-            //message.setVisibility(View.INVISIBLE);
+            message.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -97,13 +97,13 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                 user_data.put("id",id_user);
 
                 /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
-                DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis");
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis").child(id_user);
                 db.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
                         /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
-                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child("connections").child("accepter").child(id_user);
+                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("accepter").child(id_user);
                             db.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -120,7 +120,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                         user_data.put ( "updatedDate",date);
                         user_data.put("id",id_user);
                         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
-                        DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("valider");
+                        DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("valider").child(id_user);
                         db_.setValue(user_data);
 
                     }
