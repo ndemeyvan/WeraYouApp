@@ -120,6 +120,7 @@ public class ProfilActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isFriend==true){
                     makeToast("vous etes amies");
+                    //il faudra une condition pour verifier si l'utilisateur est bloque ou pas
                 }else{
                     makeToast("vous pouvez accepter cette personne comme amies");
                     accpet();
@@ -135,7 +136,7 @@ public class ProfilActivity extends AppCompatActivity {
                     reject();
                 }else{
                     makeToast("vous etes  amies et vous pouvez la bloquer");
-                    blockUser();
+                   // blockUser();
                 }
             }
         });
@@ -215,7 +216,12 @@ public class ProfilActivity extends AppCompatActivity {
         user_data.put ( "updatedDate",date);
         user_data.put("id",id_user);
          DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer").child(id_user);
-                boquer.setValue(user_data);
+         boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+             @Override
+             public void onComplete(@NonNull Task<Void> task) {
+                 makeToast("bloquer");
+             }
+         });
     }
     ///recupere les information de l'utilisateur
     public void getUserData(){
