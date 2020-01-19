@@ -16,10 +16,16 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.werayouapp.Activity.ActivityPrincipal;
 import com.example.werayouapp.Activity.DetailPhotoActivity;
 import com.example.werayouapp.Activity.ProfilActivity;
+import com.example.werayouapp.Activity.SetupActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.FriendsModel;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +35,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +49,8 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
     Context context;
     private String nom;
     private String prenom;
+    private String userID;
+    FirebaseAuth user ;
     private DatabaseReference usersDb;
 
     public FriendsAdapteur(List<FriendsModel> friendsModelList, Context context) {
@@ -59,6 +70,8 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull FriendsAdapteur.ViewHolder holder, int i) {
+        user=FirebaseAuth.getInstance();
+        userID=user.getCurrentUser().getUid();
        id_user = friendsModelList.get(i).getId();
         getUserData(holder,id_user);
         holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +89,52 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
                 Intent intent = new Intent(context, ProfilActivity.class);
                 intent.putExtra("id",id_user);
                 context.startActivity(intent);
+            }
+        });
+
+        holder.addFirendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar=Calendar.getInstance ();
+                SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+                String saveCurrentDate=currentDate.format ( calendar.getTime () );
+                final String date=saveCurrentDate;
+                Map<String, String> user_data = new HashMap<>();
+                user_data.put ( "updatedDate",date);
+                user_data.put("id",id_user);
+
+                /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis");
+                db.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
+                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child("connections").child("accepter").child(id_user);
+                            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                                    snapshot.getRef().removeValue();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                        ///mettre l'utilisateur dans les valider
+                        Map<String, String> user_data = new HashMap<>();
+                        user_data.put ( "updatedDate",date);
+                        user_data.put("id",id_user);
+
+
+                        /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
+                        DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("valider");
+                        db.setValue(user_data);
+
+                    }
+                });
+
             }
         });
     }
