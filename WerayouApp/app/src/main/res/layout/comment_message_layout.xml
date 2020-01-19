@@ -14,7 +14,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/wesplash"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="Olalal j'aime bien ta photo elle est trop jolie je jure !!!! Qui te fait les make up stp ? "
+        android:textColor="@color/black"
         android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/createdDate"
