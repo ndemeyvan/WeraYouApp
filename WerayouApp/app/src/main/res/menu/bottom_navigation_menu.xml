@@ -13,6 +13,11 @@
         android:title="amis" />
 
     <item
+        android:id="@+id/amies"
+        android:icon="@drawable/ic_friend"
+        android:title="amis" />
+
+    <item
         android:id="@+id/message"
         android:icon="@drawable/ic_conversation"
         android:title="conversation" />

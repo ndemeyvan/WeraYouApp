@@ -22,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.werayouapp.Activity.mainFragment.AmiesFragment;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
@@ -82,6 +84,11 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
                 case R.id.friends:
                     toobarTitle.setText("+ d'amis");
                     fragment = new FriendsFragment();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.amies:
+                    toobarTitle.setText("mes amis");
+                    fragment = new AmiesFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.message:

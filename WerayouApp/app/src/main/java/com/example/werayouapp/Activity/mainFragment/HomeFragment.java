@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
     ImageView right;
     ImageView left;
     Cards obj;
-    ProgressDialog dialog;
+    //ProgressDialog dialog;
     //
     private String userSex;
     private String oppositeUserSex;
@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
         flingContainer=v.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
         progressBar=v.findViewById(R.id.progressBar);
-        dialog = ProgressDialog.show(getActivity(), "","Loading. Please wait...", true);
+       // dialog = ProgressDialog.show(getActivity(), "","Loading. Please wait...", true);
 
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
@@ -290,7 +290,7 @@ public class HomeFragment extends Fragment {
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(),dataSnapshot.child("prenom").getValue().toString(),dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("id").getValue().toString(),dataSnapshot.child("pays").getValue().toString(),dataSnapshot.child("ville").getValue().toString(),dataSnapshot.child("apropos").getValue().toString(),dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
                     rowsItems.add(item);
-                    dialog.dismiss();
+                    //dialog.dismiss();
                     arrayAdapter.notifyDataSetChanged();
                     //
                 }
@@ -315,7 +315,7 @@ public class HomeFragment extends Fragment {
         });
         //
         if (rowsItems.size()<=0){
-            dialog.dismiss();
+            //dialog.dismiss();
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
