@@ -24,6 +24,8 @@ import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.PostAdapter;
 import com.example.werayouapp.model.Cards;
 import com.example.werayouapp.model.Post;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +35,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +122,7 @@ public class ProfilActivity extends AppCompatActivity {
                     makeToast("vous etes amies");
                 }else{
                     makeToast("vous pouvez accepter cette personne comme amies");
-
+                    accpet();
                 }
             }
         });
@@ -127,8 +132,10 @@ public class ProfilActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isFriend==false){
                     makeToast("vous n'etes pas amies vous pouvez refuser vous pouvez refuser sa demande");
+                    reject();
                 }else{
                     makeToast("vous etes  amies et vous pouvez la bloquer");
+                    blockUser();
                 }
             }
         });
@@ -166,6 +173,49 @@ public class ProfilActivity extends AppCompatActivity {
             }
         });
 
+    }
+    //refuser une demande
+    void reject(){
+        Calendar calendar=Calendar.getInstance ();
+        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+        String saveCurrentDate=currentDate.format ( calendar.getTime () );
+        final String date=saveCurrentDate;
+        final Map<String, String> user_data = new HashMap<>();
+        user_data.put ( "updatedDate",date);
+        user_data.put("id",id_user);
+
+        /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("refuser").child(id_user);
+        db.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("accepter").child(id_user);
+                db.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                            snapshot.getRef().removeValue();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+            }
+        });
+    }
+    void blockUser(){
+        Calendar calendar=Calendar.getInstance ();
+        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+        String saveCurrentDate=currentDate.format ( calendar.getTime () );
+        final String date=saveCurrentDate;
+        final Map<String, String> user_data = new HashMap<>();
+        user_data.put ( "updatedDate",date);
+        user_data.put("id",id_user);
+         DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer").child(id_user);
+                boquer.setValue(user_data);
     }
     ///recupere les information de l'utilisateur
     public void getUserData(){
@@ -307,6 +357,58 @@ public class ProfilActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    //accepter une demande
+    void accpet(){
+        Calendar calendar=Calendar.getInstance ();
+        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+        String saveCurrentDate=currentDate.format ( calendar.getTime () );
+        final String date=saveCurrentDate;
+        Map<String, String> user_data = new HashMap<>();
+        user_data.put ( "updatedDate",date);
+        user_data.put("id",id_user);
+
+        /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("mesAmis").child(id_user);
+        db.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("accepter").child(id_user);
+                db.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                            snapshot.getRef().removeValue();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+                ///mettre l'utilisateur dans les valider
+                Map<String, String> user_data = new HashMap<>();
+                user_data.put ( "updatedDate",date);
+                user_data.put("id",id_user);
+                /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
+                DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("valider").child(id_user);
+                db_.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Map<String, String> dataForAsker = new HashMap<>();
+                        dataForAsker.put ( "updatedDate",date);
+                        dataForAsker.put("id",currentUser);
+                        DatabaseReference dbTwoAskUser = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("mesAmis").child(currentUser);
+                        dbTwoAskUser.setValue(dataForAsker);
+                    }
+                });
+
+
+            }
+        });
+
     }
 
     void makeToast(String msg){

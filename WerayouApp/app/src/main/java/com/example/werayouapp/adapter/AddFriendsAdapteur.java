@@ -161,7 +161,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
         String saveCurrentDate=currentDate.format ( calendar.getTime () );
         final String date=saveCurrentDate;
-        Map<String, String> user_data = new HashMap<>();
+        final Map<String, String> user_data = new HashMap<>();
         user_data.put ( "updatedDate",date);
         user_data.put("id",id_user);
 
@@ -184,7 +184,9 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-                ;
+                /*DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
+                boquer.setValue(user_data);*/
+
 
             }
         });
