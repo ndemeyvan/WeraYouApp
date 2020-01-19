@@ -102,7 +102,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                             }
                             if(map.get("prenom")!=null){
                                  prenom = map.get("prenom").toString();
-                                holder.nom_profil.setText(nom + " " + prenom);
+                                String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
+                                String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
+                                holder.nom_profil.setText(prenomFinal + " " + nomFinal);
 
                             }
                             if(map.get("image")!=null){
