@@ -1,29 +1,21 @@
 package com.example.werayouapp.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.werayouapp.Activity.mainFragment.AmiesFragment;
+import com.example.werayouapp.Activity.mainFragment.MyFriendFragment;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
@@ -88,7 +80,7 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
                     return true;
                 case R.id.amies:
                     toobarTitle.setText("mes amis");
-                    fragment = new AmiesFragment();
+                    fragment = new MyFriendFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.message:

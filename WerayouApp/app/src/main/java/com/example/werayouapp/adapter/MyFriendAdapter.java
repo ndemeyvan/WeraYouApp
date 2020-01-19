@@ -88,43 +88,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         holder.blockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar=Calendar.getInstance ();
-                SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-                String saveCurrentDate=currentDate.format ( calendar.getTime () );
-                final String date=saveCurrentDate;
-                Map<String, String> user_data = new HashMap<>();
-                user_data.put ( "updatedDate",date);
-                user_data.put("id",id_user);
 
-                /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
-                DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis");
-                db.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
-                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child("connections").child("accepter").child(id_user);
-                        db.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                                    snapshot.getRef().removeValue();
-                                }
-                            }
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
-                        ///mettre l'utilisateur dans les valider
-                        Map<String, String> user_data = new HashMap<>();
-                        user_data.put ( "updatedDate",date);
-                        user_data.put("id",id_user);
-                        /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
-                        DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("valider");
-                        db_.setValue(user_data);
-
-                    }
-                });
 
             }
         });
