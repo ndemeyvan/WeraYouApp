@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.werayouapp.Activity.ProfilActivity;
 import com.example.werayouapp.R;
@@ -85,6 +87,9 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
 
             }
         });
+
+        holder.layout.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_simple ) );
+
     }
 
     @Override
@@ -166,6 +171,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         TextView seeProfilText;
         Button writeButton;
         Button blockButton;
+        ConstraintLayout layout;
 
 
         public ViewHolder(final View itemView) {
@@ -176,6 +182,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
             seeProfilText = itemView.findViewById(R.id.seeProfilText);
             writeButton = itemView.findViewById(R.id.writeButton);
             blockButton = itemView.findViewById(R.id.blockButton);
+            layout=itemView.findViewById(R.id.layout);
 
         }
 

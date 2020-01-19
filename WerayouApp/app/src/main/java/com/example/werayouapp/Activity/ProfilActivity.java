@@ -116,6 +116,7 @@ public class ProfilActivity extends AppCompatActivity {
                 if (isFriend==true){
                     makeToast("vous etes amies");
                 }else{
+                    makeToast("vous pouvez accepter cette personne comme amies");
 
                 }
             }
@@ -125,10 +126,9 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isFriend==false){
-                    makeToast("vous n'etes pas amies");
-
+                    makeToast("vous n'etes pas amies vous pouvez refuser vous pouvez refuser sa demande");
                 }else{
-
+                    makeToast("vous etes pas amies at vous voulez le bloquer");
                 }
             }
         });
@@ -279,14 +279,14 @@ public class ProfilActivity extends AppCompatActivity {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()&&dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) ) {
+                if (dataSnapshot.exists()&&!dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) ) {
                     deniedButton.setText("Bloquer");
                     addButton.setText("Ecrire");
                     isFriend=true;
                 }else{
                     isFriend=false;
-                    deniedButton.setText("Accepter");
-                    addButton.setText("Refuser");
+                    deniedButton.setText("Refuser");
+                    addButton.setText("Accepter");
                 }
             }
 

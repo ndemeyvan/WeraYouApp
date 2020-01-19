@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.werayouapp.Activity.ProfilActivity;
@@ -99,6 +101,8 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
              reject();
             }
         });
+        holder.constraintLayout.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_simple ) );
+
     }
     //accepter une demande
     void accpet(){
@@ -258,6 +262,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         TextView seeProfilText;
         Button addFirendButton;
         Button deniedFirendButton;
+        ConstraintLayout constraintLayout;
 
 
         public ViewHolder(final View itemView) {
@@ -268,6 +273,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
             seeProfilText=itemView.findViewById(R.id.seeProfilText);
             addFirendButton=itemView.findViewById(R.id.writeButton);
             deniedFirendButton=itemView.findViewById(R.id.blockButton);
+            constraintLayout=itemView.findViewById(R.id.layout);
 
         }
 

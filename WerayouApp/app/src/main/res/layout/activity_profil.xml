@@ -310,7 +310,7 @@
             android:id="@+id/aucun_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vous n'avez rien publier pour l'instant"
+            android:text="Cette personne n'a rien publier pour l'instant"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:visibility="invisible"
