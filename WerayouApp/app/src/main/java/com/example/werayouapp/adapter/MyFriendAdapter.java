@@ -5,24 +5,17 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.werayouapp.Activity.ActivityPrincipal;
-import com.example.werayouapp.Activity.DetailPhotoActivity;
 import com.example.werayouapp.Activity.ProfilActivity;
-import com.example.werayouapp.Activity.SetupActivity;
 import com.example.werayouapp.R;
-import com.example.werayouapp.model.FriendsModel;
-import com.google.android.gms.tasks.OnCanceledListener;
+import com.example.werayouapp.model.MyFriendModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -43,36 +35,37 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHolder>  {
-     String id_user;
-    List<FriendsModel> friendsModelList;
+public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHolder>   {
+    List<MyFriendModel> myFriendModelList;
     Context context;
     private String nom;
     private String prenom;
+    private String id_user;
+    private FirebaseAuth user;
     private String userID;
-    FirebaseAuth user ;
-    private DatabaseReference usersDb;
 
-    public FriendsAdapteur(List<FriendsModel> friendsModelList, Context context) {
-        this.friendsModelList = friendsModelList;
+    public MyFriendAdapter(List<MyFriendModel> myFriendModelList, Context context) {
+        this.myFriendModelList = myFriendModelList;
         this.context = context;
     }
 
+
     @NonNull
     @Override
-    public FriendsAdapteur.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyFriendAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View contactView = inflater.inflate(R.layout.add_friends_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(contactView);
+        View contactView = inflater.inflate(R.layout.my_friend_layout, parent, false);
+       ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendsAdapteur.ViewHolder holder, int i) {
-        user=FirebaseAuth.getInstance();
+    public void onBindViewHolder(@NonNull MyFriendAdapter.ViewHolder holder, int i) {
+        user= FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
-       id_user = friendsModelList.get(i).getId();
+        id_user = myFriendModelList.get(i).getId();
         getUserData(holder,id_user);
         holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +85,7 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
             }
         });
 
-        holder.addFirendButton.setOnClickListener(new View.OnClickListener() {
+        holder.blockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar=Calendar.getInstance ();
@@ -111,7 +104,7 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
 
                         /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
                         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child("connections").child("accepter").child(id_user);
-                            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                        db.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
@@ -126,11 +119,9 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
                         Map<String, String> user_data = new HashMap<>();
                         user_data.put ( "updatedDate",date);
                         user_data.put("id",id_user);
-
-
                         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
                         DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("valider");
-                        db.setValue(user_data);
+                        db_.setValue(user_data);
 
                     }
                 });
@@ -139,6 +130,10 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
         });
     }
 
+    @Override
+    public int getItemCount() {
+        return myFriendModelList.size();
+    }
 
     public void getUserData(final ViewHolder holder , String id){
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
@@ -204,29 +199,26 @@ public class FriendsAdapteur extends RecyclerView.Adapter<FriendsAdapteur.ViewHo
 
     }
 
-    @Override
-    public int getItemCount() {
-        return friendsModelList.size();
-    }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         CircleImageView profil_image;
         ProgressBar progressBar;
         TextView nom_profil;
         TextView seeProfilText;
-        Button addFirendButton;
-        Button deniedFirendButton;
+        Button writeButton;
+        Button blockButton;
 
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            profil_image=itemView.findViewById(R.id.profil_image);
-            progressBar=itemView.findViewById(R.id.progressBar);
-            nom_profil=itemView.findViewById(R.id.nom_profil);
-            seeProfilText=itemView.findViewById(R.id.seeProfilText);
-            addFirendButton=itemView.findViewById(R.id.addFirendButton);
-            deniedFirendButton=itemView.findViewById(R.id.deniedFirendButton);
+            profil_image = itemView.findViewById(R.id.profil_image);
+            progressBar = itemView.findViewById(R.id.progressBar);
+            nom_profil = itemView.findViewById(R.id.nom_profil);
+            seeProfilText = itemView.findViewById(R.id.seeProfilText);
+            writeButton = itemView.findViewById(R.id.writeButton);
+            blockButton = itemView.findViewById(R.id.blockButton);
 
         }
 

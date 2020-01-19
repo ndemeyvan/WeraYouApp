@@ -15,7 +15,9 @@
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/wesplash"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,36 +46,28 @@
         app:layout_constraintTop_toTopOf="@+id/profil_image" />
 
     <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="16dp"
-        android:text="A flashe sur vous"
-        app:layout_constraintStart_toStartOf="@+id/nom_profil"
-        app:layout_constraintTop_toBottomOf="@+id/nom_profil" />
-
-    <TextView
         android:id="@+id/seeProfilText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Voir profil"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintEnd_toEndOf="@+id/nom_profil"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/nom_profil"
+        app:layout_constraintTop_toBottomOf="@+id/nom_profil" />
 
     <Button
         android:id="@+id/writeButton"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:background="@drawable/add_firend_buttton_background"
-        android:text="Accepter"
+        android:text="Ecrire"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/textView10"
-        app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toTopOf="@+id/textView10" />
+        app:layout_constraintBottom_toBottomOf="@+id/seeProfilText"
+        app:layout_constraintStart_toEndOf="@+id/nom_profil"
+        app:layout_constraintTop_toBottomOf="@+id/nom_profil" />
 
     <Button
         android:id="@+id/blockButton"
@@ -81,7 +75,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/backgroun_button_validation"
-        android:text="Refuser"
+        android:text="Bloquer"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/writeButton"

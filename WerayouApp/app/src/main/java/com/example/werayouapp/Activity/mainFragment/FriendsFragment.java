@@ -3,27 +3,20 @@ package com.example.werayouapp.Activity.mainFragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.werayouapp.R;
-import com.example.werayouapp.adapter.FriendsAdapteur;
-import com.example.werayouapp.adapter.PostAdapter;
+import com.example.werayouapp.adapter.AddFriendsAdapteur;
 import com.example.werayouapp.model.FriendsModel;
-import com.example.werayouapp.model.Post;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -93,7 +86,7 @@ public class FriendsFragment extends Fragment {
                 }
 
                 //creating adapter
-                adapter = new FriendsAdapteur(friendsModelList, getActivity());
+                adapter = new AddFriendsAdapteur(friendsModelList, getActivity());
                 //adding adapter to recyclerview
                 mRecyclerView.setAdapter(adapter);
                 // adapter.notifyDataSetChanged();
