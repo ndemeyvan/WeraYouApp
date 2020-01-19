@@ -47,7 +47,6 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
     private String prenom;
     private String userID;
     FirebaseAuth user ;
-    private DatabaseReference usersDb;
 
     public AddFriendsAdapteur(List<FriendsModel> friendsModelList, Context context) {
         this.friendsModelList = friendsModelList;

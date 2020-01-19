@@ -1,6 +1,7 @@
 package com.example.werayouapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,12 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.werayouapp.Activity.ProfilActivity;
 import com.example.werayouapp.Activity.SettingActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.CommentModel;
 import com.example.werayouapp.model.Post;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +41,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private DatabaseReference usersDb;
     private String nom;
     private String prenom;
+    private String userID;
+    FirebaseAuth user ;
 
 
     public CommentAdapter(List<CommentModel> commentModelList, Context context) {
@@ -57,12 +62,24 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
-        String id = commentModelList.get(i).getId();
+        user=FirebaseAuth.getInstance();
+        userID=user.getCurrentUser().getUid();
+        final String id = commentModelList.get(i).getId();
         String commentaire = commentModelList.get(i).getCommentaire();
         String createdDate = commentModelList.get(i).getCreatedDate();
         holder.commentaire.setText(commentaire);
         holder.createdDate.setText(createdDate);
         holder.layout.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_simple ) );
+        holder.profil_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!id.equals(userID)){
+                    Intent intent = new Intent(context, ProfilActivity.class);
+                    intent.putExtra("id",id);
+                    context.startActivity(intent);
+                }
+            }
+        });
         getData(holder,id);
 
 
