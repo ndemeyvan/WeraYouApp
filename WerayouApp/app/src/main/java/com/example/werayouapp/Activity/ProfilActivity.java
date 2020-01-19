@@ -128,7 +128,7 @@ public class ProfilActivity extends AppCompatActivity {
                 if (isFriend==false){
                     makeToast("vous n'etes pas amies vous pouvez refuser vous pouvez refuser sa demande");
                 }else{
-                    makeToast("vous etes pas amies at vous voulez le bloquer");
+                    makeToast("vous etes  amies et vous pouvez la bloquer");
                 }
             }
         });
@@ -269,9 +269,6 @@ public class ProfilActivity extends AppCompatActivity {
 
     }
 
-    static void makeToast(Context ctx, String s){
-        Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
-    }
 
 
     void CheckifIsFriend(){
