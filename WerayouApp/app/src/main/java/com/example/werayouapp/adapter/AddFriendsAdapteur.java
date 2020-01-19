@@ -123,6 +123,9 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                         DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("valider").child(id_user);
                         db_.setValue(user_data);
 
+                        DatabaseReference dbTwoAskUser = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("mesAmis").child(userID);
+                        dbTwoAskUser.setValue(user_data);
+
                     }
                 });
 
