@@ -122,9 +122,11 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
                         DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("valider").child(id_user);
                         db_.setValue(user_data);
-
+                        Map<String, String> dataForAsker = new HashMap<>();
+                        user_data.put ( "updatedDate",date);
+                        user_data.put("id",userID);
                         DatabaseReference dbTwoAskUser = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("mesAmis").child(userID);
-                        dbTwoAskUser.setValue(user_data);
+                        dbTwoAskUser.setValue(dataForAsker);
 
                     }
                 });
