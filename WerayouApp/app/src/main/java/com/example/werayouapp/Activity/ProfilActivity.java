@@ -119,7 +119,8 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isFriend==true){
-                    makeToast("vous etes amies");
+                            Intent intent = new Intent(ProfilActivity.this, ChatActivity.class);
+                            intent.putExtra("id",id_user);
                     //il faudra une condition pour verifier si l'utilisateur est bloque ou pas
                 }else{
                     makeToast("vous pouvez accepter cette personne comme amies");

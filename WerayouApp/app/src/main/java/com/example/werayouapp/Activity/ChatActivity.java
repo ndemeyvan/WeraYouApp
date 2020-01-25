@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
@@ -46,10 +47,11 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         profil_image=findViewById(R.id.profil_image);
         nom_profil=findViewById(R.id.nom_profil);
-        id_user=getIntent().getStringExtra("id_user");
+        id_user=getIntent().getStringExtra("id");
         //
         user= FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
@@ -97,7 +99,6 @@ public class ChatActivity extends AppCompatActivity {
                             if(map.get("image")!=null){
                                 String profileImageUrl = map.get("image").toString();
                                 Picasso.with(ChatActivity.this).load(profileImageUrl).placeholder(R.drawable.ic_launcher_background).into(profil_image);
-                                profil_image.setAnimation ( AnimationUtils.loadAnimation ( ChatActivity.this,R.anim.fade_scale ) );
                             }
 
                         }
