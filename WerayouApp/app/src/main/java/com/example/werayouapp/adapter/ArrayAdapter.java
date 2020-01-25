@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,7 +32,7 @@ public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
         }
 
-        TextView name = (TextView) convertView.findViewById(R.id.nameUser);
+        TextView name = (TextView) convertView.findViewById(R.id.nom_profil);
         ImageView image = (ImageView) convertView.findViewById(R.id.imageUser);
         TextView cityUser= convertView.findViewById(R.id.cityUser);
         CardView card = convertView.findViewById(R.id.card_item);
