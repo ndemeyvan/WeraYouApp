@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -115,11 +113,11 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         imageView=findViewById(R.id.image);
         like_icon=findViewById(R.id.like_icon);
         progressBar=findViewById(R.id.progressBar);
-        send_comment_button=findViewById(R.id.send_comment_button);
+        send_comment_button=findViewById(R.id.sendButton);
         aucun_commentaires=findViewById(R.id.aucun_commentaires);
         progressBar2=findViewById(R.id.progressBar3);
         likecommentsNumbers=findViewById(R.id.likecommentsNumbers);
-        comment_edittext=findViewById(R.id.comment_edittext);
+        comment_edittext=findViewById(R.id.editText);
         // set les extras recuperez
         description_view.setText(description);
         Picasso.with(DetailPhotoActivity.this).load(image).into(imageView);
@@ -262,8 +260,8 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         bottomSheetDialog.show();
         final ProgressBar progressBar3= parientView.findViewById(R.id.progressBar3);
-        final EditText descEditText= parientView.findViewById(R.id.comment_edittext);
-        final ImageButton button= parientView.findViewById(R.id.send_comment_button);
+        final EditText descEditText= parientView.findViewById(R.id.editText);
+        final ImageButton button= parientView.findViewById(R.id.sendButton);
         final ImageView close_bottom = parientView.findViewById(R.id.close_bottom);
         final ImageView up_bottomshet= parientView.findViewById(R.id.up_bottomshet);
         up_bottomshet.setOnClickListener(new View.OnClickListener() {

@@ -7,12 +7,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.werayouapp.R;
+import com.example.werayouapp.UtilsForChat.DisplayAllChat;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -37,7 +46,10 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseAuth user ;
     String userID;
     private String nom;
+    private DisplayAllChat contact;
     //
+    EditText editText;
+    ImageButton sendButton;
 
 
 
@@ -52,6 +64,9 @@ public class ChatActivity extends AppCompatActivity {
         profil_image=findViewById(R.id.profil_image);
         nom_profil=findViewById(R.id.nom_profil);
         id_user=getIntent().getStringExtra("id");
+        editText=findViewById(R.id.editText);
+        sendButton=findViewById(R.id.sendButton);
+
         //
         user= FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
@@ -71,8 +86,17 @@ public class ChatActivity extends AppCompatActivity {
         });
         //appel de fonction
         getUserData();
-    }
 
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               String msg= editText.getText().toString();
+               if (!msg.isEmpty()){
+                   sendmessage(userID,id_user,msg);
+               }
+            }
+        });
+    }
 
     //recuperer les information de l'utilisateur
     public void getUserData(){
@@ -134,7 +158,50 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    public void sendmessage(final String expediteur, final String recepteur, final String message){
 
+        final DatabaseReference reference =FirebaseDatabase.getInstance ().getReference ();
+        Calendar calendar=Calendar.getInstance ();
+        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+        String saveCurrentDate=currentDate.format ( calendar.getTime () );
+        String date=saveCurrentDate;
+        final HashMap<String,Object> messageMap = new HashMap<> (  );
+        messageMap.put ( "expediteur",expediteur );
+        messageMap.put ( "recepteur",recepteur );
+        messageMap.put ( "message",message );
+        messageMap.put ( "createdDate",date );
+        reference.child ( "Chats" ).push ().setValue ( messageMap );
+        //
+        contact =new DisplayAllChat(  );
+        contact.setId_recepteur ( recepteur );
+        contact.setId_expediteur ( expediteur );
+        contact.setDernier_message ( message );
+        //
+        reference.child ( "dernier_message" )
+                .child(expediteur)
+                .child("contacts")
+                .child(recepteur).push ().setValue ( contact )
+                .addOnSuccessListener ( new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+        //
+                contact =new DisplayAllChat (  );
+                contact.setId_recepteur ( expediteur );
+                contact.setId_expediteur ( recepteur );
+                contact.setDernier_message ( message );
+        //
+                reference.child ( "dernier_message" )
+                        .child(recepteur)
+                        .child("contacts")
+                        .child(expediteur).push ().setValue ( contact );
+            }
+        } );
+
+
+
+
+
+    }
 
 
     @Override
