@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.werayouapp.Activity.ChatActivity;
 import com.example.werayouapp.Activity.ProfilActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.MyFriendModel;
@@ -35,9 +37,10 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
     Context context;
     private String nom;
     private String prenom;
-    private String id_user;
     private FirebaseAuth user;
     private String userID;
+    private DatabaseReference usersDb;
+
 
     public MyFriendAdapter(List<MyFriendModel> myFriendModelList, Context context) {
         this.myFriendModelList = myFriendModelList;
@@ -60,17 +63,38 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
     public void onBindViewHolder(@NonNull MyFriendAdapter.ViewHolder holder, int i) {
         user= FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
-        id_user = myFriendModelList.get(i).getId();
-        getUserData(holder,id_user);
+        final String id_user = myFriendModelList.get(i).getId();
+        holder.writeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra("id",id_user);
+                context.startActivity(intent);
+            }
+        });
+        //
+        holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ProfilActivity.class);
+                intent.putExtra("id",id_user);
+                context.startActivity(intent);
 
-       /* holder.profil_image.setOnClickListener(new View.OnClickListener() {
+            }
+        });
+
+        holder.profil_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProfilActivity.class);
                 intent.putExtra("id",id_user);
                 context.startActivity(intent);
             }
-        });*/
+        });
+        //
+        getUserData(holder,id_user);
+
+       /**/
 
         holder.blockButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,23 +113,14 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         return myFriendModelList.size();
     }
 
-    public void getUserData(final ViewHolder holder , String id){
-        //
-        holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ProfilActivity.class);
-                intent.putExtra("id",id_user);
-                context.startActivity(intent);
+    public void getUserData(final ViewHolder holder , final String id){
 
-            }
-        });
-        //
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                db.addListenerForSingleValueEvent(new ValueEventListener() {
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
+                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){

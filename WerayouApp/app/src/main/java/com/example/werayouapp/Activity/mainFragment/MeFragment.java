@@ -167,7 +167,10 @@ public class MeFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         data(dataSnapshot);
                         getPost();
-                        getUserData();
+                        if (postList.size()==0){
+                            aucun_post.setVisibility(View.VISIBLE);
+                            progressBarTwo.setVisibility(View.INVISIBLE);
+                        }
                     }
 
                     @Override
@@ -181,7 +184,6 @@ public class MeFragment extends Fragment {
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     data(dataSnapshot);
                     getPost();
-                    getUserData();
                 if (postList.size()==0){
                     aucun_post.setVisibility(View.VISIBLE);
                     progressBarTwo.setVisibility(View.INVISIBLE);

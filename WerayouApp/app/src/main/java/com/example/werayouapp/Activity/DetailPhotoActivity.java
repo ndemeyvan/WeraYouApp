@@ -499,7 +499,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
                 adapter = new CommentAdapter(commentList, DetailPhotoActivity.this);
                 //adding adapter to recyclerview
                 mRecyclerView.setAdapter(adapter);
-                //adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

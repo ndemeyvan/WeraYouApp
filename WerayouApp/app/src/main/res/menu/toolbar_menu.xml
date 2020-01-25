@@ -5,9 +5,4 @@
     android:title="Ajouter une photo"
         android:icon="@drawable/ic_add_photo"
         app:showAsAction="always"/>
-
-    <item android:id="@+id/setting"
-        android:title="Parametre"
-        android:icon="@drawable/ic_setting"
-        app:showAsAction="always"/>
 </menu>
