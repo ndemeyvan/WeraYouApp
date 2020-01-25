@@ -191,7 +191,12 @@ public class ChatActivity extends AppCompatActivity {
         messageMap.put ( "recepteur",recepteur );
         messageMap.put ( "message",message );
         messageMap.put ( "createdDate",date );
-        reference.child ( "Chats" ).push ().setValue ( messageMap );
+        reference.child ( "Chats" ).push ().setValue ( messageMap ).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                editText.setText("");
+            }
+        });
         //
         contact =new DisplayAllChat(  );
         contact.setId_recepteur ( recepteur );
@@ -217,7 +222,7 @@ public class ChatActivity extends AppCompatActivity {
                         .child(expediteur).push ().setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        editText.setText("");
+
                     }
                 });
             }
