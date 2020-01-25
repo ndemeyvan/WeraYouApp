@@ -436,7 +436,7 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
     }
     // cherche a savoir si l'utilisateur a actuel a deja likez
     void checkifLike(){
-        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(id_post).child("likes");
+        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes");
         like.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
