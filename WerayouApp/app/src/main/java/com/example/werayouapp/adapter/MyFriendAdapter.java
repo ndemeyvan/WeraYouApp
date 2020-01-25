@@ -62,23 +62,15 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         userID=user.getCurrentUser().getUid();
         id_user = myFriendModelList.get(i).getId();
         getUserData(holder,id_user);
-        holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ProfilActivity.class);
-                intent.putExtra("id",id_user);
-                context.startActivity(intent);
 
-            }
-        });
-        holder.profil_image.setOnClickListener(new View.OnClickListener() {
+       /* holder.profil_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProfilActivity.class);
                 intent.putExtra("id",id_user);
                 context.startActivity(intent);
             }
-        });
+        });*/
 
         holder.blockButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +90,17 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
     }
 
     public void getUserData(final ViewHolder holder , String id){
+        //
+        holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ProfilActivity.class);
+                intent.putExtra("id",id_user);
+                context.startActivity(intent);
+
+            }
+        });
+        //
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
         db.addChildEventListener(new ChildEventListener() {
             @Override

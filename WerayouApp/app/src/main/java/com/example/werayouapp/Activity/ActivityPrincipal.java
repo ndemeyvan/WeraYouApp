@@ -123,11 +123,11 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
                 startActivity(gogotoSearch);
                 //finish
                 return true;
-            case R.id.setting:
+            /*case R.id.setting:
                 Intent intent = new Intent(ActivityPrincipal.this, SettingActivity.class);
                 startActivity(intent);
-                finish();
-                return true;
+                //finish();
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -142,11 +142,11 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
                 startActivity(gogotoSearch);
                 //finish
                 return true;
-            case R.id.edit:
+            /*case R.id.edit:
                 Intent intent = new Intent(ActivityPrincipal.this, SettingActivity.class);
                 startActivity(intent);
-                finish();
-                return true;
+                //finish();
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }

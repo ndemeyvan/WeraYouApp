@@ -44,10 +44,10 @@
                             android:id="@+id/setupButton"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:background="@drawable/edit_background"
+                            android:background="@drawable/background_add_image_profil"
                             android:elevation="3dp"
                             android:src="@drawable/ic_edit"
-                            android:visibility="invisible"
+                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/cardView2"
                             app:layout_constraintEnd_toEndOf="@+id/cardView2" />
 

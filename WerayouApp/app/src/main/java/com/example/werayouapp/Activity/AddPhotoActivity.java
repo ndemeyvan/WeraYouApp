@@ -85,8 +85,8 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
-                startActivity(intent);
+                //Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
+                //startActivity(intent);
                 //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
             }

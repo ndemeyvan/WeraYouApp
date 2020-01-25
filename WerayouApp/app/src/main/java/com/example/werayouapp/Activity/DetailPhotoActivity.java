@@ -258,8 +258,8 @@ public class DetailPhotoActivity extends AppCompatActivity  implements Navigatio
         bottomSheetDialog.setContentView(parientView);
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View)parientView.getParent());
         //bottomSheetBehavior.setPeekHeight((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,100,getResources().getDisplayMetrics()));
-        bottomSheetBehavior.setPeekHeight(410);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_DRAGGING);
+        bottomSheetBehavior.setPeekHeight(510);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         bottomSheetDialog.show();
         final ProgressBar progressBar3= parientView.findViewById(R.id.progressBar3);
         final EditText descEditText= parientView.findViewById(R.id.comment_edittext);

@@ -133,8 +133,8 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                startActivity(intent);
+                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                //startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
             }
@@ -469,8 +469,8 @@ public class SettingActivity extends AppCompatActivity  implements AdapterView.O
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-        startActivity(intent);
+        //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+        //startActivity(intent);
         // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
         finish();
     }

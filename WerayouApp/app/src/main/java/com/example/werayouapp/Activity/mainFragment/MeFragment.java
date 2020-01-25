@@ -59,7 +59,7 @@ public class MeFragment extends Fragment {
     TextView sexe;
     private String userID;
     private String prenom;
-    //ImageButton setupButton;
+    ImageButton setupButton;
     ProgressBar progressBar;
     TextView paysView;
     private RecyclerView mRecyclerView;
@@ -102,18 +102,18 @@ public class MeFragment extends Fragment {
         mRecyclerView.setNestedScrollingEnabled(false);
         //
         progressBar=v.findViewById(R.id.progressBar);
-       // setupButton=v.findViewById(R.id.setupButton);
+       setupButton=v.findViewById(R.id.setupButton);
         //setupButton.setVisibility(View.INVISIBLE);
-       /* setupButton.setOnClickListener(new View.OnClickListener() {
+       setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
 
                 //getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-                getActivity().finish();
+                //getActivity().finish();
             }
-        });*/
+        });
         postList=new ArrayList<>();
         getUserData();
         getPost();
@@ -167,6 +167,7 @@ public class MeFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         data(dataSnapshot);
                         getPost();
+                        getUserData();
                     }
 
                     @Override
@@ -180,6 +181,7 @@ public class MeFragment extends Fragment {
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     data(dataSnapshot);
                     getPost();
+                    getUserData();
                 if (postList.size()==0){
                     aucun_post.setVisibility(View.VISIBLE);
                     progressBarTwo.setVisibility(View.INVISIBLE);
