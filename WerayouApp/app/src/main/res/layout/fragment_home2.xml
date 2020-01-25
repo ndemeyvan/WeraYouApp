@@ -39,7 +39,7 @@
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
         android:layout_width="0dp"
-        android:layout_height="400dp"
+        android:layout_height="410dp"
         android:background="@color/darkgrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

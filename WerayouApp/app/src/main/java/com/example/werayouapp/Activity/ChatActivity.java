@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.werayouapp.R;
 import com.example.werayouapp.UtilsForChat.ChatAdapter;
@@ -112,6 +113,8 @@ public class ChatActivity extends AppCompatActivity {
                String msg= editText.getText().toString();
                if (!msg.isEmpty()){
                    sendmessage(userID,id_user,msg);
+               }else{
+                    makeToast("entrer un message");
                }
             }
         });
@@ -262,7 +265,9 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-
+    void makeToast(String msg){
+        Toast.makeText(ChatActivity.this,msg,Toast.LENGTH_LONG).show();
+    }
 
 
     @Override

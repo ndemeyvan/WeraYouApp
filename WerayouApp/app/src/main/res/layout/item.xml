@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:layout_marginTop="20dp">
+    android:layout_marginTop="8dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_item"
@@ -20,7 +20,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="350dp"
-            android:layout_height="420dp">
+            android:layout_height="410dp">
 
             <ImageView
                 android:id="@+id/imageView2"
