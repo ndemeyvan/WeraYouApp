@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -16,8 +17,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.werayouapp.R;
+import com.example.werayouapp.UtilsForChat.ChatAdapter;
 import com.example.werayouapp.UtilsForChat.DisplayAllChat;
+import com.example.werayouapp.UtilsForChat.ModelChat;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,16 +34,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
     Toolbar toolbar;
-    private String id_user;
+    String id_user;
     DatabaseReference Db;
     RecyclerView mRecyclerView;
     CircleImageView profil_image;
@@ -47,11 +53,17 @@ public class ChatActivity extends AppCompatActivity {
     //
     FirebaseAuth user ;
     String userID;
-    private String nom;
-    private DisplayAllChat contact;
+    String nom;
+    DisplayAllChat contact;
     //
     EditText editText;
     ImageButton sendButton;
+    List<ModelChat> modelChatList;
+    ChatAdapter chatAdapter;
+    DatabaseReference reference;
+
+
+
 
 
 
@@ -74,6 +86,11 @@ public class ChatActivity extends AppCompatActivity {
         userID=user.getCurrentUser().getUid();
         //
         mRecyclerView=findViewById(R.id.recyclerview);
+        mRecyclerView.setHasFixedSize ( true );
+        //image_en_fond=findViewById ( R.id.image_en_fond );
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager( ChatActivity.this );
+        linearLayoutManager.setStackFromEnd ( true );
+        mRecyclerView.setLayoutManager ( linearLayoutManager );
         //toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,6 +115,8 @@ public class ChatActivity extends AppCompatActivity {
                }
             }
         });
+
+        readMessage(userID,id_user);
     }
 
     //recuperer les information de l'utilisateur
@@ -205,10 +224,40 @@ public class ChatActivity extends AppCompatActivity {
         } );
 
 
+    }
+
+
+    public void readMessage(final String monId, final String sonID){
+        // modelChatList.clear();
+        modelChatList=new ArrayList<>(  );
+        reference=FirebaseDatabase.getInstance ().getReference ("Chats");
+        reference.addValueEventListener ( new ValueEventListener () {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                modelChatList.clear ();
+                for (DataSnapshot snapshot:dataSnapshot.getChildren ()){
+                    ModelChat chat = snapshot.getValue (ModelChat.class);
+                    if (chat.getRecepteur ().equals ( monId )&&chat.getExpediteur ().equals ( sonID)||chat.getRecepteur ().equals ( sonID )&&chat.getExpediteur ().equals ( monId )){
+                        modelChatList.add ( chat );
+                    }
+                    chatAdapter=new ChatAdapter(getApplicationContext (),modelChatList,true);
+                    mRecyclerView.setAdapter ( chatAdapter );
+                    chatAdapter.notifyDataSetChanged();
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        } );
 
 
 
     }
+
+
 
 
     @Override
