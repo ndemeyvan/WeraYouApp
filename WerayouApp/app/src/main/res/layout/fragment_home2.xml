@@ -24,14 +24,14 @@
 
         <ImageButton
             android:id="@+id/leftButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:background="@drawable/close" />
 
         <ImageButton
             android:id="@+id/right"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginLeft="40dp"
             android:background="@drawable/heart" />
     </LinearLayout>
@@ -39,7 +39,7 @@
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
         android:layout_width="0dp"
-        android:layout_height="420dp"
+        android:layout_height="400dp"
         android:background="@color/darkgrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
