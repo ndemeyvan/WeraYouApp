@@ -24,7 +24,7 @@
               android:id="@+id/profil_image"
               android:layout_width="35dp"
               android:layout_height="35dp"
-              android:src="@drawable/ic_launcher_background"
+              android:src="@drawable/wesplash"
               app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent" />
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageButton
-                android:id="@+id/setupButton"
+                android:id="@+id/imageButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/background_add_image_profil"
@@ -115,9 +115,19 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/imageToSend"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ImageView
+        android:id="@+id/imageToSend"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/wesplash" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
