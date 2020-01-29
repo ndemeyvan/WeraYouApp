@@ -8,16 +8,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.werayouapp.Activity.ChatActivity;
+import com.example.werayouapp.Activity.DetailPhotoActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.UtilsForChat.ChatAdapter;
 import com.example.werayouapp.UtilsForChat.ModelChat;
+import com.example.werayouapp.adapter.CommentAdapter;
 import com.example.werayouapp.adapter.LastMessageChatAdapter;
+import com.example.werayouapp.model.CommentModel;
 import com.example.werayouapp.model.LastMessageModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -52,6 +56,10 @@ public class MessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_message, container, false);
+        //
+        user= FirebaseAuth.getInstance();
+        userID=user.getCurrentUser().getUid();
+        //
         message=v.findViewById(R.id.message);
         //
         mRecyclerView=v.findViewById(R.id.recyclerview);
@@ -60,11 +68,10 @@ public class MessageFragment extends Fragment {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager( getActivity() );
         linearLayoutManager.setStackFromEnd ( true );
         mRecyclerView.setLayoutManager ( linearLayoutManager );
-        //
-        user= FirebaseAuth.getInstance();
-        userID=user.getCurrentUser().getUid();
-        //
-        getLastMessage();
+        modelChatList=new ArrayList<>()
+
+        //getLastMessage();
+        getMessage();
 
         return v;
     }
@@ -77,7 +84,6 @@ public class MessageFragment extends Fragment {
         reference.addValueEventListener ( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                modelChatList.clear ();
                 for (DataSnapshot snapshot:dataSnapshot.getChildren ()){
                     LastMessageModel chat = snapshot.getValue (LastMessageModel.class);
                     modelChatList.add ( chat );
@@ -95,6 +101,37 @@ public class MessageFragment extends Fragment {
         } );
 
 
+
+    }
+
+
+    //recupere tout ce que l'utilisateur a poste
+    void getMessage(){
+        //adding an event listener to fetch values
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("dernier_message").child(userID).child("contacts");
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                //iterating through all the values in database
+                modelChatList.clear();//vide la liste de la recyclrView pour eviter les doublons
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    LastMessageModel comment = postSnapshot.getValue(LastMessageModel.class);
+                    modelChatList.add(comment);
+                    //aucun_commentaires.setVisibility(View.INVISIBLE);
+                }
+
+               // commentNumber=commentList.size();
+
+                //creating adapter
+                chatAdapter = new LastMessageChatAdapter(modelChatList, getActivity());
+                //adding adapter to recyclerview
+                mRecyclerView.setAdapter(chatAdapter);
+                chatAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
     }
 
