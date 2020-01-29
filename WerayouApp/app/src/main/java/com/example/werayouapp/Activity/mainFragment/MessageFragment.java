@@ -68,7 +68,7 @@ public class MessageFragment extends Fragment {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager( getActivity() );
         linearLayoutManager.setStackFromEnd ( true );
         mRecyclerView.setLayoutManager ( linearLayoutManager );
-        modelChatList=new ArrayList<>()
+        modelChatList=new ArrayList<>();
 
         //getLastMessage();
         getMessage();
