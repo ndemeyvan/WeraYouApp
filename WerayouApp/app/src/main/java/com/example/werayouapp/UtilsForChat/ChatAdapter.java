@@ -4,12 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.werayouapp.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
@@ -47,7 +50,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         ModelChat modelChat=modelChatList.get ( i );
-        viewHolder.message.setText ( modelChat.getMessage () );
+        String image = modelChat.getImage();
+        String type = modelChat.getType();
+        if (type.equals("message")){
+            viewHolder.message.setText ( modelChat.getMessage () );
+            viewHolder.imageChat.setVisibility(View.GONE);
+        }else if (type.equals("image")){
+            viewHolder.message.setVisibility(View.GONE);
+            viewHolder.imageChat.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(image).into(viewHolder.imageChat);
+
+        } else if (type.equals("imageAndImage")) {
+            viewHolder.message.setText ( modelChat.getMessage () );
+            Picasso.with(context).load(image).into(viewHolder.imageChat);
+            viewHolder.imageChat.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -57,10 +74,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView message;
+        ImageView imageChat;
         // ConstraintLayout right_constraint;
         public ViewHolder(@NonNull View itemView) {
             super ( itemView );
             message=itemView.findViewById ( R.id.show_message );
+            imageChat=itemView.findViewById(R.id.imageChat);
         }
     }
 

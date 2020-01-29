@@ -39,6 +39,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -90,6 +91,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        storageReference= FirebaseStorage.getInstance ().getReference ();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         profil_image=findViewById(R.id.profil_image);
@@ -128,17 +130,19 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                String msg= editText.getText().toString();
-               if (!msg.isEmpty()){
-                   if (isWithImage==false){
-                       sendmessage(userID,id_user,msg);
-                   }else{
-                       sendMessageWithImage(userID,id_user);
-                       imageToSend.setVisibility(View.GONE);
-                       isWithImage=false;
-                   }
+               if (msg.isEmpty()&&isWithImage==true){
+                   sendMessageWithImage(userID,id_user);
+                   isWithImage=false;
+                   imageToSend.setVisibility(View.GONE);
 
-               }else{
-                   makeToast("entrez un message");
+               }else if (!msg.isEmpty()&&isWithImage==false){
+
+                   sendmessage(userID,id_user,msg);
+
+               }else if (!msg.isEmpty()&&isWithImage==true){
+
+                   sendMessageWithImageAndMessage(userID,id_user,msg);
+
                }
             }
         });
@@ -154,7 +158,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-
+    //cette methode appele l'activite de choix d'image
     void setImage(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
@@ -174,7 +178,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-
+    //cette methode permet de set l'image a imageView
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult ( requestCode, resultCode, data );
@@ -209,7 +213,6 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-
     void stockageWithURI(@NonNull Task<Uri> task,final String expediteur, final String recepteur){
         Uri downloadUri;
         if (task!=null){
@@ -226,6 +229,7 @@ public class ChatActivity extends AppCompatActivity {
         messageMap.put ( "expediteur",expediteur );
         messageMap.put ( "recepteur",recepteur );
         messageMap.put ( "message",downloadUri.toString() );
+        messageMap.put ( "image",downloadUri.toString() );
         messageMap.put ( "createdDate",date );
         messageMap.put ( "type","image" );
         reference.child ( "Chats" ).push ().setValue ( messageMap ).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -266,10 +270,64 @@ public class ChatActivity extends AppCompatActivity {
                 } );
 
     }
+    //cette methode sert a attribuer le type message et image pendant l'envoie
+    void stockageWithURIForMessageAndImage(@NonNull Task<Uri> task,final String expediteur, final String recepteur,String msg){
+        Uri downloadUri;
+        if (task!=null){
+            downloadUri = task.getResult ();
+        }else{
+            downloadUri=mImageUri;
+        }
+        final DatabaseReference reference =FirebaseDatabase.getInstance ().getReference ();
+        Calendar calendar=Calendar.getInstance ();
+        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
+        String saveCurrentDate=currentDate.format ( calendar.getTime () );
+        String date=saveCurrentDate;
+        final HashMap<String,Object> messageMap = new HashMap<> (  );
+        messageMap.put ( "expediteur",expediteur );
+        messageMap.put ( "recepteur",recepteur );
+        messageMap.put ( "message",msg );
+        messageMap.put ( "image",downloadUri.toString() );
+        messageMap.put ( "createdDate",date );
+        messageMap.put ( "type","imageAndImage" );
+        reference.child ( "Chats" ).push ().setValue ( messageMap ).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                editText.setText("");
+            }
+        });
+        //
+        contact =new DisplayAllChat(  );
+        contact.setId_recepteur ( recepteur );
+        contact.setId_expediteur ( expediteur );
+        contact.setDernier_message ( "image" );
+        //
+        reference.child ( "dernier_message" )
+                .child(expediteur)
+                .child("contacts")
+                .child(recepteur).push ().setValue ( contact )
+                .addOnSuccessListener ( new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //
+                        contact =new DisplayAllChat (  );
+                        contact.setId_recepteur ( expediteur );
+                        contact.setId_expediteur ( recepteur );
+                        contact.setDernier_message ( "image" );
+                        //
+                        reference.child ( "dernier_message" )
+                                .child(recepteur)
+                                .child("contacts")
+                                .child(expediteur).push ().setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
 
+                            }
+                        });
+                    }
+                } );
 
-
-
+    }
     //recuperer les information de l'utilisateur
     public void getUserData(){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
@@ -329,7 +387,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     }
-
+    //cette fonction envoi uniquement les image en message
     void sendMessageWithImage(final String expediteur, final String recepteur){
         //debut envoie dans storage
         String random =random ();
@@ -366,7 +424,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
-
+    //cette fonction envoie uniquement les message
     public void sendmessage(final String expediteur, final String recepteur, final String message){
 
         final DatabaseReference reference =FirebaseDatabase.getInstance ().getReference ();
@@ -378,6 +436,7 @@ public class ChatActivity extends AppCompatActivity {
         messageMap.put ( "expediteur",expediteur );
         messageMap.put ( "recepteur",recepteur );
         messageMap.put ( "message",message );
+        messageMap.put ( "image","" );
         messageMap.put ( "createdDate",date );
         messageMap.put ( "type","message" );
         reference.child ( "Chats" ).push ().setValue ( messageMap ).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -419,6 +478,44 @@ public class ChatActivity extends AppCompatActivity {
 
 
     }
+    //cette fonction envoie les message et les image
+    void sendMessageWithImageAndMessage(final String expediteur, final String recepteur, final String msg){
+        //debut envoie dans storage
+        String random =random ();
+        final StorageReference ref = storageReference.child ( "messages_images" ).child ( random + " .jpg" );
+        UploadTask uploadTask = ref.putBytes(final_image);
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                // Continue with the task to get the download URL
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+
+                    } else {
+                        // Handle failures
+                        // ...
+                    }
+                    stockageWithURIForMessageAndImage ( task,expediteur,recepteur,msg);
+
+                } else {
+
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+    }
+
 
 
     public void readMessage(final String monId, final String sonID){
