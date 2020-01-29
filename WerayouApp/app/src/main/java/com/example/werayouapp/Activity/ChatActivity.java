@@ -134,13 +134,14 @@ public class ChatActivity extends AppCompatActivity {
                    sendMessageWithImage(userID,id_user);
                    isWithImage=false;
                    imageToSend.setVisibility(View.GONE);
-
                }else if (!msg.isEmpty()&&isWithImage==false){
-
                    sendmessage(userID,id_user,msg);
+                   isWithImage=false;
+                   imageToSend.setVisibility(View.GONE);
 
                }else if (!msg.isEmpty()&&isWithImage==true){
-
+                   isWithImage=false;
+                   imageToSend.setVisibility(View.GONE);
                    sendMessageWithImageAndMessage(userID,id_user,msg);
 
                }

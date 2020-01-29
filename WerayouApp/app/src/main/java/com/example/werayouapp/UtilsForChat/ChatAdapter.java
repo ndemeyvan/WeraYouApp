@@ -57,8 +57,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             viewHolder.imageChat.setVisibility(View.GONE);
         }else if (type.equals("image")){
             viewHolder.message.setVisibility(View.GONE);
-            viewHolder.imageChat.setVisibility(View.VISIBLE);
             Picasso.with(context).load(image).into(viewHolder.imageChat);
+            viewHolder.imageChat.setVisibility(View.VISIBLE);
 
         } else if (type.equals("imageAndImage")) {
             viewHolder.message.setText ( modelChat.getMessage () );
