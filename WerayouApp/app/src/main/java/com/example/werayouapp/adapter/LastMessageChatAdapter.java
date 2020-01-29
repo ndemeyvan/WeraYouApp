@@ -86,6 +86,17 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
                 }
             }
         });
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!id.equals(userID)){
+                    Intent intent = new Intent(context, ChatActivity.class);
+                    intent.putExtra("id",id);
+                    context.startActivity(intent);
+                }
+            }
+        });
         getData(holder,id);
 
 

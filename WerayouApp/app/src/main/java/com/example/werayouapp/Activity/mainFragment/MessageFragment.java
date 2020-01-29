@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,11 +64,12 @@ public class MessageFragment extends Fragment {
         message=v.findViewById(R.id.message);
         //
         mRecyclerView=v.findViewById(R.id.recyclerview);
-        mRecyclerView.setHasFixedSize ( true );
-        //image_en_fond=findViewById ( R.id.image_en_fond );
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager( getActivity() );
-        linearLayoutManager.setStackFromEnd ( true );
-        mRecyclerView.setLayoutManager ( linearLayoutManager );
+        mRecyclerView=v.findViewById(R.id.recyclerview);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setNestedScrollingEnabled(false);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         modelChatList=new ArrayList<>();
 
         //getLastMessage();
@@ -113,7 +115,7 @@ public class MessageFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
-                modelChatList.clear();//vide la liste de la recyclrView pour eviter les doublons
+                //modelChatList.clear();//vide la liste de la recyclrView pour eviter les doublons
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     LastMessageModel comment = postSnapshot.getValue(LastMessageModel.class);
                     modelChatList.add(comment);
