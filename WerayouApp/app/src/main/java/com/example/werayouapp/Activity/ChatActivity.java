@@ -248,7 +248,7 @@ public class ChatActivity extends AppCompatActivity {
         reference.child ( "dernier_message" )
                 .child(expediteur)
                 .child("contacts")
-                .child(recepteur).push ().setValue ( contact )
+                .child(recepteur).setValue ( contact )
                 .addOnSuccessListener ( new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -261,7 +261,7 @@ public class ChatActivity extends AppCompatActivity {
                         reference.child ( "dernier_message" )
                                 .child(recepteur)
                                 .child("contacts")
-                                .child(expediteur).push ().setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .child(expediteur).setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
@@ -306,7 +306,7 @@ public class ChatActivity extends AppCompatActivity {
         reference.child ( "dernier_message" )
                 .child(expediteur)
                 .child("contacts")
-                .child(recepteur).push ().setValue ( contact )
+                .child(recepteur).setValue ( contact )
                 .addOnSuccessListener ( new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -319,7 +319,7 @@ public class ChatActivity extends AppCompatActivity {
                         reference.child ( "dernier_message" )
                                 .child(recepteur)
                                 .child("contacts")
-                                .child(expediteur).push ().setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .child(expediteur).setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
@@ -455,7 +455,7 @@ public class ChatActivity extends AppCompatActivity {
         reference.child ( "dernier_message" )
                 .child(expediteur)
                 .child("contacts")
-                .child(recepteur).push ().setValue ( contact )
+                .child(recepteur).setValue ( contact )
                 .addOnSuccessListener ( new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -468,7 +468,7 @@ public class ChatActivity extends AppCompatActivity {
                 reference.child ( "dernier_message" )
                         .child(recepteur)
                         .child("contacts")
-                        .child(expediteur).push ().setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        .child(expediteur).setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
@@ -518,7 +518,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-
+    //affiche les message dans la base de dooneee
     public void readMessage(final String monId, final String sonID){
         // modelChatList.clear();
         modelChatList=new ArrayList<>(  );
