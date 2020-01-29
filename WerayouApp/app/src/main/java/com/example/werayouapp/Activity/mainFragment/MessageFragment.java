@@ -79,35 +79,6 @@ public class MessageFragment extends Fragment {
     }
 
     //affiche les message dans la base de dooneee
-    public void getLastMessage(){
-        // modelChatList.clear();
-        modelChatList=new ArrayList<>(  );
-        reference= FirebaseDatabase.getInstance ().getReference ("dernier_message").child(userID).child("contacts");
-        reference.addValueEventListener ( new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot:dataSnapshot.getChildren ()){
-                    LastMessageModel chat = snapshot.getValue (LastMessageModel.class);
-                    modelChatList.add ( chat );
-                    chatAdapter=new LastMessageChatAdapter(modelChatList,getActivity());
-                    mRecyclerView.setAdapter ( chatAdapter );
-                    chatAdapter.notifyDataSetChanged();
-                }
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        } );
-
-
-
-    }
-
-
-    //recupere tout ce que l'utilisateur a poste
     void getMessage(){
         //adding an event listener to fetch values
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("dernier_message").child(userID).child("contacts");
@@ -119,7 +90,7 @@ public class MessageFragment extends Fragment {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     LastMessageModel comment = postSnapshot.getValue(LastMessageModel.class);
                     modelChatList.add(comment);
-                    //aucun_commentaires.setVisibility(View.INVISIBLE);
+                    message.setVisibility(View.INVISIBLE);
                 }
 
                // commentNumber=commentList.size();
@@ -134,6 +105,12 @@ public class MessageFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
+        if (modelChatList.size()==0){
+            message.setVisibility(View.VISIBLE);
+        }else{
+            message.setVisibility(View.INVISIBLE);
+        }
 
     }
 
