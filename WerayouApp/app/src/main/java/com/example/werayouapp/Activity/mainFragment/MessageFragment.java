@@ -86,7 +86,7 @@ public class MessageFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
-                //modelChatList.clear();//vide la liste de la recyclrView pour eviter les doublons
+                modelChatList.clear();//vide la liste de la recyclrView pour eviter les doublons
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     LastMessageModel comment = postSnapshot.getValue(LastMessageModel.class);
                     modelChatList.add(comment);

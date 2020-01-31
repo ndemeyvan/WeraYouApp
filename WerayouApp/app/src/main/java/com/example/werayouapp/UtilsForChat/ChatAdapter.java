@@ -63,7 +63,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             Picasso.with(context).load(image).into(viewHolder.imageChat);
             viewHolder.imageChat.setVisibility(View.VISIBLE);
 
-        } else if (type.equals("imageAndImage")) {
+        } else if (type.equals("msgAndImage")) {
+            viewHolder.message.setVisibility(View.VISIBLE);
             viewHolder.message.setText ( modelChat.getMessage () );
             Picasso.with(context).load(image).into(viewHolder.imageChat);
             viewHolder.imageChat.setVisibility(View.VISIBLE);
@@ -73,6 +74,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailImageChat.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("image",image);
                 context.startActivity(intent);
             }

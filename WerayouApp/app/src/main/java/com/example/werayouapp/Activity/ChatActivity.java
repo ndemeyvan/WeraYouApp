@@ -290,7 +290,7 @@ public class ChatActivity extends AppCompatActivity {
         messageMap.put ( "message",msg );
         messageMap.put ( "image",downloadUri.toString() );
         messageMap.put ( "createdDate",date );
-        messageMap.put ( "type","imageAndImage" );
+        messageMap.put ( "type","msgAndImage" );
         reference.child ( "Chats" ).push ().setValue ( messageMap ).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
