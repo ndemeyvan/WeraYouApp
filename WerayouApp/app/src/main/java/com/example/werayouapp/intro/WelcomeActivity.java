@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.werayouapp.Activity.ActivityPrincipal;
+import com.example.werayouapp.LoginActivity;
 import com.example.werayouapp.R;
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -123,7 +124,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, ActivityPrincipal.class));
+        startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
         finish();
     }
 
