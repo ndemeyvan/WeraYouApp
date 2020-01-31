@@ -11,7 +11,8 @@
         android:roundIcon="@drawable/welogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.ChatActivity"></activity>
+        <activity android:name=".Activity.DetailImageChat"></activity>
+        <activity android:name=".Activity.ChatActivity" />
         <activity android:name=".Activity.ProfilActivity" />
         <activity android:name=".Activity.SplashcreenActivity">
             <intent-filter>

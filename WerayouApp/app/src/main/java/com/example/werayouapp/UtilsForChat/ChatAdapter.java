@@ -1,6 +1,7 @@
 package com.example.werayouapp.UtilsForChat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.werayouapp.Activity.DetailImageChat;
 import com.example.werayouapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -50,7 +53,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         ModelChat modelChat=modelChatList.get ( i );
-        String image = modelChat.getImage();
+        final String image = modelChat.getImage();
         String type = modelChat.getType();
         if (type.equals("message")){
             viewHolder.message.setText ( modelChat.getMessage () );
@@ -65,6 +68,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             Picasso.with(context).load(image).into(viewHolder.imageChat);
             viewHolder.imageChat.setVisibility(View.VISIBLE);
         }
+
+        viewHolder.imageChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailImageChat.class);
+                intent.putExtra("image",image);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
