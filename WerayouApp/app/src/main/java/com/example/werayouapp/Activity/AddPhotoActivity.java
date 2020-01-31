@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,10 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.example.werayouapp.LoginActivity;
 import com.example.werayouapp.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;

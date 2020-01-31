@@ -1,4 +1,4 @@
-package com.example.werayouapp;
+package com.example.werayouapp.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.werayouapp.Activity.ActivityPrincipal;
 import com.example.werayouapp.Activity.SetupActivity;
+import com.example.werayouapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -32,12 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "PhoneAuth";
 
     private EditText phoneText;
-    private EditText codeText;
-    private Button verifyButton;
     private Button sendButton;
-    private Button resendButton;
-    private Button signoutButton;
-    private TextView statusText;
     private ProgressBar progressBar;
     String number;
     String country;
@@ -88,12 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onVerificationCompleted(
                             PhoneAuthCredential credential) {
-
-                        /*signoutButton.setEnabled(true);
-                        statusText.setText("Signed In");
-                        resendButton.setEnabled(false);
-                        verifyButton.setEnabled(false);*/
-                       /* codeText.setText("");*/
                         signInWithPhoneAuthCredential(credential);
                     }
 
@@ -124,14 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                 };
     }
 
-    public void verifyCode(View view) {
 
-        String code = codeText.getText().toString();
-
-        PhoneAuthCredential credential =
-                PhoneAuthProvider.getCredential(phoneVerificationId, code);
-        signInWithPhoneAuthCredential(credential);
-    }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         fbAuth.signInWithCredential(credential)
@@ -139,15 +122,13 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                           /* signoutButton.setEnabled(true);
-                            codeText.setText("");
-                            statusText.setText("Signed In");
-                            resendButton.setEnabled(false);
-                            verifyButton.setEnabled(false);*/
+
                             progressBar.setVisibility(View.INVISIBLE);
                             FirebaseUser user = task.getResult().getUser();
-                            Intent intent = new Intent(LoginActivity.this, SetupActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, VerificationCodeActivity.class);
                             intent.putExtra("country",country);
+                            intent.putExtra("phone",number);
+                            intent.putExtra("verificationId",phoneVerificationId);
                             startActivity(intent);
                             finish();
 
@@ -161,20 +142,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    public void resendCode(View view) {
 
-        number = ccp.getFullNumberWithPlus();
-
-        setUpVerificatonCallbacks();
-
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                number,
-                60,
-                TimeUnit.SECONDS,
-                this,
-                verificationCallbacks,
-                resendToken);
-    }
 
 
     void isOnline(){

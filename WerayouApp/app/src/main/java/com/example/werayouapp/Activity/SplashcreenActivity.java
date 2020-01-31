@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.example.werayouapp.LoginActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.intro.WelcomeActivity;
 

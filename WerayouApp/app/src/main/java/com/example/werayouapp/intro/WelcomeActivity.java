@@ -20,8 +20,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.werayouapp.Activity.ActivityPrincipal;
-import com.example.werayouapp.LoginActivity;
+import com.example.werayouapp.login.LoginActivity;
 import com.example.werayouapp.R;
 
 public class WelcomeActivity extends AppCompatActivity {

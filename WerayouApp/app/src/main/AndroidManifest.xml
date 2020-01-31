@@ -12,7 +12,8 @@
         android:roundIcon="@drawable/welogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".intro.WelcomeActivity"></activity>
+        <activity android:name=".login.VerificationCodeActivity"></activity>
+        <activity android:name=".intro.WelcomeActivity" />
         <activity android:name=".Activity.DetailImageChat" />
         <activity android:name=".Activity.ChatActivity" />
         <activity android:name=".Activity.ProfilActivity" />
@@ -28,7 +29,7 @@
         <activity android:name=".Activity.AddPhotoActivity" />
         <activity android:name=".Activity.ActivityPrincipal" />
         <activity android:name=".Activity.SetupActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".login.LoginActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"
