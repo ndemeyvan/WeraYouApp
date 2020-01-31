@@ -295,7 +295,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
             String saveCurrentDate=currentDate.format ( calendar.getTime () );
             String date=saveCurrentDate;
-            Map<String, String> user_data = new HashMap<>();
+            Map<String, Object> user_data = new HashMap<>();
             user_data.put ( "nom",nom);
             user_data.put ( "prenom",prenom);
             user_data.put ( "pays",country);
@@ -311,7 +311,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             user_data.put("apropos",apropos);
 
             DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-            userDb.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     Intent intent = new Intent(SetupActivity.this,ActivityPrincipal.class);
