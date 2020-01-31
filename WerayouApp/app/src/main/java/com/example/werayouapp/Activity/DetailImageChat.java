@@ -33,7 +33,7 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
     Toolbar toolbar;
     FloatingActionButton floatingActionButton;
     private String imageLink;
-    private static final int code=1000;
+    private static final int PERMISSION_STORAGE_CODE=1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +81,14 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
                             PackageManager.PERMISSION_DENIED){
                         //la permission a ete refuse , redemande
                         String[] permission ={Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        requestPermissions(permission,code);
+                        requestPermissions(permission,PERMISSION_STORAGE_CODE);
                     }else{
                         //la permission a deja ete accorde
                         donwload();
                     }
                 }else{
                     //le systeme est inferieur a android marshmallow
+                    donwload();
                 }
 
                 return true;
@@ -106,13 +107,14 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
                             PackageManager.PERMISSION_DENIED){
                         //la permission a ete refuse , redemande
                         String[] permission ={Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        requestPermissions(permission,code);
+                        requestPermissions(permission,PERMISSION_STORAGE_CODE);
                     }else{
                         //la permission a deja ete accorde
                         donwload();
                     }
                 }else{
                     //le systeme est inferieur a android marshmallow
+                    donwload();
                 }
 
                 return true;
@@ -139,16 +141,16 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            switch (requestCode){
-                case code: {
-                    if (grantResults.length>0&&grantResults[0]==
-                    PackageManager.PERMISSION_GRANTED){
-                        donwload();
-                    }else{
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case PERMISSION_STORAGE_CODE: {
+                if (grantResults.length>0&&grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    donwload();
+                }else{
 
-                    }
                 }
             }
+        }
     }
 
     @Override
