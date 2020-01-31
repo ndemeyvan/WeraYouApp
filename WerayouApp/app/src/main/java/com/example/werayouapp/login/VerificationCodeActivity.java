@@ -63,6 +63,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
         buttonVerifier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 verificode();
             }
         });
@@ -70,6 +71,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 resendCode();
+
             }
         });
 
