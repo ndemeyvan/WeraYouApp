@@ -414,7 +414,7 @@ public class ChatActivity extends AppCompatActivity {
     }
     //cette fonction envoi uniquement les image en message
     void sendMessageWithImage(final String expediteur, final String recepteur){
-        dialog = ProgressDialog.show(ChatActivity.this, "","Loading. Please wait...", true);
+        dialog = ProgressDialog.show(ChatActivity.this, "","envoie de l'image ...", true);
         //debut envoie dans storage
         String random =random ();
         final StorageReference ref = storageReference.child ( "messages_images" ).child ( random + " .jpg" );
