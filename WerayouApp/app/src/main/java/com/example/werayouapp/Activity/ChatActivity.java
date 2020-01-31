@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -85,6 +86,7 @@ public class ChatActivity extends AppCompatActivity {
     Uri mImageUri;
     private static  final int MAX_LENGTH =100;
     private boolean isWithImage =false;
+    ProgressDialog dialog;
 
 
     @Override
@@ -264,7 +266,7 @@ public class ChatActivity extends AppCompatActivity {
                                 .child(expediteur).setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-
+                                dialog.dismiss();
                             }
                         });
                     }
@@ -322,7 +324,7 @@ public class ChatActivity extends AppCompatActivity {
                                 .child(expediteur).setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-
+                                dialog.dismiss();
                             }
                         });
                     }
@@ -390,6 +392,7 @@ public class ChatActivity extends AppCompatActivity {
     }
     //cette fonction envoi uniquement les image en message
     void sendMessageWithImage(final String expediteur, final String recepteur){
+        dialog = ProgressDialog.show(ChatActivity.this, "","Loading. Please wait...", true);
         //debut envoie dans storage
         String random =random ();
         final StorageReference ref = storageReference.child ( "messages_images" ).child ( random + " .jpg" );
@@ -481,6 +484,7 @@ public class ChatActivity extends AppCompatActivity {
     }
     //cette fonction envoie les message et les image
     void sendMessageWithImageAndMessage(final String expediteur, final String recepteur, final String msg){
+        dialog = ProgressDialog.show(ChatActivity.this, "","Loading. Please wait...", true);
         //debut envoie dans storage
         String random =random ();
         final StorageReference ref = storageReference.child ( "messages_images" ).child ( random + " .jpg" );
