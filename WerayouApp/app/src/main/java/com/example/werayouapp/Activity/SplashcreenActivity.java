@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.example.werayouapp.LoginActivity;
 import com.example.werayouapp.R;
+import com.example.werayouapp.intro.WelcomeActivity;
 
 public class SplashcreenActivity extends AppCompatActivity {
 
@@ -18,11 +19,11 @@ public class SplashcreenActivity extends AppCompatActivity {
         new Handler(  ).postDelayed (new Runnable () {
             @Override
             public void run() {
-                Intent gotochoice= new Intent(getApplicationContext(), LoginActivity.class);
+                Intent gotochoice= new Intent(getApplicationContext(), WelcomeActivity.class);
                 startActivity(gotochoice);
                 finish();
             }
-        }, 3000 );
+        }, 2000 );
         //SystemClock.sleep(3000);
 
     }

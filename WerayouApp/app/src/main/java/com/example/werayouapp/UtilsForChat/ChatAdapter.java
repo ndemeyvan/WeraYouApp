@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -89,11 +90,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView message;
         ImageView imageChat;
+        ProgressBar progressBar;
         // ConstraintLayout right_constraint;
         public ViewHolder(@NonNull View itemView) {
             super ( itemView );
             message=itemView.findViewById ( R.id.show_message );
             imageChat=itemView.findViewById(R.id.imageChat);
+            progressBar=itemView.findViewById(R.id.progressBar);
         }
     }
 
