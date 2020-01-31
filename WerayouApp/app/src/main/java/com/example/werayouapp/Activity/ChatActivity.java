@@ -59,6 +59,8 @@ import java.util.Map;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 import id.zelory.compressor.Compressor;
 
 public class ChatActivity extends AppCompatActivity {
@@ -74,7 +76,8 @@ public class ChatActivity extends AppCompatActivity {
     String nom;
     DisplayAllChat contact;
     //
-    EditText editText;
+    EmojiconEditText editText;
+    ImageButton emojiButton;
     ImageButton sendButton;
     ImageButton imageButton;
     ImageView imageToSend;
@@ -87,6 +90,8 @@ public class ChatActivity extends AppCompatActivity {
     private static  final int MAX_LENGTH =100;
     private boolean isWithImage =false;
     ProgressDialog dialog;
+    View rootview;
+    EmojIconActions emojIcon;
 
 
     @Override
@@ -103,6 +108,7 @@ public class ChatActivity extends AppCompatActivity {
         sendButton=findViewById(R.id.sendButton);
         imageButton=findViewById(R.id.imageButton);
         imageToSend=findViewById(R.id.imageToSend);
+        emojiButton=findViewById(R.id.emojiButton);
         //
         user= FirebaseAuth.getInstance();
         userID=user.getCurrentUser().getUid();
@@ -125,6 +131,22 @@ public class ChatActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //emoji
+        rootview=findViewById(R.id.rootview);
+        emojIcon=new EmojIconActions(this,rootview,editText,emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+
+            }
+
+            @Override
+            public void onKeyboardClose() {
+
+            }
+        });
+        //emodi
         //appel de fonction
         getUserData();
 

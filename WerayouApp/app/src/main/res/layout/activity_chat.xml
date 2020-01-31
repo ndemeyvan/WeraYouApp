@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.ChatActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/rootview">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -55,6 +56,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+        <ImageButton
+            android:id="@+id/emojiButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/background_add_image_profil"
+            android:elevation="3dp"
+            android:src="@drawable/ic_emoji"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+            app:layout_constraintEnd_toEndOf="@+id/cardView2"
+            app:layout_constraintStart_toStartOf="@+id/editText" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -71,7 +83,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/cardView2" />
 
 
-            <EditText
+            <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
                 android:id="@+id/editText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
