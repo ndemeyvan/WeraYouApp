@@ -19,8 +19,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="350dp"
-            android:layout_height="410dp">
+            android:layout_width="400dp"
+            android:layout_height="500dp">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -85,11 +85,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="64dp"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:maxLines="2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

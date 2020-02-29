@@ -62,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void sendCode(View view) {
-
         progressBar.setVisibility(View.VISIBLE);
         number = ccp.getFullNumberWithPlus();
         country=ccp.getSelectedCountryName();
@@ -77,10 +76,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void setUpVerificatonCallbacks() {
-
         verificationCallbacks =
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
                     @Override
                     public void onVerificationCompleted(
                             PhoneAuthCredential credential) {
@@ -103,10 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onCodeSent(String verificationId,
                                            PhoneAuthProvider.ForceResendingToken token) {
-
                         phoneVerificationId = verificationId;
                         resendToken = token;
-
                         //verifyButton.setEnabled(true);
                         sendButton.setEnabled(false);
                        // resendButton.setEnabled(true);
@@ -115,14 +110,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         fbAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             progressBar.setVisibility(View.INVISIBLE);
                             FirebaseUser user = task.getResult().getUser();
                             Intent intent = new Intent(LoginActivity.this, VerificationCodeActivity.class);
@@ -131,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
                             intent.putExtra("verificationId",phoneVerificationId);
                             startActivity(intent);
                             finish();
-
                         } else {
                             if (task.getException() instanceof
                                     FirebaseAuthInvalidCredentialsException) {
@@ -141,8 +133,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
 
 
     void isOnline(){

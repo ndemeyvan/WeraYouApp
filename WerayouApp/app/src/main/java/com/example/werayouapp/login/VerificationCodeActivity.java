@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.werayouapp.Activity.SetupActivity;
 import com.example.werayouapp.R;
@@ -39,11 +40,11 @@ public class VerificationCodeActivity extends AppCompatActivity {
     String phoneVerificationId;
      FirebaseAuth fbAuth;
      ProgressBar progressBar;
-    private String country;
-    private String phone;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks
+     String country;
+     String phone;
+     PhoneAuthProvider.OnVerificationStateChangedCallbacks
             verificationCallbacks;
-    private PhoneAuthProvider.ForceResendingToken resendToken;
+     PhoneAuthProvider.ForceResendingToken resendToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
         buttonVerifier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("phoneVerificationId",phoneVerificationId);
                 progressBar.setVisibility(View.VISIBLE);
                 verificode();
             }
@@ -70,8 +72,8 @@ public class VerificationCodeActivity extends AppCompatActivity {
         resendCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 resendCode();
-
             }
         });
 
@@ -89,10 +91,8 @@ public class VerificationCodeActivity extends AppCompatActivity {
     }
 
     private void setUpVerificatonCallbacks() {
-
         verificationCallbacks =
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
                     @Override
                     public void onVerificationCompleted(
                             PhoneAuthCredential credential) {
@@ -134,23 +134,14 @@ public class VerificationCodeActivity extends AppCompatActivity {
                 this,
                 verificationCallbacks,
                 resendToken);
-       /* new Handler(  ).postDelayed (new Runnable () {
-            @Override
-            public void run() {
-                Intent gotochoice= new Intent(getApplicationContext(), WelcomeActivity.class);
-                startActivity(gotochoice);
-                finish();
-            }
-        }, 2000 );*/
     }
 
 
     void verificode(){
          code = phoneText.getText().toString();
-
         PhoneAuthCredential credential =
                 PhoneAuthProvider.getCredential(phoneVerificationId, code);
-        signInWithPhoneAuthCredential(credential);
+        signInWithPhoneAuthCredentialVerificationCode(credential);
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
@@ -159,7 +150,33 @@ public class VerificationCodeActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+//                            progressBar.setVisibility(View.INVISIBLE);
+//                            FirebaseUser user = task.getResult().getUser();
+//                            Intent intent = new Intent(VerificationCodeActivity.this, SetupActivity.class);
+//                            intent.putExtra("country",country);
+//                            intent.putExtra("phone",phone);
+//                            startActivity(intent);
+//                            finish();
+                            //code renvoyer
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(VerificationCodeActivity.this,"Code resend",Toast.LENGTH_LONG).show();
 
+                        } else {
+                            if (task.getException() instanceof
+                                    FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void signInWithPhoneAuthCredentialVerificationCode(PhoneAuthCredential credential) {
+        fbAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
                             progressBar.setVisibility(View.INVISIBLE);
                             FirebaseUser user = task.getResult().getUser();
                             Intent intent = new Intent(VerificationCodeActivity.this, SetupActivity.class);

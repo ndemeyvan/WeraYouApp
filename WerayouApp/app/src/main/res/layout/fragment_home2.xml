@@ -4,80 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkgrey"
     tools:context=".Activity.mainFragment.HomeFragment">
 
-
-
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="bottom"
-        android:background="@color/darkgrey"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frame">
-
-        <ImageButton
-            android:id="@+id/leftButton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/close" />
-
-        <ImageButton
-            android:id="@+id/right"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="40dp"
-            android:background="@drawable/heart" />
-    </LinearLayout>
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
         android:layout_width="0dp"
-        android:layout_height="410dp"
-        android:background="@color/darkgrey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:rotation_degrees="15.5"
-        tools:context=".MyActivity" />
-
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:theme="@style/AppTheme"
-        app:layout_constraintBottom_toBottomOf="@+id/frame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/frame" />
-
-    <TextView
-        android:id="@+id/messageDeDernierCards"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="il n'y a plus de proposition"
-        android:textColor="@color/black"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/frame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/frame" />
-
-
-
-
-    <!--<com.lorentzos.flingswipe.SwipeFlingAdapterView
-        android:id="@+id/frame"
-        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/darkgrey"
+        android:layout_marginTop="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -111,11 +46,12 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
         android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="566dp">
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/leftButton"
@@ -133,7 +69,7 @@
             android:src="@drawable/heart"
             tools:layout_editor_absoluteX="96dp"
             tools:layout_editor_absoluteY="620dp" />
-    </LinearLayout>-->
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,8 +43,8 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
        // bottomNavigation= (AHBottomNavigation) findViewById(R.id.bottomNavigationView);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());
+//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
+//        layoutParams.setBehavior(new BottomNavigationBehavior());
         loadFragment(new HomeFragment());
         //bottomNavigation.setOnTabSelectedListener(this);
         toolbar=findViewById(R.id.toolbar);
