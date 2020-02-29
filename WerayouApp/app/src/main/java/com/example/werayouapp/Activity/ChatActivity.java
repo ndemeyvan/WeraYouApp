@@ -105,6 +105,7 @@ public class ChatActivity extends AppCompatActivity {
         nom_profil = findViewById(R.id.nom_profil);
         id_user = getIntent().getStringExtra("id");
         editText = findViewById(R.id.editText);
+        editText.setEmojiconSize(50);
         sendButton = findViewById(R.id.sendButton);
         imageButton = findViewById(R.id.imageButton);
         imageToSend = findViewById(R.id.imageToSend);
