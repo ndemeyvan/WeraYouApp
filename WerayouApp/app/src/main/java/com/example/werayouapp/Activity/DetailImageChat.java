@@ -25,15 +25,20 @@ import com.bumptech.glide.Glide;
 import com.example.werayouapp.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 public class DetailImageChat extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    //
+    FirebaseAuth user;
+    String userID;
+    //
     ImageView imageView;
     Toolbar toolbar;
     FloatingActionButton floatingActionButton;
     private String imageLink;
     private static final int PERMISSION_STORAGE_CODE = 1000;
+    private String expediteur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
         toolbar = findViewById(R.id.toolbar);
         floatingActionButton = findViewById(R.id.floatingActionButton);
         imageLink = getIntent().getStringExtra("image");
+        expediteur = getIntent().getStringExtra("expediteur");
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -54,6 +61,10 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
                 finish();
             }
         });
+        //
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
+        //
 
         Picasso.with(this)
                 .load(imageLink)
@@ -64,9 +75,10 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.download_menu, menu);
-
+        if (!userID.equals(expediteur)){
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.download_menu, menu);
+        }
         return true;
     }
 

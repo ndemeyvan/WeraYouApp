@@ -158,7 +158,7 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginTop="4dp"
                                 android:text="Xxxxx"
-                                tools:textSize="14sp" />
+                                tools:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -186,7 +186,7 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginTop="4dp"
                                 android:text="Xxxx"
-                                tools:textSize="14sp" />
+                                tools:textSize="16sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -212,7 +212,7 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginTop="4dp"
                                 android:text="Xxxxxxx"
-                                tools:textSize="14sp" />
+                                tools:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -240,7 +240,7 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginTop="4dp"
                                 android:text="Xxxxxxx"
-                                tools:textSize="14sp" />
+                                tools:textSize="16sp" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -251,8 +251,10 @@
                     android:id="@+id/linearLayout5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="16dp"
                     android:gravity="center_horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout6">

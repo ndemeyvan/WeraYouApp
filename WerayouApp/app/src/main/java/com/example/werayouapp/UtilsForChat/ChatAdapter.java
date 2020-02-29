@@ -52,7 +52,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         ModelChat modelChat=modelChatList.get ( i );
         final String image = modelChat.getImage();
         String type = modelChat.getType();
@@ -74,9 +74,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         viewHolder.imageChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String expediteur = modelChatList.get(i).getExpediteur();
                 Intent intent = new Intent(context, DetailImageChat.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("image",image);
+                intent.putExtra("expediteur",expediteur);
                 context.startActivity(intent);
             }
         });
