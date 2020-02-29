@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             }
                         },
-                        2000);
+                        1000);
             }
         };
 

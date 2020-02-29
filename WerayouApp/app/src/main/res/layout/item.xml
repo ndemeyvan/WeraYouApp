@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:layout_marginTop="8dp">
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,7 +21,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="400dp"
-            android:layout_height="500dp">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -84,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="64dp"
                 android:ellipsize="end"
                 android:maxLines="2"
