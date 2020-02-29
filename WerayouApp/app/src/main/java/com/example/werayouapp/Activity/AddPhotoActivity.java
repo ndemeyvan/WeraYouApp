@@ -47,7 +47,7 @@ import java.util.Random;
 import id.zelory.compressor.Compressor;
 
 public class AddPhotoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private static  final int MAX_LENGTH =100;
+    private static final int MAX_LENGTH = 100;
 
     ImageView image;
     EditText post_description;
@@ -58,7 +58,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
     StorageReference storageReference;
     //
     String userID;
-    FirebaseAuth user ;
+    FirebaseAuth user;
     //
     byte[] final_image;
 
@@ -67,14 +67,14 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
-        image=findViewById(R.id.image);
-        storageReference= FirebaseStorage.getInstance ().getReference ();
-        post_description=findViewById(R.id.post_description);
-        post_button=findViewById(R.id.post_button);
-        progressBar=findViewById(R.id.progressBar);
-        toolbar=findViewById(R.id.toolbar);
-        user=FirebaseAuth.getInstance();
-        userID=user.getCurrentUser().getUid();
+        image = findViewById(R.id.image);
+        storageReference = FirebaseStorage.getInstance().getReference();
+        post_description = findViewById(R.id.post_description);
+        post_button = findViewById(R.id.post_button);
+        progressBar = findViewById(R.id.progressBar);
+        toolbar = findViewById(R.id.toolbar);
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -110,7 +110,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.image:
-               setImage();
+                setImage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -130,12 +130,12 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
     }
 
 
-    void makeToast(String msg){
+    void makeToast(String msg) {
         Toast.makeText(AddPhotoActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 
 
-    void setImage(){
+    void setImage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 555);
@@ -143,8 +143,8 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .start(AddPhotoActivity.this);
 
-            }catch (Exception e){
-                e.printStackTrace ();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } else {
             CropImage.activity()
@@ -156,13 +156,13 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult ( requestCode, resultCode, data );
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 mImageUri = result.getUri();
                 File actualImage = new File(mImageUri.getPath());
-                try{
+                try {
                     Bitmap compressedImage = new Compressor(this)
                             .setMaxWidth(250)
                             .setMaxHeight(250)
@@ -171,29 +171,29 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     compressedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     final_image = baos.toByteArray();
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
-                image.setImageURI ( mImageUri );
+                image.setImageURI(mImageUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
         }
     }
 
-    public void getuserdata(){
-        post_button.setOnClickListener ( new View.OnClickListener () {
+    public void getuserdata() {
+        post_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 progressBar.setVisibility(View.VISIBLE);
                 post_button.setVisibility(View.INVISIBLE);
-                final String description =post_description.getText().toString();
+                final String description = post_description.getText().toString();
                 /////////// envoi des fichier dans la base de donnee
-                if ( !TextUtils.isEmpty ( description )) {
+                if (!TextUtils.isEmpty(description)) {
                     //debut envoie dans storage
-                    String random =random ();
-                    final StorageReference ref = storageReference.child ( "image_de_posts" ).child ( random + " .jpg" );
+                    String random = random();
+                    final StorageReference ref = storageReference.child("image_de_posts").child(random + " .jpg");
                     UploadTask uploadTask = ref.putBytes(final_image);
 
                     Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -216,7 +216,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                                     // Handle failures
                                     // ...
                                 }
-                                stockageWithURI ( task,description);
+                                stockageWithURI(task, description);
 
                             } else {
 
@@ -229,7 +229,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                 } else {
                     progressBar.setVisibility(View.INVISIBLE);
                     post_button.setVisibility(View.VISIBLE);
-                    Toast.makeText ( getApplicationContext (), "remplir tous les champs", Toast.LENGTH_LONG ).show ();
+                    Toast.makeText(getApplicationContext(), "remplir tous les champs", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -241,28 +241,27 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
     }
 
 
-
-    void stockageWithURI(@NonNull Task<Uri> task,String description){
+    void stockageWithURI(@NonNull Task<Uri> task, String description) {
         Uri downloadUri;
-        if (task!=null){
-            downloadUri = task.getResult ();
-        }else{
-            downloadUri=mImageUri;
+        if (task != null) {
+            downloadUri = task.getResult();
+        } else {
+            downloadUri = mImageUri;
         }
 
         //
         String key = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").push().getKey();
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        String date=saveCurrentDate;
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        String date = saveCurrentDate;
         Map<String, Object> post_data = new HashMap<>();
-        post_data.put ( "image",downloadUri.toString());
-        post_data.put ( "description",description);
-        post_data.put ( "id_post",key);
-        post_data.put("id_user",userID);
-        post_data.put("statut","public");
-        post_data.put ( "createdDate",date);
+        post_data.put("image", downloadUri.toString());
+        post_data.put("description", description);
+        post_data.put("id_post", key);
+        post_data.put("id_user", userID);
+        post_data.put("statut", "public");
+        post_data.put("createdDate", date);
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(key);
         userDb.setValue(post_data).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -271,7 +270,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                 progressBar.setVisibility(View.INVISIBLE);
                 /*Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
                 startActivity(intent);*/
-               // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
                 makeToast("publier");
             }
@@ -289,18 +288,17 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         finish();
     }
 
-    public static String random(){
+    public static String random() {
         Random generator = new Random();
         StringBuilder randomStringBuilder = new StringBuilder();
         int randomLength = generator.nextInt(MAX_LENGTH);
         char tempChar;
-        for (int i = 0; i < randomLength; i++){
+        for (int i = 0; i < randomLength; i++) {
             tempChar = (char) (generator.nextInt(96) + 32);
             randomStringBuilder.append(tempChar);
         }
         return randomStringBuilder.toString();
     }
-
 
 
 }

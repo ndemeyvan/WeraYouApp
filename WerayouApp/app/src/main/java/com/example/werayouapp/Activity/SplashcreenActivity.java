@@ -15,14 +15,14 @@ public class SplashcreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashcreen);
-        new Handler(  ).postDelayed (new Runnable () {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent gotochoice= new Intent(getApplicationContext(), WelcomeActivity.class);
+                Intent gotochoice = new Intent(getApplicationContext(), WelcomeActivity.class);
                 startActivity(gotochoice);
                 finish();
             }
-        }, 2000 );
+        }, 2000);
         //SystemClock.sleep(3000);
 
     }

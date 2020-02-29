@@ -27,22 +27,22 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
-public class DetailImageChat extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class DetailImageChat extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageView imageView;
     Toolbar toolbar;
     FloatingActionButton floatingActionButton;
     private String imageLink;
-    private static final int PERMISSION_STORAGE_CODE=1000;
+    private static final int PERMISSION_STORAGE_CODE = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_image_chat);
-        imageView=findViewById(R.id.image);
-        toolbar=findViewById(R.id.toolbar);
-        floatingActionButton=findViewById(R.id.floatingActionButton);
-        imageLink=getIntent().getStringExtra("image");
+        imageView = findViewById(R.id.image);
+        toolbar = findViewById(R.id.toolbar);
+        floatingActionButton = findViewById(R.id.floatingActionButton);
+        imageLink = getIntent().getStringExtra("image");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -60,13 +60,12 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
                 .into(imageView);
 
 
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.download_menu, menu);
+        inflater.inflate(R.menu.download_menu, menu);
 
         return true;
     }
@@ -76,17 +75,17 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.image:
-                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==
-                            PackageManager.PERMISSION_DENIED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                            PackageManager.PERMISSION_DENIED) {
                         //la permission a ete refuse , redemande
-                        String[] permission ={Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        requestPermissions(permission,PERMISSION_STORAGE_CODE);
-                    }else{
+                        String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        requestPermissions(permission, PERMISSION_STORAGE_CODE);
+                    } else {
                         //la permission a deja ete accorde
                         donwload();
                     }
-                }else{
+                } else {
                     //le systeme est inferieur a android marshmallow
                     donwload();
                 }
@@ -102,17 +101,17 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.image:
-                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==
-                            PackageManager.PERMISSION_DENIED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                            PackageManager.PERMISSION_DENIED) {
                         //la permission a ete refuse , redemande
-                        String[] permission ={Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        requestPermissions(permission,PERMISSION_STORAGE_CODE);
-                    }else{
+                        String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        requestPermissions(permission, PERMISSION_STORAGE_CODE);
+                    } else {
                         //la permission a deja ete accorde
                         donwload();
                     }
-                }else{
+                } else {
                     //le systeme est inferieur a android marshmallow
                     donwload();
                 }
@@ -124,16 +123,16 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
         }
     }
 
-    void donwload(){
+    void donwload() {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(imageLink));
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI|
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
                 DownloadManager.Request.NETWORK_MOBILE);
         request.setTitle("Download");
         request.setDescription("telechargement en cour ...");
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS," " + System.currentTimeMillis());
-        DownloadManager manager= (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, " " + System.currentTimeMillis());
+        DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
 
 
@@ -142,11 +141,11 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case PERMISSION_STORAGE_CODE: {
-                if (grantResults.length>0&&grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     donwload();
-                }else{
+                } else {
 
                 }
             }

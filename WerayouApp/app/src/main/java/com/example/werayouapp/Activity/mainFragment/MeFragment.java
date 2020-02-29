@@ -46,7 +46,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * A simple {@link Fragment} subclass.
  */
 public class MeFragment extends Fragment {
-    FirebaseAuth user ;
+    FirebaseAuth user;
     String userSex;
     ImageView cardView2;
     private DatabaseReference usersDb;
@@ -70,7 +70,6 @@ public class MeFragment extends Fragment {
     TextView villeView;
 
 
-
     public MeFragment() {
         // Required empty public constructor
     }
@@ -81,30 +80,30 @@ public class MeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_me, container, false);
-        cardView2=v.findViewById(R.id.cardView2);
-        nomUser=v.findViewById(R.id.nomUser);
-        age=v.findViewById(R.id.age);
-        user=FirebaseAuth.getInstance();
-        cherche=v.findViewById(R.id.cherche);
-        user=FirebaseAuth.getInstance();
-        userID=user.getCurrentUser().getUid();
-        sexe=v.findViewById(R.id.sexe);
-        progressBarTwo=v.findViewById(R.id.progressBarTwo);
-        mRecyclerView=v.findViewById(R.id.mRecyclerView);
-        aucun_post=v.findViewById(R.id.aucun_post);
-        paysView=v.findViewById(R.id.paysView);
-        villeView=v.findViewById(R.id.villeView);
+        cardView2 = v.findViewById(R.id.cardView2);
+        nomUser = v.findViewById(R.id.nomUser);
+        age = v.findViewById(R.id.age);
+        user = FirebaseAuth.getInstance();
+        cherche = v.findViewById(R.id.cherche);
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
+        sexe = v.findViewById(R.id.sexe);
+        progressBarTwo = v.findViewById(R.id.progressBarTwo);
+        mRecyclerView = v.findViewById(R.id.mRecyclerView);
+        aucun_post = v.findViewById(R.id.aucun_post);
+        paysView = v.findViewById(R.id.paysView);
+        villeView = v.findViewById(R.id.villeView);
         //
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
-       // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
+        // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setNestedScrollingEnabled(false);
         //
-        progressBar=v.findViewById(R.id.progressBar);
-       setupButton=v.findViewById(R.id.setupButton);
+        progressBar = v.findViewById(R.id.progressBar);
+        setupButton = v.findViewById(R.id.setupButton);
         //setupButton.setVisibility(View.INVISIBLE);
-       setupButton.setOnClickListener(new View.OnClickListener() {
+        setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
@@ -114,49 +113,50 @@ public class MeFragment extends Fragment {
                 //getActivity().finish();
             }
         });
-        postList=new ArrayList<>();
+        postList = new ArrayList<>();
         getUserData();
         getPost();
 
-       // FetchPost();
+        // FetchPost();
         return v;
 
     }
 
-   //recupere tout ce que l'utilisateur a poste
-   void getPost(){
-       //adding an event listener to fetch values
-       DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts");
-       db.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(DataSnapshot snapshot) {
-               //iterating through all the values in database
-               postList.clear();//vide la liste de la recyclrView pour eviter les doublons
-               for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                   Post post = postSnapshot.getValue(Post.class);
-                   postList.add(post);
-                   progressBarTwo.setVisibility(View.INVISIBLE);
-               }
-               if (postList.size()==0){
-                   aucun_post.setVisibility(View.VISIBLE);
-                   progressBarTwo.setVisibility(View.INVISIBLE);
-               }
-               //creating adapter
-               adapter = new PostAdapter(postList, getActivity());
-               //adding adapter to recyclerview
-               mRecyclerView.setAdapter(adapter);
-              // adapter.notifyDataSetChanged();
-           }
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
-           }
-       });
+    //recupere tout ce que l'utilisateur a poste
+    void getPost() {
+        //adding an event listener to fetch values
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts");
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                //iterating through all the values in database
+                postList.clear();//vide la liste de la recyclrView pour eviter les doublons
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    postList.add(post);
+                    progressBarTwo.setVisibility(View.INVISIBLE);
+                }
+                if (postList.size() == 0) {
+                    aucun_post.setVisibility(View.VISIBLE);
+                    progressBarTwo.setVisibility(View.INVISIBLE);
+                }
+                //creating adapter
+                adapter = new PostAdapter(postList, getActivity());
+                //adding adapter to recyclerview
+                mRecyclerView.setAdapter(adapter);
+                // adapter.notifyDataSetChanged();
+            }
 
-   }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+    }
 
 
     ///recupere les information de l'utilisateur
-    public void getUserData(){
+    public void getUserData() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -167,7 +167,7 @@ public class MeFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         data(dataSnapshot);
                         getPost();
-                        if (postList.size()==0){
+                        if (postList.size() == 0) {
                             aucun_post.setVisibility(View.VISIBLE);
                             progressBarTwo.setVisibility(View.INVISIBLE);
                         }
@@ -182,9 +182,9 @@ public class MeFragment extends Fragment {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    data(dataSnapshot);
-                    getPost();
-                if (postList.size()==0){
+                data(dataSnapshot);
+                getPost();
+                if (postList.size() == 0) {
                     aucun_post.setVisibility(View.VISIBLE);
                     progressBarTwo.setVisibility(View.INVISIBLE);
                 }
@@ -208,30 +208,30 @@ public class MeFragment extends Fragment {
 
     }
 
-    void data(DataSnapshot dataSnapshot){
-        if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+    void data(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-            if(map.get("nom")!=null){
+            if (map.get("nom") != null) {
                 nom = map.get("nom").toString();
             }
-            if(map.get("prenom")!=null){
+            if (map.get("prenom") != null) {
                 prenom = map.get("prenom").toString();
                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
-                nomUser.setText(prenomFinal +" " + nomFinal);
+                nomUser.setText(prenomFinal + " " + nomFinal);
             }
-            if(map.get("age")!=null){
+            if (map.get("age") != null) {
                 userAge = map.get("age").toString();
                 String ageFinal = userAge.substring(0, 1).toUpperCase() + userAge.substring(1);
-                age.setText(ageFinal +" ans");
+                age.setText(ageFinal + " ans");
             }
-            if(map.get("ville")!=null){
+            if (map.get("ville") != null) {
                 String ville = map.get("ville").toString();
                 String villeFinal = ville.substring(0, 1).toUpperCase() + ville.substring(1);
                 villeView.setText(villeFinal);
 
             }
-            if(map.get("image")!=null){
+            if (map.get("image") != null) {
                 profileImageUrl = map.get("image").toString();
                 Picasso.with(getActivity()).load(profileImageUrl).into(cardView2);
                 progressBar.setVisibility(View.INVISIBLE);
@@ -240,20 +240,19 @@ public class MeFragment extends Fragment {
 
             }
             //
-            if(map.get("recherche")!=null){
+            if (map.get("recherche") != null) {
                 String recherche = map.get("recherche").toString();
                 String rechercheFinal = recherche.substring(0, 1).toUpperCase() + recherche.substring(1);
                 cherche.setText(rechercheFinal);
 
 
-
             }
-            if(map.get("sexe")!=null){
+            if (map.get("sexe") != null) {
                 String userSexe = map.get("sexe").toString();
                 sexe.setText(userSexe);
 
             }
-            if(map.get("pays")!=null){
+            if (map.get("pays") != null) {
                 String pays = map.get("pays").toString();
                 String paysFinal = pays.substring(0, 1).toUpperCase() + pays.substring(1);
                 paysView.setText(paysFinal);
@@ -264,10 +263,9 @@ public class MeFragment extends Fragment {
 
     }
 
-    static void makeToast(Context ctx, String s){
+    static void makeToast(Context ctx, String s) {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
-
 
 
 }

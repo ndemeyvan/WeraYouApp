@@ -115,7 +115,7 @@ public class OtpActivity extends AppCompatActivity {
     }
 
     public void sendUserToHome() {
-        Intent homeIntent = new Intent(OtpActivity.this, ActivityPrincipal.class);
+        Intent homeIntent = new Intent(OtpActivity.this, SetupActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);

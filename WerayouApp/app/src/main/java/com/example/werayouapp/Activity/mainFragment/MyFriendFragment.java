@@ -36,10 +36,8 @@ public class MyFriendFragment extends Fragment {
     List<MyFriendModel> friendsModelList;
     RecyclerView.Adapter adapter;
     String userID;
-    FirebaseAuth user ;
+    FirebaseAuth user;
     TextView message;
-
-
 
 
     public MyFriendFragment() {
@@ -51,24 +49,24 @@ public class MyFriendFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_amies, container, false);
-        user=FirebaseAuth.getInstance();
-        userID=user.getCurrentUser().getUid();
-        message=v.findViewById(R.id.message);
-        mRecyclerView=v.findViewById(R.id.recyclerview);
+        View v = inflater.inflate(R.layout.fragment_amies, container, false);
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
+        message = v.findViewById(R.id.message);
+        mRecyclerView = v.findViewById(R.id.recyclerview);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setNestedScrollingEnabled(false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         ///
-        friendsModelList=new ArrayList<>();
+        friendsModelList = new ArrayList<>();
         getAsk();
         return v;
     }
 
     //recupere tout ce que l'utilisateur a poste
-    void getAsk(){
+    void getAsk() {
         //adding an event listener to fetch values
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis");
         db.addValueEventListener(new ValueEventListener() {
@@ -89,6 +87,7 @@ public class MyFriendFragment extends Fragment {
                 mRecyclerView.setAdapter(adapter);
                 // adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -96,10 +95,10 @@ public class MyFriendFragment extends Fragment {
 
     }
 
-    void checkIfEmpty(){
-        if (friendsModelList.size()<=0){
-           message.setVisibility(View.VISIBLE);
-        }else {
+    void checkIfEmpty() {
+        if (friendsModelList.size() <= 0) {
+            message.setVisibility(View.VISIBLE);
+        } else {
             message.setVisibility(View.INVISIBLE);
         }
     }

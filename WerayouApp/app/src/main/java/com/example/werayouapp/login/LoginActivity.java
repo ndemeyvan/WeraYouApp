@@ -1,4 +1,5 @@
 package com.example.werayouapp.login;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
+
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -39,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar mLoginProgress;
 
     private TextView mLoginFeedbackText;
-
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     @Override
@@ -64,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 String complete_phone_number = "+" + country_code + phone_number;
 
-                if(country_code.isEmpty() || phone_number.isEmpty()){
+                if (country_code.isEmpty() || phone_number.isEmpty()) {
                     mLoginFeedbackText.setText("Please fill in the form to continue.");
                     mLoginFeedbackText.setVisibility(View.VISIBLE);
                 } else {
@@ -119,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(mCurrentUser != null){
+        if (mCurrentUser != null) {
             sendUserToHome();
         }
     }

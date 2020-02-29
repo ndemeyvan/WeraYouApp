@@ -34,7 +34,7 @@ public class FriendsFragment extends Fragment {
     List<FriendsModel> friendsModelList;
     private RecyclerView.Adapter adapter;
     private String userID;
-    FirebaseAuth user ;
+    FirebaseAuth user;
     TextView message;
 
 
@@ -48,10 +48,10 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_friends, container, false);
-        mRecyclerView=v.findViewById(R.id.recyclerView);
-        user=FirebaseAuth.getInstance();
-        userID=user.getCurrentUser().getUid();
-        message=v.findViewById(R.id.message);
+        mRecyclerView = v.findViewById(R.id.recyclerView);
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
+        message = v.findViewById(R.id.message);
         // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
         ///
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -61,16 +61,16 @@ public class FriendsFragment extends Fragment {
         // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         ///
-        friendsModelList=new ArrayList<>();
+        friendsModelList = new ArrayList<>();
         getAsk();
         checkIfEmpty();
 
-        return  v;
+        return v;
     }
 
 
     //recupere tout ce que l'utilisateur a poste
-    void getAsk(){
+    void getAsk() {
         //adding an event listener to fetch values
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("accepter");
         db.addValueEventListener(new ValueEventListener() {
@@ -92,16 +92,18 @@ public class FriendsFragment extends Fragment {
                 mRecyclerView.setAdapter(adapter);
                 // adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
     }
-    void checkIfEmpty(){
-        if (friendsModelList.size()<=0){
+
+    void checkIfEmpty() {
+        if (friendsModelList.size() <= 0) {
             message.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             message.setVisibility(View.INVISIBLE);
         }
     }

@@ -27,12 +27,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHolder>   {
+public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHolder> {
     List<MyFriendModel> myFriendModelList;
     Context context;
     private String nom;
@@ -61,14 +62,14 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyFriendAdapter.ViewHolder holder, int i) {
-        user= FirebaseAuth.getInstance();
-        userID=user.getCurrentUser().getUid();
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
         final String id_user = myFriendModelList.get(i).getId();
         holder.writeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("id",id_user);
+                intent.putExtra("id", id_user);
                 context.startActivity(intent);
             }
         });
@@ -77,7 +78,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProfilActivity.class);
-                intent.putExtra("id",id_user);
+                intent.putExtra("id", id_user);
                 context.startActivity(intent);
 
             }
@@ -87,14 +88,14 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProfilActivity.class);
-                intent.putExtra("id",id_user);
+                intent.putExtra("id", id_user);
                 context.startActivity(intent);
             }
         });
         //
-        getUserData(holder,id_user);
+        getUserData(holder, id_user);
 
-       /**/
+        /**/
 
         holder.blockButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +105,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
             }
         });
 
-        holder.layout.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_simple ) );
+        holder.layout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_simple));
 
     }
 
@@ -113,7 +114,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         return myFriendModelList.size();
     }
 
-    public void getUserData(final ViewHolder holder , final String id){
+    public void getUserData(final ViewHolder holder, final String id) {
 
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
         db.addChildEventListener(new ChildEventListener() {
@@ -123,19 +124,19 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
                 usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                            if(map.get("nom")!=null){
+                            if (map.get("nom") != null) {
                                 nom = map.get("nom").toString();
                             }
-                            if(map.get("prenom")!=null){
+                            if (map.get("prenom") != null) {
                                 prenom = map.get("prenom").toString();
                                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
-                                holder.nom_profil.setText(prenomFinal +" " + nomFinal);
+                                holder.nom_profil.setText(prenomFinal + " " + nomFinal);
                             }
 
-                            if(map.get("image")!=null){
+                            if (map.get("image") != null) {
                                 String image = map.get("image").toString();
                                 Picasso.with(context).load(image).into(holder.profil_image);
                                 holder.progressBar.setVisibility(View.INVISIBLE);
@@ -176,9 +177,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         });
 
 
-
     }
-
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -200,7 +199,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
             seeProfilText = itemView.findViewById(R.id.seeProfilText);
             writeButton = itemView.findViewById(R.id.writeButton);
             blockButton = itemView.findViewById(R.id.blockButton);
-            layout=itemView.findViewById(R.id.layout);
+            layout = itemView.findViewById(R.id.layout);
 
         }
 

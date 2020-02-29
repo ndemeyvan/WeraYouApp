@@ -25,7 +25,7 @@ import com.example.werayouapp.Utiles.BottomNavigationBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-public class ActivityPrincipal extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener   {
+public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //AHBottomNavigation bottomNavigation;
     ImageView add_image;
@@ -38,20 +38,20 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       // bottomNavigation= (AHBottomNavigation) findViewById(R.id.bottomNavigationView);
+        // bottomNavigation= (AHBottomNavigation) findViewById(R.id.bottomNavigationView);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 //        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
 //        layoutParams.setBehavior(new BottomNavigationBehavior());
         loadFragment(new HomeFragment());
         //bottomNavigation.setOnTabSelectedListener(this);
-        toolbar=findViewById(R.id.toolbar);
-        toobarTitle=findViewById(R.id.toobarTitle);
+        toolbar = findViewById(R.id.toolbar);
+        toobarTitle = findViewById(R.id.toobarTitle);
         toobarTitle.setText("Werayou");
 
-       // this.createNavItems();
+        // this.createNavItems();
 
     }
 
@@ -110,7 +110,7 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.toolbar_menu, menu);
+        inflater.inflate(R.menu.toolbar_menu, menu);
         return true;
     }
 
@@ -119,7 +119,7 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.add_photo:
-                Intent gogotoSearch = new Intent(getApplicationContext(),AddPhotoActivity.class);
+                Intent gogotoSearch = new Intent(getApplicationContext(), AddPhotoActivity.class);
                 startActivity(gogotoSearch);
                 //finish
                 return true;
@@ -138,7 +138,7 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.add_photo:
-                Intent gogotoSearch = new Intent(getApplicationContext(),AddPhotoActivity.class);
+                Intent gogotoSearch = new Intent(getApplicationContext(), AddPhotoActivity.class);
                 startActivity(gogotoSearch);
                 //finish
                 return true;
@@ -205,11 +205,7 @@ public class ActivityPrincipal extends AppCompatActivity  implements NavigationV
         //*/
 
 
-
-
-
-
-    }
+}
 
 
   /*  @Override

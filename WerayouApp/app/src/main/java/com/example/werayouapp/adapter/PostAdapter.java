@@ -56,11 +56,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailPhotoActivity.class);
-                intent.putExtra("id_post",id_post);
-                intent.putExtra("id_user",id_user);
-                intent.putExtra("description",description);
-                intent.putExtra("image",imagelink);
-                intent.putExtra("date",date);
+                intent.putExtra("id_post", id_post);
+                intent.putExtra("id_user", id_user);
+                intent.putExtra("description", description);
+                intent.putExtra("image", imagelink);
+                intent.putExtra("date", date);
                 context.startActivity(intent);
             }
         });
@@ -72,7 +72,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return postList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView image;
         public ProgressBar progressBar;
@@ -81,9 +81,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            image=itemView.findViewById(R.id.image);
-            progressBar=itemView.findViewById(R.id.progressBar);
-            card_view=itemView.findViewById(R.id.card_view);
+            image = itemView.findViewById(R.id.image);
+            progressBar = itemView.findViewById(R.id.progressBar);
+            card_view = itemView.findViewById(R.id.card_view);
         }
 
     }

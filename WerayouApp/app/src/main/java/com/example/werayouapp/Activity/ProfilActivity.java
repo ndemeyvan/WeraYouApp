@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProfilActivity extends AppCompatActivity {
-    FirebaseAuth user ;
+    FirebaseAuth user;
     ImageView cardView2;
     private DatabaseReference usersDb;
     TextView nomUser;
@@ -74,23 +74,23 @@ public class ProfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
-        cardView2=findViewById(R.id.cardView2);
-        nomUser=findViewById(R.id.nomUser);
-        age=findViewById(R.id.age);
-        user=FirebaseAuth.getInstance();
-        cherche=findViewById(R.id.cherche);
-        user=FirebaseAuth.getInstance();
-        currentUser=user.getCurrentUser().getUid();
-        id_user=getIntent().getStringExtra("id");
-        sexe=findViewById(R.id.sexe);
-        progressBarTwo=findViewById(R.id.progressBarTwo);
-        mRecyclerView=findViewById(R.id.mRecyclerView);
-        aucun_post=findViewById(R.id.aucun_post);
-        paysView=findViewById(R.id.paysView);
-        villeView=findViewById(R.id.villeView);
-        toolbar=findViewById(R.id.toolbar);
-        addButton=findViewById(R.id.addButton);
-        deniedButton=findViewById(R.id.deniedButton);
+        cardView2 = findViewById(R.id.cardView2);
+        nomUser = findViewById(R.id.nomUser);
+        age = findViewById(R.id.age);
+        user = FirebaseAuth.getInstance();
+        cherche = findViewById(R.id.cherche);
+        user = FirebaseAuth.getInstance();
+        currentUser = user.getCurrentUser().getUid();
+        id_user = getIntent().getStringExtra("id");
+        sexe = findViewById(R.id.sexe);
+        progressBarTwo = findViewById(R.id.progressBarTwo);
+        mRecyclerView = findViewById(R.id.mRecyclerView);
+        aucun_post = findViewById(R.id.aucun_post);
+        paysView = findViewById(R.id.paysView);
+        villeView = findViewById(R.id.villeView);
+        toolbar = findViewById(R.id.toolbar);
+        addButton = findViewById(R.id.addButton);
+        deniedButton = findViewById(R.id.deniedButton);
         //
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ProfilActivity.this, 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -109,8 +109,8 @@ public class ProfilActivity extends AppCompatActivity {
                 finish();
             }
         });
-        progressBar=findViewById(R.id.progressBar);
-        postList=new ArrayList<>();
+        progressBar = findViewById(R.id.progressBar);
+        postList = new ArrayList<>();
         CheckifIsFriend();
         getUserData();
         getPost();
@@ -118,12 +118,12 @@ public class ProfilActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isFriend==true){
-                            Intent intent = new Intent(ProfilActivity.this, ChatActivity.class);
-                            intent.putExtra("id",id_user);
-                            startActivity(intent);
+                if (isFriend == true) {
+                    Intent intent = new Intent(ProfilActivity.this, ChatActivity.class);
+                    intent.putExtra("id", id_user);
+                    startActivity(intent);
                     //il faudra une condition pour verifier si l'utilisateur est bloque ou pas
-                }else{
+                } else {
                     makeToast("vous pouvez accepter cette personne comme amies");
                     accpet();
                 }
@@ -133,22 +133,21 @@ public class ProfilActivity extends AppCompatActivity {
         deniedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isFriend==false){
+                if (isFriend == false) {
                     makeToast("vous n'etes pas amies vous pouvez refuser vous pouvez refuser sa demande");
                     reject();
-                }else{
+                } else {
                     makeToast("vous etes  amies et vous pouvez la bloquer");
-                   // blockUser();
+                    // blockUser();
                 }
             }
         });
 
 
-
     }
 
     //recupere tout ce que l'utilisateur a poste
-    void getPost(){
+    void getPost() {
         //adding an event listener to fetch values
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts");
         db.addValueEventListener(new ValueEventListener() {
@@ -161,7 +160,7 @@ public class ProfilActivity extends AppCompatActivity {
                     postList.add(post);
                     progressBarTwo.setVisibility(View.INVISIBLE);
                 }
-                if (postList.size()==0){
+                if (postList.size() == 0) {
                     aucun_post.setVisibility(View.VISIBLE);
                     progressBarTwo.setVisibility(View.INVISIBLE);
                 }
@@ -171,21 +170,23 @@ public class ProfilActivity extends AppCompatActivity {
                 mRecyclerView.setAdapter(adapter);
                 // adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
     }
+
     //refuser une demande
-    void reject(){
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        final String date=saveCurrentDate;
+    void reject() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        final String date = saveCurrentDate;
         final Map<String, String> user_data = new HashMap<>();
-        user_data.put ( "updatedDate",date);
-        user_data.put("id",id_user);
+        user_data.put("updatedDate", date);
+        user_data.put("id", id_user);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("refuser").child(id_user);
@@ -198,10 +199,11 @@ public class ProfilActivity extends AppCompatActivity {
                 db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             snapshot.getRef().removeValue();
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
@@ -209,24 +211,26 @@ public class ProfilActivity extends AppCompatActivity {
             }
         });
     }
-    void blockUser(){
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        final String date=saveCurrentDate;
+
+    void blockUser() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        final String date = saveCurrentDate;
         final Map<String, String> user_data = new HashMap<>();
-        user_data.put ( "updatedDate",date);
-        user_data.put("id",id_user);
-         DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer").child(id_user);
-         boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-             @Override
-             public void onComplete(@NonNull Task<Void> task) {
-                 makeToast("bloquer");
-             }
-         });
+        user_data.put("updatedDate", date);
+        user_data.put("id", id_user);
+        DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer").child(id_user);
+        boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                makeToast("bloquer");
+            }
+        });
     }
+
     ///recupere les information de l'utilisateur
-    public void getUserData(){
+    public void getUserData() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -270,53 +274,52 @@ public class ProfilActivity extends AppCompatActivity {
 
     }
 
-    void data(DataSnapshot dataSnapshot){
-        if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+    void data(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-            if(map.get("nom")!=null){
+            if (map.get("nom") != null) {
                 nom = map.get("nom").toString();
 
             }
-            if(map.get("prenom")!=null){
+            if (map.get("prenom") != null) {
                 prenom = map.get("prenom").toString();
                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
-                nomUser.setText(prenomFinal +" " + nomFinal);
-                toolbar.setTitle(prenomFinal +" " + nomFinal);
+                nomUser.setText(prenomFinal + " " + nomFinal);
+                toolbar.setTitle(prenomFinal + " " + nomFinal);
 
             }
-            if(map.get("age")!=null){
+            if (map.get("age") != null) {
                 userAge = map.get("age").toString();
                 String ageFinal = userAge.substring(0, 1).toUpperCase() + userAge.substring(1);
-                age.setText(ageFinal +" ans");
+                age.setText(ageFinal + " ans");
             }
-            if(map.get("ville")!=null){
+            if (map.get("ville") != null) {
                 String ville = map.get("ville").toString();
                 String villeFinal = ville.substring(0, 1).toUpperCase() + ville.substring(1);
                 villeView.setText(villeFinal);
 
             }
-            if(map.get("image")!=null){
+            if (map.get("image") != null) {
                 profileImageUrl = map.get("image").toString();
                 Picasso.with(ProfilActivity.this).load(profileImageUrl).into(cardView2);
                 progressBar.setVisibility(View.INVISIBLE);
 
             }
             //
-            if(map.get("recherche")!=null){
+            if (map.get("recherche") != null) {
                 String recherche = map.get("recherche").toString();
                 String rechercheFinal = recherche.substring(0, 1).toUpperCase() + recherche.substring(1);
                 cherche.setText(rechercheFinal);
 
 
-
             }
-            if(map.get("sexe")!=null){
+            if (map.get("sexe") != null) {
                 String userSexe = map.get("sexe").toString();
                 sexe.setText(userSexe);
 
             }
-            if(map.get("pays")!=null){
+            if (map.get("pays") != null) {
                 String pays = map.get("pays").toString();
                 String paysFinal = pays.substring(0, 1).toUpperCase() + pays.substring(1);
                 paysView.setText(paysFinal);
@@ -328,18 +331,17 @@ public class ProfilActivity extends AppCompatActivity {
     }
 
 
-
-    void CheckifIsFriend(){
+    void CheckifIsFriend() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("mesAmis");
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()&&!dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) ) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser)) {
                     deniedButton.setText("Bloquer");
                     addButton.setText("Ecrire");
-                    isFriend=true;
-                }else{
-                    isFriend=false;
+                    isFriend = true;
+                } else {
+                    isFriend = false;
                     deniedButton.setText("Refuser");
                     addButton.setText("Accepter");
                 }
@@ -368,14 +370,14 @@ public class ProfilActivity extends AppCompatActivity {
     }
 
     //accepter une demande
-    void accpet(){
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        final String date=saveCurrentDate;
+    void accpet() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        final String date = saveCurrentDate;
         Map<String, String> user_data = new HashMap<>();
-        user_data.put ( "updatedDate",date);
-        user_data.put("id",id_user);
+        user_data.put("updatedDate", date);
+        user_data.put("id", id_user);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("mesAmis").child(id_user);
@@ -388,26 +390,27 @@ public class ProfilActivity extends AppCompatActivity {
                 db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             snapshot.getRef().removeValue();
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
                 ///mettre l'utilisateur dans les valider
                 Map<String, String> user_data = new HashMap<>();
-                user_data.put ( "updatedDate",date);
-                user_data.put("id",id_user);
+                user_data.put("updatedDate", date);
+                user_data.put("id", id_user);
                 /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
                 DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("valider").child(id_user);
                 db_.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Map<String, String> dataForAsker = new HashMap<>();
-                        dataForAsker.put ( "updatedDate",date);
-                        dataForAsker.put("id",currentUser);
+                        dataForAsker.put("updatedDate", date);
+                        dataForAsker.put("id", currentUser);
                         DatabaseReference dbTwoAskUser = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("mesAmis").child(currentUser);
                         dbTwoAskUser.setValue(dataForAsker);
                     }
@@ -419,7 +422,7 @@ public class ProfilActivity extends AppCompatActivity {
 
     }
 
-    void makeToast(String msg){
-        Toast.makeText(ProfilActivity.this,msg,Toast.LENGTH_LONG).show();
+    void makeToast(String msg) {
+        Toast.makeText(ProfilActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 }

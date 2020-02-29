@@ -43,7 +43,7 @@ public class MessageFragment extends Fragment {
     List<LastMessageModel> modelChatList;
     LastMessageChatAdapter chatAdapter;
     DatabaseReference reference;
-    FirebaseAuth user ;
+    FirebaseAuth user;
     String userID;
 
 
@@ -58,19 +58,19 @@ public class MessageFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_message, container, false);
         //
-        user= FirebaseAuth.getInstance();
-        userID=user.getCurrentUser().getUid();
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
         //
-        message=v.findViewById(R.id.message);
+        message = v.findViewById(R.id.message);
         //
-        mRecyclerView=v.findViewById(R.id.recyclerview);
-        mRecyclerView=v.findViewById(R.id.recyclerview);
+        mRecyclerView = v.findViewById(R.id.recyclerview);
+        mRecyclerView = v.findViewById(R.id.recyclerview);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setNestedScrollingEnabled(false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        modelChatList=new ArrayList<>();
+        modelChatList = new ArrayList<>();
 
         //getLastMessage();
         getMessage();
@@ -79,7 +79,7 @@ public class MessageFragment extends Fragment {
     }
 
     //affiche les message dans la base de dooneee
-    void getMessage(){
+    void getMessage() {
         //adding an event listener to fetch values
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("dernier_message").child(userID).child("contacts");
         db.addValueEventListener(new ValueEventListener() {
@@ -93,7 +93,7 @@ public class MessageFragment extends Fragment {
                     message.setVisibility(View.INVISIBLE);
                 }
 
-               // commentNumber=commentList.size();
+                // commentNumber=commentList.size();
 
                 //creating adapter
                 chatAdapter = new LastMessageChatAdapter(modelChatList, getActivity());
@@ -101,14 +101,15 @@ public class MessageFragment extends Fragment {
                 mRecyclerView.setAdapter(chatAdapter);
                 chatAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
-        if (modelChatList.size()==0){
+        if (modelChatList.size() == 0) {
             message.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             message.setVisibility(View.INVISIBLE);
         }
 

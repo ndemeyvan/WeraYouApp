@@ -39,14 +39,14 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.ViewHolder>  {
-     String id_user;
+public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.ViewHolder> {
+    String id_user;
     List<FriendsModel> friendsModelList;
     Context context;
     private String nom;
     private String prenom;
     private String userID;
-    FirebaseAuth user ;
+    FirebaseAuth user;
 
     public AddFriendsAdapteur(List<FriendsModel> friendsModelList, Context context) {
         this.friendsModelList = friendsModelList;
@@ -65,15 +65,15 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
 
     @Override
     public void onBindViewHolder(@NonNull AddFriendsAdapteur.ViewHolder holder, int i) {
-        user=FirebaseAuth.getInstance();
-        userID=user.getCurrentUser().getUid();
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
         id_user = friendsModelList.get(i).getId();
-        getUserData(holder,id_user);
+        getUserData(holder, id_user);
         holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProfilActivity.class);
-                intent.putExtra("id",id_user);
+                intent.putExtra("id", id_user);
                 context.startActivity(intent);
 
             }
@@ -82,7 +82,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProfilActivity.class);
-                intent.putExtra("id",id_user);
+                intent.putExtra("id", id_user);
                 context.startActivity(intent);
             }
         });
@@ -98,24 +98,26 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         holder.deniedFirendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             reject();
+                reject();
             }
         });
-        holder.constraintLayout.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_simple ) );
+        holder.constraintLayout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_simple));
 
     }
-    void makeToast(String msg){
-        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+
+    void makeToast(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
+
     //accepter une demande
-    void accpet(){
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        final String date=saveCurrentDate;
+    void accpet() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        final String date = saveCurrentDate;
         Map<String, String> user_data = new HashMap<>();
-        user_data.put ( "updatedDate",date);
-        user_data.put("id",id_user);
+        user_data.put("updatedDate", date);
+        user_data.put("id", id_user);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis").child(id_user);
@@ -128,26 +130,27 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                 db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             snapshot.getRef().removeValue();
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
                 ///mettre l'utilisateur dans les valider
                 Map<String, String> user_data = new HashMap<>();
-                user_data.put ( "updatedDate",date);
-                user_data.put("id",id_user);
+                user_data.put("updatedDate", date);
+                user_data.put("id", id_user);
                 /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
                 DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("valider").child(id_user);
                 db_.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Map<String, String> dataForAsker = new HashMap<>();
-                        dataForAsker.put ( "updatedDate",date);
-                        dataForAsker.put("id",userID);
+                        dataForAsker.put("updatedDate", date);
+                        dataForAsker.put("id", userID);
                         DatabaseReference dbTwoAskUser = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("mesAmis").child(userID);
                         dbTwoAskUser.setValue(dataForAsker);
                     }
@@ -158,15 +161,16 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         });
 
     }
+
     //refuser une demande
-    void reject(){
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        final String date=saveCurrentDate;
+    void reject() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        final String date = saveCurrentDate;
         final Map<String, String> user_data = new HashMap<>();
-        user_data.put ( "updatedDate",date);
-        user_data.put("id",id_user);
+        user_data.put("updatedDate", date);
+        user_data.put("id", id_user);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("refuser").child(id_user);
@@ -179,10 +183,11 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                 db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             snapshot.getRef().removeValue();
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
@@ -194,8 +199,9 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
             }
         });
     }
+
     //recuperer les info de l'utilisateur
-    public void getUserData(final ViewHolder holder , String id){
+    public void getUserData(final ViewHolder holder, String id) {
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -203,19 +209,19 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                 db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                            if(map.get("nom")!=null){
+                            if (map.get("nom") != null) {
                                 nom = map.get("nom").toString();
                             }
-                            if(map.get("prenom")!=null){
+                            if (map.get("prenom") != null) {
                                 prenom = map.get("prenom").toString();
                                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
-                                holder.nom_profil.setText(prenomFinal +" " + nomFinal);
+                                holder.nom_profil.setText(prenomFinal + " " + nomFinal);
                             }
 
-                            if(map.get("image")!=null){
+                            if (map.get("image") != null) {
                                 String image = map.get("image").toString();
                                 Picasso.with(context).load(image).into(holder.profil_image);
                                 holder.progressBar.setVisibility(View.INVISIBLE);
@@ -256,7 +262,6 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         });
 
 
-
     }
 
     @Override
@@ -264,7 +269,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         return friendsModelList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         CircleImageView profil_image;
         ProgressBar progressBar;
@@ -277,13 +282,13 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            profil_image=itemView.findViewById(R.id.profil_image);
-            progressBar=itemView.findViewById(R.id.progressBar);
-            nom_profil=itemView.findViewById(R.id.nom_profil);
-            seeProfilText=itemView.findViewById(R.id.seeProfilText);
-            addFirendButton=itemView.findViewById(R.id.writeButton);
-            deniedFirendButton=itemView.findViewById(R.id.blockButton);
-            constraintLayout=itemView.findViewById(R.id.layout);
+            profil_image = itemView.findViewById(R.id.profil_image);
+            progressBar = itemView.findViewById(R.id.progressBar);
+            nom_profil = itemView.findViewById(R.id.nom_profil);
+            seeProfilText = itemView.findViewById(R.id.seeProfilText);
+            addFirendButton = itemView.findViewById(R.id.writeButton);
+            deniedFirendButton = itemView.findViewById(R.id.blockButton);
+            constraintLayout = itemView.findViewById(R.id.layout);
 
         }
 

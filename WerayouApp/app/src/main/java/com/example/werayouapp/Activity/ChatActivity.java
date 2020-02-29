@@ -71,7 +71,7 @@ public class ChatActivity extends AppCompatActivity {
     CircleImageView profil_image;
     TextView nom_profil;
     //
-    FirebaseAuth user ;
+    FirebaseAuth user;
     String userID;
     String nom;
     DisplayAllChat contact;
@@ -87,8 +87,8 @@ public class ChatActivity extends AppCompatActivity {
     StorageReference storageReference;
     byte[] final_image;
     Uri mImageUri;
-    private static  final int MAX_LENGTH =100;
-    private boolean isWithImage =false;
+    private static final int MAX_LENGTH = 100;
+    private boolean isWithImage = false;
     ProgressDialog dialog;
     View rootview;
     EmojIconActions emojIcon;
@@ -98,27 +98,27 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        storageReference= FirebaseStorage.getInstance ().getReference ();
+        storageReference = FirebaseStorage.getInstance().getReference();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        profil_image=findViewById(R.id.profil_image);
-        nom_profil=findViewById(R.id.nom_profil);
-        id_user=getIntent().getStringExtra("id");
-        editText=findViewById(R.id.editText);
-        sendButton=findViewById(R.id.sendButton);
-        imageButton=findViewById(R.id.imageButton);
-        imageToSend=findViewById(R.id.imageToSend);
-        emojiButton=findViewById(R.id.emojiButton);
+        profil_image = findViewById(R.id.profil_image);
+        nom_profil = findViewById(R.id.nom_profil);
+        id_user = getIntent().getStringExtra("id");
+        editText = findViewById(R.id.editText);
+        sendButton = findViewById(R.id.sendButton);
+        imageButton = findViewById(R.id.imageButton);
+        imageToSend = findViewById(R.id.imageToSend);
+        emojiButton = findViewById(R.id.emojiButton);
         //
-        user= FirebaseAuth.getInstance();
-        userID=user.getCurrentUser().getUid();
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
         //
-        mRecyclerView=findViewById(R.id.recyclerview);
-        mRecyclerView.setHasFixedSize ( true );
+        mRecyclerView = findViewById(R.id.recyclerview);
+        mRecyclerView.setHasFixedSize(true);
         //image_en_fond=findViewById ( R.id.image_en_fond );
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager( ChatActivity.this );
-        linearLayoutManager.setStackFromEnd ( true );
-        mRecyclerView.setLayoutManager ( linearLayoutManager );
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+        linearLayoutManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         //toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -132,8 +132,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         //emoji
-        rootview=findViewById(R.id.rootview);
-        emojIcon=new EmojIconActions(this,rootview,editText,emojiButton);
+        rootview = findViewById(R.id.rootview);
+        emojIcon = new EmojIconActions(this, rootview, editText, emojiButton);
         emojIcon.ShowEmojIcon();
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
             @Override
@@ -153,22 +153,22 @@ public class ChatActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               String msg= editText.getText().toString();
-               if (msg.isEmpty()&&isWithImage==true){
-                   sendMessageWithImage(userID,id_user);
-                   isWithImage=false;
-                   imageToSend.setVisibility(View.GONE);
-               }else if (!msg.isEmpty()&&isWithImage==false){
-                   sendmessage(userID,id_user,msg);
-                   isWithImage=false;
-                   imageToSend.setVisibility(View.GONE);
+                String msg = editText.getText().toString();
+                if (msg.isEmpty() && isWithImage == true) {
+                    sendMessageWithImage(userID, id_user);
+                    isWithImage = false;
+                    imageToSend.setVisibility(View.GONE);
+                } else if (!msg.isEmpty() && isWithImage == false) {
+                    sendmessage(userID, id_user, msg);
+                    isWithImage = false;
+                    imageToSend.setVisibility(View.GONE);
 
-               }else if (!msg.isEmpty()&&isWithImage==true){
-                   isWithImage=false;
-                   imageToSend.setVisibility(View.GONE);
-                   sendMessageWithImageAndMessage(userID,id_user,msg);
+                } else if (!msg.isEmpty() && isWithImage == true) {
+                    isWithImage = false;
+                    imageToSend.setVisibility(View.GONE);
+                    sendMessageWithImageAndMessage(userID, id_user, msg);
 
-               }
+                }
             }
         });
 
@@ -179,12 +179,12 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        readMessage(userID,id_user);
+        readMessage(userID, id_user);
     }
 
 
     //cette methode appele l'activite de choix d'image
-    void setImage(){
+    void setImage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 555);
@@ -192,8 +192,8 @@ public class ChatActivity extends AppCompatActivity {
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .start(ChatActivity.this);
 
-            }catch (Exception e){
-                e.printStackTrace ();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } else {
             CropImage.activity()
@@ -206,13 +206,13 @@ public class ChatActivity extends AppCompatActivity {
     //cette methode permet de set l'image a imageView
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult ( requestCode, resultCode, data );
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 mImageUri = result.getUri();
                 File actualImage = new File(mImageUri.getPath());
-                try{
+                try {
 
                     Bitmap compressedImage = new Compressor(this)
                             .setMaxWidth(250)
@@ -223,12 +223,12 @@ public class ChatActivity extends AppCompatActivity {
                     compressedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     final_image = baos.toByteArray();
                     imageToSend.setImageURI(mImageUri);
-                    isWithImage=true;
-                    if (isWithImage==true){
+                    isWithImage = true;
+                    if (isWithImage == true) {
                         imageToSend.setVisibility(View.VISIBLE);
                     }
 
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -238,123 +238,125 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    void stockageWithURI(@NonNull Task<Uri> task,final String expediteur, final String recepteur){
+    void stockageWithURI(@NonNull Task<Uri> task, final String expediteur, final String recepteur) {
         Uri downloadUri;
-        if (task!=null){
-            downloadUri = task.getResult ();
-        }else{
-            downloadUri=mImageUri;
+        if (task != null) {
+            downloadUri = task.getResult();
+        } else {
+            downloadUri = mImageUri;
         }
-        final DatabaseReference reference =FirebaseDatabase.getInstance ().getReference ();
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        String date=saveCurrentDate;
-        final HashMap<String,Object> messageMap = new HashMap<> (  );
-        messageMap.put ( "expediteur",expediteur );
-        messageMap.put ( "recepteur",recepteur );
-        messageMap.put ( "message",downloadUri.toString() );
-        messageMap.put ( "image",downloadUri.toString() );
-        messageMap.put ( "createdDate",date );
-        messageMap.put ( "type","image" );
-        reference.child ( "Chats" ).push ().setValue ( messageMap ).addOnCompleteListener(new OnCompleteListener<Void>() {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        String date = saveCurrentDate;
+        final HashMap<String, Object> messageMap = new HashMap<>();
+        messageMap.put("expediteur", expediteur);
+        messageMap.put("recepteur", recepteur);
+        messageMap.put("message", downloadUri.toString());
+        messageMap.put("image", downloadUri.toString());
+        messageMap.put("createdDate", date);
+        messageMap.put("type", "image");
+        reference.child("Chats").push().setValue(messageMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 editText.setText("");
             }
         });
         //
-        contact =new DisplayAllChat(  );
-        contact.setId_recepteur ( recepteur );
-        contact.setId_expediteur ( expediteur );
-        contact.setDernier_message ( "image" );
+        contact = new DisplayAllChat();
+        contact.setId_recepteur(recepteur);
+        contact.setId_expediteur(expediteur);
+        contact.setDernier_message("image");
         //
-        reference.child ( "dernier_message" )
+        reference.child("dernier_message")
                 .child(expediteur)
                 .child("contacts")
-                .child(recepteur).setValue ( contact )
-                .addOnSuccessListener ( new OnSuccessListener<Void>() {
+                .child(recepteur).setValue(contact)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         //
-                        contact =new DisplayAllChat (  );
-                        contact.setId_recepteur ( expediteur );
-                        contact.setId_expediteur ( recepteur );
-                        contact.setDernier_message ( "image" );
+                        contact = new DisplayAllChat();
+                        contact.setId_recepteur(expediteur);
+                        contact.setId_expediteur(recepteur);
+                        contact.setDernier_message("image");
                         //
-                        reference.child ( "dernier_message" )
+                        reference.child("dernier_message")
                                 .child(recepteur)
                                 .child("contacts")
-                                .child(expediteur).setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 dialog.dismiss();
                             }
                         });
                     }
-                } );
+                });
 
     }
+
     //cette methode sert a attribuer le type message et image pendant l'envoie
-    void stockageWithURIForMessageAndImage(@NonNull Task<Uri> task,final String expediteur, final String recepteur,String msg){
+    void stockageWithURIForMessageAndImage(@NonNull Task<Uri> task, final String expediteur, final String recepteur, String msg) {
         Uri downloadUri;
-        if (task!=null){
-            downloadUri = task.getResult ();
-        }else{
-            downloadUri=mImageUri;
+        if (task != null) {
+            downloadUri = task.getResult();
+        } else {
+            downloadUri = mImageUri;
         }
-        final DatabaseReference reference =FirebaseDatabase.getInstance ().getReference ();
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        String date=saveCurrentDate;
-        final HashMap<String,Object> messageMap = new HashMap<> (  );
-        messageMap.put ( "expediteur",expediteur );
-        messageMap.put ( "recepteur",recepteur );
-        messageMap.put ( "message",msg );
-        messageMap.put ( "image",downloadUri.toString() );
-        messageMap.put ( "createdDate",date );
-        messageMap.put ( "type","msgAndImage" );
-        reference.child ( "Chats" ).push ().setValue ( messageMap ).addOnCompleteListener(new OnCompleteListener<Void>() {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        String date = saveCurrentDate;
+        final HashMap<String, Object> messageMap = new HashMap<>();
+        messageMap.put("expediteur", expediteur);
+        messageMap.put("recepteur", recepteur);
+        messageMap.put("message", msg);
+        messageMap.put("image", downloadUri.toString());
+        messageMap.put("createdDate", date);
+        messageMap.put("type", "msgAndImage");
+        reference.child("Chats").push().setValue(messageMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 editText.setText("");
             }
         });
         //
-        contact =new DisplayAllChat(  );
-        contact.setId_recepteur ( recepteur );
-        contact.setId_expediteur ( expediteur );
-        contact.setDernier_message ( "image" );
+        contact = new DisplayAllChat();
+        contact.setId_recepteur(recepteur);
+        contact.setId_expediteur(expediteur);
+        contact.setDernier_message("image");
         //
-        reference.child ( "dernier_message" )
+        reference.child("dernier_message")
                 .child(expediteur)
                 .child("contacts")
-                .child(recepteur).setValue ( contact )
-                .addOnSuccessListener ( new OnSuccessListener<Void>() {
+                .child(recepteur).setValue(contact)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         //
-                        contact =new DisplayAllChat (  );
-                        contact.setId_recepteur ( expediteur );
-                        contact.setId_expediteur ( recepteur );
-                        contact.setDernier_message ( "image" );
+                        contact = new DisplayAllChat();
+                        contact.setId_recepteur(expediteur);
+                        contact.setId_expediteur(recepteur);
+                        contact.setDernier_message("image");
                         //
-                        reference.child ( "dernier_message" )
+                        reference.child("dernier_message")
                                 .child(recepteur)
                                 .child("contacts")
-                                .child(expediteur).setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 dialog.dismiss();
                             }
                         });
                     }
-                } );
+                });
 
     }
+
     //recuperer les information de l'utilisateur
-    public void getUserData(){
+    public void getUserData() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -363,19 +365,19 @@ public class ChatActivity extends AppCompatActivity {
                 Db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                            if(map.get("nom")!=null){
+                            if (map.get("nom") != null) {
                                 nom = map.get("nom").toString();
                             }
-                            if(map.get("prenom")!=null){
+                            if (map.get("prenom") != null) {
                                 String prenom = map.get("prenom").toString();
                                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
                                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                                 nom_profil.setText(prenomFinal + " " + nomFinal);
-                                toolbar.setTitle("Publication de "+prenomFinal + " " + nomFinal);
+                                toolbar.setTitle("Publication de " + prenomFinal + " " + nomFinal);
                             }
-                            if(map.get("image")!=null){
+                            if (map.get("image") != null) {
                                 String profileImageUrl = map.get("image").toString();
                                 Picasso.with(ChatActivity.this).load(profileImageUrl).placeholder(R.drawable.ic_launcher_background).into(profil_image);
                             }
@@ -412,12 +414,13 @@ public class ChatActivity extends AppCompatActivity {
 
 
     }
+
     //cette fonction envoi uniquement les image en message
-    void sendMessageWithImage(final String expediteur, final String recepteur){
-        dialog = ProgressDialog.show(ChatActivity.this, "","envoie de l'image ...", true);
+    void sendMessageWithImage(final String expediteur, final String recepteur) {
+        dialog = ProgressDialog.show(ChatActivity.this, "", "envoie de l'image ...", true);
         //debut envoie dans storage
-        String random =random ();
-        final StorageReference ref = storageReference.child ( "messages_images" ).child ( random + " .jpg" );
+        String random = random();
+        final StorageReference ref = storageReference.child("messages_images").child(random + " .jpg");
         UploadTask uploadTask = ref.putBytes(final_image);
 
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -440,7 +443,7 @@ public class ChatActivity extends AppCompatActivity {
                         // Handle failures
                         // ...
                     }
-                    stockageWithURI ( task,expediteur,recepteur);
+                    stockageWithURI(task, expediteur, recepteur);
 
                 } else {
 
@@ -450,66 +453,68 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
-    //cette fonction envoie uniquement les message
-    public void sendmessage(final String expediteur, final String recepteur, final String message){
 
-        final DatabaseReference reference =FirebaseDatabase.getInstance ().getReference ();
-        Calendar calendar=Calendar.getInstance ();
-        SimpleDateFormat currentDate=new SimpleDateFormat (" dd MMM yyyy" );
-        String saveCurrentDate=currentDate.format ( calendar.getTime () );
-        String date=saveCurrentDate;
-        final HashMap<String,Object> messageMap = new HashMap<> (  );
-        messageMap.put ( "expediteur",expediteur );
-        messageMap.put ( "recepteur",recepteur );
-        messageMap.put ( "message",message );
-        messageMap.put ( "image","" );
-        messageMap.put ( "createdDate",date );
-        messageMap.put ( "type","message" );
-        reference.child ( "Chats" ).push ().setValue ( messageMap ).addOnCompleteListener(new OnCompleteListener<Void>() {
+    //cette fonction envoie uniquement les message
+    public void sendmessage(final String expediteur, final String recepteur, final String message) {
+
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        String date = saveCurrentDate;
+        final HashMap<String, Object> messageMap = new HashMap<>();
+        messageMap.put("expediteur", expediteur);
+        messageMap.put("recepteur", recepteur);
+        messageMap.put("message", message);
+        messageMap.put("image", "");
+        messageMap.put("createdDate", date);
+        messageMap.put("type", "message");
+        reference.child("Chats").push().setValue(messageMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 editText.setText("");
             }
         });
         //
-        contact =new DisplayAllChat(  );
-        contact.setId_recepteur ( recepteur );
-        contact.setId_expediteur ( expediteur );
-        contact.setDernier_message ( message );
+        contact = new DisplayAllChat();
+        contact.setId_recepteur(recepteur);
+        contact.setId_expediteur(expediteur);
+        contact.setDernier_message(message);
         //
-        reference.child ( "dernier_message" )
+        reference.child("dernier_message")
                 .child(expediteur)
                 .child("contacts")
-                .child(recepteur).setValue ( contact )
-                .addOnSuccessListener ( new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-        //
-                contact =new DisplayAllChat (  );
-                contact.setId_recepteur ( expediteur );
-                contact.setId_expediteur ( recepteur );
-                contact.setDernier_message ( message );
-        //
-                reference.child ( "dernier_message" )
-                        .child(recepteur)
-                        .child("contacts")
-                        .child(expediteur).setValue ( contact ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .child(recepteur).setValue(contact)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    public void onSuccess(Void aVoid) {
+                        //
+                        contact = new DisplayAllChat();
+                        contact.setId_recepteur(expediteur);
+                        contact.setId_expediteur(recepteur);
+                        contact.setDernier_message(message);
+                        //
+                        reference.child("dernier_message")
+                                .child(recepteur)
+                                .child("contacts")
+                                .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
 
+                            }
+                        });
                     }
                 });
-            }
-        } );
 
 
     }
+
     //cette fonction envoie les message et les image
-    void sendMessageWithImageAndMessage(final String expediteur, final String recepteur, final String msg){
-        dialog = ProgressDialog.show(ChatActivity.this, "","Loading. Please wait...", true);
+    void sendMessageWithImageAndMessage(final String expediteur, final String recepteur, final String msg) {
+        dialog = ProgressDialog.show(ChatActivity.this, "", "Loading. Please wait...", true);
         //debut envoie dans storage
-        String random =random ();
-        final StorageReference ref = storageReference.child ( "messages_images" ).child ( random + " .jpg" );
+        String random = random();
+        final StorageReference ref = storageReference.child("messages_images").child(random + " .jpg");
         UploadTask uploadTask = ref.putBytes(final_image);
 
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -532,7 +537,7 @@ public class ChatActivity extends AppCompatActivity {
                         // Handle failures
                         // ...
                     }
-                    stockageWithURIForMessageAndImage ( task,expediteur,recepteur,msg);
+                    stockageWithURIForMessageAndImage(task, expediteur, recepteur, msg);
 
                 } else {
 
@@ -545,21 +550,21 @@ public class ChatActivity extends AppCompatActivity {
 
 
     //affiche les message dans la base de dooneee
-    public void readMessage(final String monId, final String sonID){
+    public void readMessage(final String monId, final String sonID) {
         // modelChatList.clear();
-        modelChatList=new ArrayList<>(  );
-        reference=FirebaseDatabase.getInstance ().getReference ("Chats");
-        reference.addValueEventListener ( new ValueEventListener () {
+        modelChatList = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                modelChatList.clear ();
-                for (DataSnapshot snapshot:dataSnapshot.getChildren ()){
-                    ModelChat chat = snapshot.getValue (ModelChat.class);
-                    if (chat.getRecepteur ().equals ( monId )&&chat.getExpediteur ().equals ( sonID)||chat.getRecepteur ().equals ( sonID )&&chat.getExpediteur ().equals ( monId )){
-                        modelChatList.add ( chat );
+                modelChatList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ModelChat chat = snapshot.getValue(ModelChat.class);
+                    if (chat.getRecepteur().equals(monId) && chat.getExpediteur().equals(sonID) || chat.getRecepteur().equals(sonID) && chat.getExpediteur().equals(monId)) {
+                        modelChatList.add(chat);
                     }
-                    chatAdapter=new ChatAdapter(getApplicationContext (),modelChatList,true);
-                    mRecyclerView.setAdapter ( chatAdapter );
+                    chatAdapter = new ChatAdapter(getApplicationContext(), modelChatList, true);
+                    mRecyclerView.setAdapter(chatAdapter);
                     chatAdapter.notifyDataSetChanged();
                 }
             }
@@ -569,14 +574,13 @@ public class ChatActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        } );
-
+        });
 
 
     }
 
-    void makeToast(String msg){
-        Toast.makeText(ChatActivity.this,msg,Toast.LENGTH_LONG).show();
+    void makeToast(String msg) {
+        Toast.makeText(ChatActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 
 
@@ -587,12 +591,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    public static String random(){
+    public static String random() {
         Random generator = new Random();
         StringBuilder randomStringBuilder = new StringBuilder();
         int randomLength = generator.nextInt(MAX_LENGTH);
         char tempChar;
-        for (int i = 0; i < randomLength; i++){
+        for (int i = 0; i < randomLength; i++) {
             tempChar = (char) (generator.nextInt(96) + 32);
             randomStringBuilder.append(tempChar);
         }
