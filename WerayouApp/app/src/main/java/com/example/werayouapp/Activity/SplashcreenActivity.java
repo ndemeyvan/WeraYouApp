@@ -26,4 +26,6 @@ public class SplashcreenActivity extends AppCompatActivity {
         //SystemClock.sleep(3000);
 
     }
+
+
 }

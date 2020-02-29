@@ -296,7 +296,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             Map<String, Object> user_data = new HashMap<>();
             user_data.put("nom", nom);
             user_data.put("prenom", prenom);
-            user_data.put("pays", country);
+//            user_data.put("pays", country);
+            user_data.put("pays", "cameroon");
             user_data.put("phone", user.getCurrentUser().getPhoneNumber());
             user_data.put("ville", ville);
             user_data.put("age", ageUser);

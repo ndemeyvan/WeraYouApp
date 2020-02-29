@@ -101,16 +101,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCodeSent(final String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
-
                 new android.os.Handler().postDelayed(
                         new Runnable() {
                             public void run() {
                                 Intent otpIntent = new Intent(LoginActivity.this, OtpActivity.class);
                                 otpIntent.putExtra("AuthCredentials", s);
                                 startActivity(otpIntent);
+                                finish();
                             }
                         },
-                        10000);
+                        2000);
             }
         };
 
@@ -131,7 +131,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            sendUserToHome();
+//                            sendUserToHome();
+
                             // ...
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
