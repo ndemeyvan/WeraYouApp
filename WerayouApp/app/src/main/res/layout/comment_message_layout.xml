@@ -26,7 +26,7 @@
         android:layout_marginStart="16dp"
         android:text="Audrey abena"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

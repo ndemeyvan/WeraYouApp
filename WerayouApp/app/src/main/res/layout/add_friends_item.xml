@@ -14,7 +14,7 @@
         android:id="@+id/profil_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/wesplash"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,10 +24,10 @@
         android:id="@+id/nom_profil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:text="Audrey abena"
         android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/profil_image"
         app:layout_constraintTop_toTopOf="@+id/profil_image" />
@@ -63,32 +63,36 @@
         app:layout_constraintStart_toStartOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-    <Button
-        android:id="@+id/writeButton"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:background="@drawable/add_firend_buttton_background"
-        android:text="Accepter"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/textView10"
-        app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toTopOf="@+id/textView10" />
-
-    <Button
-        android:id="@+id/blockButton"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/backgroun_button_validation"
-        android:text="Refuser"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/writeButton"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/writeButton"
-        app:layout_constraintTop_toTopOf="@+id/writeButton" />
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintTop_toTopOf="@+id/nom_profil">
+
+        <Button
+            android:id="@+id/blockButton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="@drawable/backgroun_button_validation"
+            android:text="Refuser"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/writeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/add_firend_buttton_background"
+            android:text="Accepter"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
