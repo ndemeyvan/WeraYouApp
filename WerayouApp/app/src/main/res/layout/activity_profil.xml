@@ -121,7 +121,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Pays :"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -130,7 +130,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:text="Xxxxxx"
-                                tools:textSize="14sp" />
+                                tools:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -147,7 +147,7 @@
                                 android:text="Ville :"
 
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -175,7 +175,7 @@
                                 android:text="Age :"
                                 android:textColor="@color/black"
 
-                                android:textSize="12sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -202,7 +202,7 @@
                                 android:text="Sexe : "
                                 android:textColor="@color/black"
 
-                                android:textSize="12sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -230,7 +230,7 @@
 
                                 android:text="Cherche :"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView

@@ -114,7 +114,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Pays :"
                                 android:textColor="@color/black"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -140,7 +140,7 @@
                                 android:text="Ville :"
 
                                 android:textColor="@color/black"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -168,7 +168,7 @@
                                 android:text="Age :"
                                 android:textColor="@color/black"
 
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -195,7 +195,7 @@
                                 android:text="Sexe : "
                                 android:textColor="@color/black"
 
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -223,7 +223,7 @@
 
                                 android:text="Cherche :"
                                 android:textColor="@color/black"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
