@@ -27,123 +27,131 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
-
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = "PhoneAuth";
+    private FirebaseAuth mAuth;
+    private FirebaseUser mCurrentUser;
 
-    private EditText phoneText;
-    private Button sendButton;
-    private ProgressBar progressBar;
-    String number;
-    String country;
+    private EditText mCountryCode;
+    private EditText mPhoneNumber;
 
-    private String phoneVerificationId;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks
-            verificationCallbacks;
-    private PhoneAuthProvider.ForceResendingToken resendToken;
+    private Button mGenerateBtn;
+    private ProgressBar mLoginProgress;
 
-    private FirebaseAuth fbAuth;
-    CountryCodePicker ccp;
+    private TextView mLoginFeedbackText;
+
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        phoneText =  findViewById(R.id.phoneText);
-        sendButton =  findViewById(R.id.sendButton);
-        ccp =findViewById(R.id.ccp);
-        progressBar=findViewById(R.id.progressBar);
-        ccp.registerCarrierNumberEditText(phoneText);
-        isOnline();
-        fbAuth = FirebaseAuth.getInstance();
+
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
+
+        mCountryCode = findViewById(R.id.country_code_text);
+        mPhoneNumber = findViewById(R.id.phone_number_text);
+        mGenerateBtn = findViewById(R.id.generate_btn);
+        mLoginProgress = findViewById(R.id.login_progress_bar);
+        mLoginFeedbackText = findViewById(R.id.login_form_feedback);
+
+        mGenerateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String country_code = mCountryCode.getText().toString();
+                String phone_number = mPhoneNumber.getText().toString();
+
+                String complete_phone_number = "+" + country_code + phone_number;
+
+                if(country_code.isEmpty() || phone_number.isEmpty()){
+                    mLoginFeedbackText.setText("Please fill in the form to continue.");
+                    mLoginFeedbackText.setVisibility(View.VISIBLE);
+                } else {
+                    mLoginProgress.setVisibility(View.VISIBLE);
+                    mGenerateBtn.setEnabled(false);
+
+                    PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                            complete_phone_number,
+                            60,
+                            TimeUnit.SECONDS,
+                            LoginActivity.this,
+                            mCallbacks
+                    );
+
+                }
+            }
+        });
+
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                signInWithPhoneAuthCredential(phoneAuthCredential);
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                mLoginFeedbackText.setText("Verification Failed, please try again.");
+                mLoginFeedbackText.setVisibility(View.VISIBLE);
+                mLoginProgress.setVisibility(View.INVISIBLE);
+                mGenerateBtn.setEnabled(true);
+            }
+
+            @Override
+            public void onCodeSent(final String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+
+                new android.os.Handler().postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                Intent otpIntent = new Intent(LoginActivity.this, OtpActivity.class);
+                                otpIntent.putExtra("AuthCredentials", s);
+                                startActivity(otpIntent);
+                            }
+                        },
+                        10000);
+            }
+        };
 
 
     }
 
-    public void sendCode(View view) {
-        progressBar.setVisibility(View.VISIBLE);
-        number = ccp.getFullNumberWithPlus();
-        country=ccp.getSelectedCountryName();
-        setUpVerificatonCallbacks();
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                number,        // Phone number to verify
-                60,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
-                verificationCallbacks);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mCurrentUser != null){
+            sendUserToHome();
+        }
     }
-
-
-    private void setUpVerificatonCallbacks() {
-        verificationCallbacks =
-                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                    @Override
-                    public void onVerificationCompleted(
-                            PhoneAuthCredential credential) {
-                        signInWithPhoneAuthCredential(credential);
-                    }
-
-                    @Override
-                    public void onVerificationFailed(FirebaseException e) {
-
-                        if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                            // Invalid request
-                            Log.d(TAG, "Invalid credential: "
-                                    + e.getLocalizedMessage());
-                        } else if (e instanceof FirebaseTooManyRequestsException) {
-                            // SMS quota exceeded
-                            Log.d(TAG, "SMS Quota exceeded.");
-                        };
-                    }
-
-                    @Override
-                    public void onCodeSent(String verificationId,
-                                           PhoneAuthProvider.ForceResendingToken token) {
-                        phoneVerificationId = verificationId;
-                        resendToken = token;
-                        //verifyButton.setEnabled(true);
-                        sendButton.setEnabled(false);
-                       // resendButton.setEnabled(true);
-                    }
-                };
-    }
-
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        fbAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            progressBar.setVisibility(View.INVISIBLE);
-                            FirebaseUser user = task.getResult().getUser();
-                            Intent intent = new Intent(LoginActivity.this, VerificationCodeActivity.class);
-                            intent.putExtra("country",country);
-                            intent.putExtra("phone",number);
-                            intent.putExtra("verificationId",phoneVerificationId);
-                            startActivity(intent);
-                            finish();
+                            sendUserToHome();
+                            // ...
                         } else {
-                            if (task.getException() instanceof
-                                    FirebaseAuthInvalidCredentialsException) {
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
+                                mLoginFeedbackText.setVisibility(View.VISIBLE);
+                                mLoginFeedbackText.setText("There was an error verifying OTP");
                             }
                         }
+                        mLoginProgress.setVisibility(View.INVISIBLE);
+                        mGenerateBtn.setEnabled(true);
                     }
                 });
     }
 
-
-    void isOnline(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-          Intent intent = new Intent(LoginActivity.this, ActivityPrincipal.class);
-          startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-          finish();
-        }
-
+    private void sendUserToHome() {
+        Intent homeIntent = new Intent(LoginActivity.this, ActivityPrincipal.class);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(homeIntent);
+        finish();
     }
+
 
 }

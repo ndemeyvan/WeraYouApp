@@ -1,276 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- <TextView
-        android:id="@+id/statusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Signed Out"
-        android:visibility="gone"/>
-
-    <RelativeLayout
-        android:id="@+id/phoneAuth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Entrer votre numero de telephone"
-                android:textSize="14sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-
-                <com.hbb20.CountryCodePicker
-                    android:id="@+id/ccp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:ccp_defaultNameCode="US" />
-
-                <EditText
-                    android:id="@+id/phoneText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="phone"
-                    android:inputType="phone"
-                    android:singleLine="true" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/phoneAuth"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/backgroun_button_validation"
-        android:onClick="sendCode"
-        android:text="Send Code"
-        android:textAllCaps="false"
-        android:textColor="#FFF"
-        app:layout_constraintEnd_toEndOf="@+id/phoneAuth"
-        app:layout_constraintStart_toStartOf="@+id/phoneAuth"
-        app:layout_constraintTop_toBottomOf="@+id/phoneAuth" />
-
-    <Button
-        android:id="@+id/resendButton"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sendButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="61dp"
-        android:background="@color/colorPrimary"
-        android:onClick="resendCode"
-        android:text="Resend Code"
-        android:textColor="#FFF"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/sendButton"
-        app:layout_constraintStart_toStartOf="@+id/sendButton"
-        app:layout_constraintTop_toBottomOf="@+id/sendButton" />
-
-    <EditText
-        android:id="@+id/codeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/resendButton"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="Code"
-        android:inputType="number"
-        android:textColor="#000"
-        android:textColorHint="#000"
-        android:visibility="gone"
-
-        app:layout_constraintEnd_toEndOf="@+id/resendButton"
-        app:layout_constraintStart_toStartOf="@+id/resendButton"
-        tools:layout_editor_absoluteY="497dp" />
-
-    <Button
-        android:id="@+id/verifyButton"
-        android:layout_width="200dp"
-        android:visibility="gone"
-
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/codeText"
-        android:layout_alignStart="@+id/codeText"
-        android:layout_alignLeft="@+id/codeText"
-        android:layout_alignEnd="@+id/codeText"
-        android:layout_alignRight="@+id/codeText"
-        android:background="@color/colorPrimary"
-        android:onClick="verifyCode"
-        android:text="Verify Code"
-        android:textColor="#FFF"
-        app:layout_constraintEnd_toEndOf="@+id/codeText"
-        app:layout_constraintStart_toStartOf="@+id/codeText"
-        tools:layout_editor_absoluteY="563dp" />
-
-    <Button
-        android:id="@+id/signoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="signOut"
-        android:layout_below="@+id/verifyButton"
-        android:text="Sign Out"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:text="LOGO "
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
-        android:text="Ton histoire commence ici "
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" /> -->
+    android:layout_height="match_parent"
+    tools:context=".login.LoginActivity"
+    android:background="@color/white">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginTop="70dp"
+        android:id="@+id/login_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/welogo" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:elevation="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/ccp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:ccp_defaultNameCode="CM"
-                app:ccp_showFlag="true"
-                app:ccp_showNameCode="false"
-                app:ccp_textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/phoneText"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/phoneText" />
-
-            <EditText
-                android:id="@+id/phoneText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/edit_background"
-                android:hint="@string/fui_invalid_phone_number"
-                android:inputType="phone"
-                android:padding="12dp"
-                android:singleLine="true"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/ccp"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/backgroun_button_validation"
-        android:onClick="sendCode"
-        android:text="Connexion"
-        android:textAllCaps="false"
-        android:textColor="#FFF"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:srcCompat="@drawable/login_screen_image" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="8dp"
-        android:text="Bienvenu sur Werayou , creer votre compte maintenant, c'est facile et rapide ."
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Votre histoire commence ici"
+        android:fontFamily="@font/open_sans_bold"
+        android:text="Verify Your Number"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_image" />
+
+    <TextView
+        android:id="@+id/login_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/open_sans_bold"
+        android:text="Please enter your Country Code \n and Phone number for verification"
+        android:textAlignment="center"
         android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_title" />
+
+    <EditText
+        android:id="@+id/country_code_text"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/text_input_bg"
+        android:ems="10"
+        android:fontFamily="@font/open_sans_bold"
+        android:hint="+91"
+        android:inputType="number"
+        android:padding="16dp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_desc" />
+
+    <EditText
+        android:id="@+id/phone_number_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/text_input_bg"
+        android:ems="10"
+        android:hint="Your Phone Number"
+        android:inputType="phone"
+        android:padding="16dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/country_code_text"
+        app:layout_constraintTop_toBottomOf="@+id/login_desc" />
+
+    <Button
+        android:id="@+id/generate_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/primary_btn_bg"
+        android:text="Generate OTP"
+        android:textAllCaps="false"
+        android:textColor="@android:color/background_light"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone_number_text" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/login_progress_bar"
         style="?android:attr/progressBarStyle"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="16dp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/sendButton"
-        app:layout_constraintStart_toStartOf="@+id/sendButton"
-        app:layout_constraintTop_toBottomOf="@+id/sendButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/generate_btn"
+        app:layout_constraintEnd_toEndOf="@+id/generate_btn"
+        app:layout_constraintTop_toTopOf="@+id/generate_btn" />
+
+    <TextView
+        android:id="@+id/login_form_feedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Working . . ."
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/generate_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

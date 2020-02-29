@@ -16,4 +16,7 @@
     <color name="color_tab_4">#6C4A42</color>
     <color name="color_tab_5">#F63D2B</color>
     <color name="orange">#ff8f00</color>
+
+    <color name="lightGray">#F2F2F2</color>
+    <color name="disabledBtnBg">#999999</color>
 </resources>
