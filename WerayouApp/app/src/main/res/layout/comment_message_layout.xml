@@ -13,7 +13,7 @@
         android:id="@+id/profil_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/wesplash"
         app:layout_constraintStart_toStartOf="parent"
