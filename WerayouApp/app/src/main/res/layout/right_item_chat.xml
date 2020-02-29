@@ -24,7 +24,7 @@
         tools:textStyle="bold" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/carte"
+        android:id="@+id/cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -44,10 +44,6 @@
                 android:id="@+id/imageChat"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/wesplash"
                 android:visibility="gone"
