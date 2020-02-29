@@ -59,7 +59,7 @@ public class MeFragment extends Fragment {
     TextView sexe;
     private String userID;
     private String prenom;
-    ImageButton setupButton;
+    TextView TextChange;
     ProgressBar progressBar;
     TextView paysView;
     private RecyclerView mRecyclerView;
@@ -101,9 +101,9 @@ public class MeFragment extends Fragment {
         mRecyclerView.setNestedScrollingEnabled(false);
         //
         progressBar = v.findViewById(R.id.progressBar);
-        setupButton = v.findViewById(R.id.setupButton);
+        TextChange = v.findViewById(R.id.TextChange);
         //setupButton.setVisibility(View.INVISIBLE);
-        setupButton.setOnClickListener(new View.OnClickListener() {
+        TextChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);

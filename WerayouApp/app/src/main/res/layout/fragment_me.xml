@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="24dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="24dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -46,16 +46,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
-                            <ImageButton
-                                android:id="@+id/setupButton"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:background="@drawable/background_add_image_profil"
-                                android:elevation="3dp"
-                                android:src="@drawable/ic_edit"
-                                android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardView2"
-                                app:layout_constraintEnd_toEndOf="@+id/cardView2" />
+<!--                            <ImageButton-->
+<!--                                android:id="@+id/setupButton"-->
+<!--                                android:layout_width="50dp"-->
+<!--                                android:layout_height="50dp"-->
+<!--                                android:background="@drawable/background_add_image_profil"-->
+<!--                                android:elevation="3dp"-->
+<!--                                android:src="@drawable/ic_edit"-->
+<!--                                android:visibility="invisible"-->
+<!--                                app:layout_constraintBottom_toBottomOf="@+id/cardView2"-->
+<!--                                app:layout_constraintEnd_toEndOf="@+id/cardView2" />-->
 
                             <ImageView
                                 android:id="@+id/cardView2"
@@ -70,6 +70,30 @@
                                 app:layout_constraintVertical_bias="1.0"
                                 app:srcCompat="@drawable/wesplash" />
 
+                            <ImageView
+                                android:id="@+id/imageView"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:srcCompat="@drawable/backgound" />
+
+                            <TextView
+                                android:id="@+id/TextChange"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="modifier"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:theme="@style/SpinnerThemeWhite"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="@+id/imageView"
+                                tools:textColor="@color/white" />
+
                             <ProgressBar
                                 android:id="@+id/progressBar"
                                 style="?android:attr/progressBarStyle"
@@ -79,6 +103,7 @@
                                 app:layout_constraintEnd_toEndOf="@+id/cardView2"
                                 app:layout_constraintStart_toStartOf="@+id/cardView2"
                                 app:layout_constraintTop_toTopOf="@+id/cardView2" />
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
 
