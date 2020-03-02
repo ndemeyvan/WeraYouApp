@@ -31,7 +31,7 @@ public class SplashcreenActivity extends AppCompatActivity {
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -41,13 +41,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 new NotificationCompat.Builder(this, "WERAYOUCHANNEL")
                         .setContentTitle(title)
                         .setContentText(body)
-                        .setSmallIcon(R.drawable.welogo);
+                        .setSmallIcon(R.drawable.welogo)
+                        .setAutoCancel(true);
 
         Intent intent = null;
         if (type.equals("chat_notification")) {
             intent = new Intent(this, ChatActivity.class);
             intent.putExtra("id", id);
-
         } else if (type.equals("post_notification")){
             intent = new Intent(this, DetailPhotoActivity.class);
             intent.putExtra("id_post", id_post);
@@ -65,6 +65,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         notificationBuilder.setContentIntent(pendingIntent);
+
 
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

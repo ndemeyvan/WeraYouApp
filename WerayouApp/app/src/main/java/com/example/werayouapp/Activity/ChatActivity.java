@@ -48,6 +48,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -106,6 +107,7 @@ public class ChatActivity extends AppCompatActivity {
     TextView user_status;
     RequestQueue requestQueue;
     String URL = "https://fcm.googleapis.com/fcm/send";
+    FirebaseMessaging messaging;
 
 
 
@@ -129,6 +131,8 @@ public class ChatActivity extends AppCompatActivity {
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
+        FirebaseMessaging.getInstance();
+        messaging.unsubscribeFromTopic(userID);
         //
         mRecyclerView = findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -193,10 +197,10 @@ public class ChatActivity extends AppCompatActivity {
                 JSONObject json = new JSONObject();
                 try {
                 //json.put("to","/topics/"+id_user);
-                    json.put("to","/topics/"+"news");
+                    json.put("to","/topics/"+id_user);
 
                     JSONObject notificationObj = new JSONObject();
-                    notificationObj.put("title","news message");
+                    notificationObj.put("title","Message");
                     notificationObj.put("body","any body");
 
                     JSONObject extraData = new JSONObject();
@@ -705,18 +709,30 @@ public class ChatActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         setStatus("offline");
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setStatus("online");
+        FirebaseMessaging.getInstance().subscribeToTopic("");
+
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         setStatus("online");
+        FirebaseMessaging.getInstance().subscribeToTopic("");
+
     }
 
 }

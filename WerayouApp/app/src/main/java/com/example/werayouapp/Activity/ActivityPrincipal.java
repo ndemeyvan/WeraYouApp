@@ -29,6 +29,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -188,24 +189,32 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     protected void onPause() {
         super.onPause();
         setStatus("offline");
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setStatus("online");
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         setStatus("online");
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         setStatus("offline");
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+
     }
 
     /*private void loadFragment(Fragment fragment) {

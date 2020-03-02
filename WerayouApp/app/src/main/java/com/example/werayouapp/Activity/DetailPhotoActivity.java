@@ -98,6 +98,8 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
     boolean islike;
     RequestQueue requestQueue;
     String URL = "https://fcm.googleapis.com/fcm/send";
+    private String notificationName;
+    private String commentaire;
 
 
     @Override
@@ -594,7 +596,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         send_comment_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String commentaire = comment_edittext.getText().toString();
+                 commentaire = comment_edittext.getText().toString();
                 String key = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child("posts").child(id_post).child("commentaires").push().getKey();
 
                 if (!TextUtils.isEmpty(commentaire)) {
@@ -625,11 +627,11 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                     JSONObject json = new JSONObject();
                     try {
                         //json.put("to","/topics/"+id_user);
-                        json.put("to", "/topics/" + "news");
+                        json.put("to", "/topics/" + id_user);
 
                         JSONObject notificationObj = new JSONObject();
-                        notificationObj.put("title", "news cpmment");
-                        notificationObj.put("body", "any body");
+                        notificationObj.put("title", notificationName+" a commenté votre publication");
+                        notificationObj.put("body", commentaire);
 
                         JSONObject extraData = new JSONObject();
                         extraData.put("id_recepteur", "");

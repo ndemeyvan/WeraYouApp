@@ -113,7 +113,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                 JSONObject json = new JSONObject();
                 try {
                     //json.put("to","/topics/"+id_user);
-                    json.put("to","/topics/"+"news");
+                    json.put("to","/topics/"+id_user);
 
                     JSONObject notificationObj = new JSONObject();
                     notificationObj.put("title","news cpmment");
