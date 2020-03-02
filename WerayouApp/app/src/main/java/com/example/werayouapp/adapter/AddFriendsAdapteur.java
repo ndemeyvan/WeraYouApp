@@ -2,6 +2,7 @@ package com.example.werayouapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.werayouapp.Activity.ProfilActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.FriendsModel;
@@ -31,6 +39,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -38,6 +49,8 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.ViewHolder> {
     String id_user;
@@ -47,6 +60,8 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
     private String prenom;
     private String userID;
     FirebaseAuth user;
+    RequestQueue requestQueue;
+    String URL = "https://fcm.googleapis.com/fcm/send";
 
     public AddFriendsAdapteur(List<FriendsModel> friendsModelList, Context context) {
         this.friendsModelList = friendsModelList;
@@ -57,6 +72,8 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
     @Override
     public AddFriendsAdapteur.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
+        requestQueue= Volley.newRequestQueue(context);
+
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.add_friends_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
@@ -91,6 +108,55 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
             @Override
             public void onClick(View view) {
                 accpet();
+
+                //send notification
+                JSONObject json = new JSONObject();
+                try {
+                    //json.put("to","/topics/"+id_user);
+                    json.put("to","/topics/"+"news");
+
+                    JSONObject notificationObj = new JSONObject();
+                    notificationObj.put("title","news cpmment");
+                    notificationObj.put("body","any body");
+
+                    JSONObject extraData = new JSONObject();
+                    extraData.put("id",userID);
+                    extraData.put("type","new_friends_notification");
+                    extraData.put("postID","");
+
+                    json.put("notification",notificationObj);
+                    json.put("data",extraData);
+
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                            json,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+
+                                    Log.d("MUR", "onResponse: ");
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("MUR", "onError: "+error.networkResponse);
+                        }
+                    }
+                    ){
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String,String> header = new HashMap<>();
+                            header.put("content-type","application/json");
+                            header.put("authorization","key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
+                            return header;
+                        }
+                    };
+                    requestQueue.add(request);
+                }
+                catch (JSONException e)
+
+                {
+                    e.printStackTrace();
+                }
             }
         });
 

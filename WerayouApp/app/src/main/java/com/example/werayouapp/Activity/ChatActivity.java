@@ -192,7 +192,7 @@ public class ChatActivity extends AppCompatActivity {
                 //send notification
                 JSONObject json = new JSONObject();
                 try {
-//                    json.put("to","/topics/"+id_user);
+                //json.put("to","/topics/"+id_user);
                     json.put("to","/topics/"+"news");
 
                     JSONObject notificationObj = new JSONObject();
@@ -204,11 +204,8 @@ public class ChatActivity extends AppCompatActivity {
                     extraData.put("type","chat_notification");
                     extraData.put("postID","");
 
-
-
                     json.put("notification",notificationObj);
                     json.put("data",extraData);
-
 
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
                             json,
