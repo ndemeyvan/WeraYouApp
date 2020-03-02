@@ -23,10 +23,17 @@ import android.widget.Magnifier;
 
 import com.bumptech.glide.Glide;
 import com.example.werayouapp.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DetailImageChat extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //
@@ -168,5 +175,38 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    void setStatus(String status){
+        Map<String, Object> user_data = new HashMap<>();
+        user_data.put("isOnline", status);
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                //startActivity(intent);
+                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setStatus("offline");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatus("online");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setStatus("online");
     }
 }

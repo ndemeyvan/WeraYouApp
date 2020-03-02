@@ -68,6 +68,8 @@ public class ProfilActivity extends AppCompatActivity {
     Button addButton;
     Button deniedButton;
     boolean isFriend;
+    //
+    String userID;
 
 
     @Override
@@ -91,6 +93,10 @@ public class ProfilActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         addButton = findViewById(R.id.addButton);
         deniedButton = findViewById(R.id.deniedButton);
+        //
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
+        //
         //
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ProfilActivity.this, 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -424,5 +430,38 @@ public class ProfilActivity extends AppCompatActivity {
 
     void makeToast(String msg) {
         Toast.makeText(ProfilActivity.this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    void setStatus(String status){
+        Map<String, Object> user_data = new HashMap<>();
+        user_data.put("isOnline", status);
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                //startActivity(intent);
+                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setStatus("offline");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatus("online");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setStatus("online");
     }
 }
