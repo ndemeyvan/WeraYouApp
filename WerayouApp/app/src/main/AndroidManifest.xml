@@ -12,6 +12,13 @@
         android:roundIcon="@drawable/welogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".Utiles.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <activity android:name=".login.OtpActivity"></activity>
         <activity android:name=".intro.WelcomeActivity" />
         <activity android:name=".Activity.DetailImageChat" />
@@ -38,6 +45,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

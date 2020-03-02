@@ -74,11 +74,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
         <ImageButton
+            android:elevation="10dp"
             android:id="@+id/emojiButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/background_add_image_profil"
-            android:elevation="3dp"
             android:src="@drawable/ic_emoji"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/cardView2"
@@ -87,7 +87,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            >
             <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="50dp"

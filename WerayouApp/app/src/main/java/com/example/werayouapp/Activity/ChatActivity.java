@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
@@ -24,6 +25,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.werayouapp.R;
 import com.example.werayouapp.UtilsForChat.ChatAdapter;
 import com.example.werayouapp.UtilsForChat.DisplayAllChat;
@@ -46,6 +54,9 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -93,6 +104,9 @@ public class ChatActivity extends AppCompatActivity {
     View rootview;
     EmojIconActions emojIcon;
     TextView user_status;
+    RequestQueue requestQueue;
+    String URL = "https://fcm.googleapis.com/fcm/send";
+
 
 
     @Override
@@ -152,7 +166,7 @@ public class ChatActivity extends AppCompatActivity {
         //emodi
         //appel de fonction
         getUserData();
-
+        requestQueue= Volley.newRequestQueue(this);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,7 +189,60 @@ public class ChatActivity extends AppCompatActivity {
                     sendMessageWithImageAndMessage(userID, id_user, msg);
 
                 }
+                //send notification
+                JSONObject json = new JSONObject();
+                try {
+//                    json.put("to","/topics/"+id_user);
+                    json.put("to","/topics/"+"news");
+
+                    JSONObject notificationObj = new JSONObject();
+                    notificationObj.put("title","news message");
+                    notificationObj.put("body","any body");
+
+                    JSONObject extraData = new JSONObject();
+                    extraData.put("id",userID);
+                    extraData.put("type","chat_notification");
+                    extraData.put("postID","");
+
+
+
+                    json.put("notification",notificationObj);
+                    json.put("data",extraData);
+
+
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                            json,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+
+                                    Log.d("MUR", "onResponse: ");
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("MUR", "onError: "+error.networkResponse);
+                        }
+                    }
+                    ){
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String,String> header = new HashMap<>();
+                            header.put("content-type","application/json");
+                            header.put("authorization","key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
+                            return header;
+                        }
+                    };
+                    requestQueue.add(request);
+                }
+                catch (JSONException e)
+
+                {
+                    e.printStackTrace();
+                }
             }
+
+
         });
 
         imageButton.setOnClickListener(new View.OnClickListener() {

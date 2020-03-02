@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +27,11 @@ public class SplashcreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashcreen);
+
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
-        //
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
