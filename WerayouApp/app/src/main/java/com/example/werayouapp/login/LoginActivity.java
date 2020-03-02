@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.hbb20.CCPCountry;
 import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
 
-    private EditText mCountryCode;
+    private CountryCodePicker mCountryCode;
     private EditText mPhoneNumber;
 
     private Button mGenerateBtn;
@@ -42,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextView mLoginFeedbackText;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private String number;
+    private String countryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +63,9 @@ public class LoginActivity extends AppCompatActivity {
         mGenerateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String country_code = mCountryCode.getText().toString();
+                String country_code = mCountryCode.getFullNumberWithPlus();
                 String phone_number = mPhoneNumber.getText().toString();
-
+                 countryName = mCountryCode.getSelectedCountryName();
                 String complete_phone_number = "+" + country_code + phone_number;
 
                 if (country_code.isEmpty() || phone_number.isEmpty()) {
@@ -106,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void run() {
                                 Intent otpIntent = new Intent(LoginActivity.this, OtpActivity.class);
                                 otpIntent.putExtra("AuthCredentials", s);
+                                otpIntent.putExtra("country", countryName);
                                 startActivity(otpIntent);
                                 finish();
                             }
@@ -131,14 +135,13 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-//                            sendUserToHome();
-
+                            sendUserToHome();
                             // ...
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
                                 mLoginFeedbackText.setVisibility(View.VISIBLE);
-                                mLoginFeedbackText.setText("There was an error verifying OTP");
+                                mLoginFeedbackText.setText("Une erreur est survenu lors de la verification");
                             }
                         }
                         mLoginProgress.setVisibility(View.INVISIBLE);

@@ -42,6 +42,7 @@ public class OtpActivity extends AppCompatActivity {
     private ProgressBar mOtpProgress;
 
     private TextView mOtpFeedback;
+    private String country;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class OtpActivity extends AppCompatActivity {
         mCurrentUser = mAuth.getCurrentUser();
 
         mAuthVerificationId = getIntent().getStringExtra("AuthCredentials");
+        country = getIntent().getStringExtra("country");
+
 
         mOtpFeedback = findViewById(R.id.otp_form_feedback);
         mOtpProgress = findViewById(R.id.otp_progress_bar);
@@ -116,6 +119,8 @@ public class OtpActivity extends AppCompatActivity {
 
     public void sendUserToHome() {
         Intent homeIntent = new Intent(OtpActivity.this, SetupActivity.class);
+        homeIntent.putExtra("country", country);
+
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);
