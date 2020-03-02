@@ -429,6 +429,8 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         user_data.put("forfait", "gratuit");
         user_data.put("id", userID);
         user_data.put("apropos", apropos);
+        user_data.put("isOnline", "true");
+
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -460,6 +462,8 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         user_data.put("forfait", "gratuit");
         user_data.put("id", userID);
         user_data.put("apropos", apropos);
+        user_data.put("isOnline", "true");
+
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
