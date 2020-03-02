@@ -9,6 +9,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.example.werayouapp.Activity.ActivityPrincipal;
 import com.example.werayouapp.Activity.ChatActivity;
 import com.example.werayouapp.Activity.DetailPhotoActivity;
 import com.example.werayouapp.R;
@@ -28,8 +29,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Map<String, String> extraData = remoteMessage.getData();
 
-        String expID = extraData.get("id");
+        String id = extraData.get("id_user");
         String type = extraData.get("type");
+        String id_post = extraData.get("id_post");
+        String id_user = extraData.get("id_user");
+        String description = extraData.get("description");
+        String image = extraData.get("image");
+        String date = extraData.get("date");
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, "WERAYOUCHANNEL")
@@ -37,13 +43,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentText(body)
                         .setSmallIcon(R.drawable.welogo);
 
-        Intent intent;
+        Intent intent = null;
         if (type.equals("chat_notification")) {
             intent = new Intent(this, ChatActivity.class);
-            intent.putExtra("id", expID);
+            intent.putExtra("id", id);
 
-        } else {
+        } else if (type.equals("post_notification")){
             intent = new Intent(this, DetailPhotoActivity.class);
+            intent.putExtra("id_post", id_post);
+            intent.putExtra("id_user", id_user);
+            intent.putExtra("description", description);
+            intent.putExtra("image", image);
+            intent.putExtra("date", date);
+
+
+        } else if (type.equals("new_friends_notification")){
+            intent = new Intent(this, ActivityPrincipal.class);
         }
 
 
@@ -55,13 +70,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 
-        int id = (int) System.currentTimeMillis();
+        int idNotification = (int) System.currentTimeMillis();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("WERAYOUCHANNEL", "demo", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
-        notificationManager.notify(id, notificationBuilder.build());
+        notificationManager.notify(idNotification, notificationBuilder.build());
 
     }
 }

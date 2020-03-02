@@ -200,9 +200,13 @@ public class ChatActivity extends AppCompatActivity {
                     notificationObj.put("body","any body");
 
                     JSONObject extraData = new JSONObject();
-                    extraData.put("id",userID);
+                    extraData.put("id_recepteur",id_user);
                     extraData.put("type","chat_notification");
-                    extraData.put("postID","");
+                    extraData.put("id_post","");
+                    extraData.put("id_user", userID);
+                    extraData.put("description", "");
+                    extraData.put("image", "");
+                    extraData.put("date", "");
 
                     json.put("notification",notificationObj);
                     json.put("data",extraData);

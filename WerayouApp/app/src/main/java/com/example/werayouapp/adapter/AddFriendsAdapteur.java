@@ -120,9 +120,13 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                     notificationObj.put("body","any body");
 
                     JSONObject extraData = new JSONObject();
-                    extraData.put("id",userID);
+                    extraData.put("id_recepteur","");
                     extraData.put("type","new_friends_notification");
-                    extraData.put("postID","");
+                    extraData.put("id_post","");
+                    extraData.put("id_user", "");
+                    extraData.put("description", "");
+                    extraData.put("image", "");
+                    extraData.put("date", "");
 
                     json.put("notification",notificationObj);
                     json.put("data",extraData);
