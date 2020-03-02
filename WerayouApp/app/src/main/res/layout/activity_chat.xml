@@ -30,18 +30,35 @@
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent" />
 
-          <TextView
-              android:id="@+id/nom_profil"
-              android:layout_width="wrap_content"
+          <LinearLayout
+              android:layout_width="0dp"
               android:layout_height="wrap_content"
-              android:layout_marginStart="8dp"
-              android:text="werayou"
-              android:textColor="@color/white"
-              android:textSize="14sp"
-              android:textStyle="bold"
-              app:layout_constraintBottom_toBottomOf="@+id/profil_image"
+              android:orientation="vertical"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintStart_toEndOf="@+id/profil_image"
-              app:layout_constraintTop_toTopOf="@+id/profil_image" />
+              app:layout_constraintTop_toTopOf="parent">
+
+              <TextView
+                  android:id="@+id/nom_profil"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="werayou"
+                  android:textColor="@color/white"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+
+              <TextView
+                  android:id="@+id/user_status"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="werayou"
+                  android:textColor="@color/white"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
+          </LinearLayout>
       </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 

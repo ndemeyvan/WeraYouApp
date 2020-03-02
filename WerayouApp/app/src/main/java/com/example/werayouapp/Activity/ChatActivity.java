@@ -92,6 +92,7 @@ public class ChatActivity extends AppCompatActivity {
     ProgressDialog dialog;
     View rootview;
     EmojIconActions emojIcon;
+    TextView user_status;
 
 
     @Override
@@ -110,6 +111,7 @@ public class ChatActivity extends AppCompatActivity {
         imageButton = findViewById(R.id.imageButton);
         imageToSend = findViewById(R.id.imageToSend);
         emojiButton = findViewById(R.id.emojiButton);
+        user_status=findViewById(R.id.user_status);
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
@@ -380,6 +382,15 @@ public class ChatActivity extends AppCompatActivity {
                                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                                 nom_profil.setText(prenomFinal + " " + nomFinal);
                                 toolbar.setTitle("Publication de " + prenomFinal + " " + nomFinal);
+                            }
+                            if (map.get("isOnline") != null) {
+
+                                String status = map.get("isOnline").toString();
+                                if (status.equals("true")){
+                                    user_status.setText("online");
+                                }else{
+                                    user_status.setText("offline");
+                                }
                             }
                             if (map.get("image") != null) {
                                 String profileImageUrl = map.get("image").toString();
