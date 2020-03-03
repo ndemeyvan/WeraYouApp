@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -57,18 +58,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         final String image = modelChat.getImage();
         String type = modelChat.getType();
         if (type.equals("message")){
+            viewHolder.message.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
             viewHolder.message.setText ( modelChat.getMessage () );
             viewHolder.imageChat.setVisibility(View.GONE);
         }else if (type.equals("image")){
             viewHolder.message.setVisibility(View.GONE);
             Picasso.with(context).load(image).into(viewHolder.imageChat);
             viewHolder.imageChat.setVisibility(View.VISIBLE);
+            viewHolder.imageChat.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
 
         } else if (type.equals("msgAndImage")) {
             viewHolder.message.setVisibility(View.VISIBLE);
+            viewHolder.message.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
             viewHolder.message.setText ( modelChat.getMessage () );
             Picasso.with(context).load(image).into(viewHolder.imageChat);
             viewHolder.imageChat.setVisibility(View.VISIBLE);
+            viewHolder.imageChat.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
         }
 
         viewHolder.imageChat.setOnClickListener(new View.OnClickListener() {
