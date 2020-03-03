@@ -140,10 +140,10 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isFriend == false) {
-                    makeToast("vous n'etes pas amies vous pouvez refuser vous pouvez refuser sa demande");
+                    //makeToast("vous n'etes pas amies vous pouvez refuser vous pouvez refuser sa demande");
                     reject();
                 } else {
-                    makeToast("vous etes  amies et vous pouvez la bloquer");
+                    //makeToast("vous etes  amies et vous pouvez la bloquer");
                     // blockUser();
                 }
             }

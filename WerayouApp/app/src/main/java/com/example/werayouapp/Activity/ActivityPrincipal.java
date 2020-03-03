@@ -63,9 +63,11 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         toolbar = findViewById(R.id.toolbar);
         toobarTitle = findViewById(R.id.toobarTitle);
         toobarTitle.setText("Werayou");
+
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
         //
 
         // this.createNavItems();

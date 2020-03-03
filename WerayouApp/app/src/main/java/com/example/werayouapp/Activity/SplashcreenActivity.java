@@ -29,9 +29,9 @@ public class SplashcreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splashcreen);
 
         //
-        user = FirebaseAuth.getInstance();
-        userID = user.getCurrentUser().getUid();
-        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+//        user = FirebaseAuth.getInstance();
+//        userID = user.getCurrentUser().getUid();
+//        FirebaseMessaging.getInstance().subscribeToTopic(userID);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -44,39 +44,39 @@ public class SplashcreenActivity extends AppCompatActivity {
 
     }
 
-    void setStatus(String status){
-        Map<String, Object> user_data = new HashMap<>();
-        user_data.put("isOnline", status);
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                //startActivity(intent);
-                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-                finish();
-
-            }
-        });
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        setStatus("offline");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setStatus("online");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        setStatus("online");
-    }
+//    void setStatus(String status){
+//        Map<String, Object> user_data = new HashMap<>();
+//        user_data.put("isOnline", status);
+//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+//                //startActivity(intent);
+//                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+//                finish();
+//
+//            }
+//        });
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        setStatus("offline");
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        setStatus("online");
+//    }
+//
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        setStatus("online");
+//    }
 
 
 }

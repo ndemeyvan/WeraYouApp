@@ -143,6 +143,8 @@ public class MeFragment extends Fragment {
                     Post post = postSnapshot.getValue(Post.class);
                     postList.add(post);
                     progressBarTwo.setVisibility(View.INVISIBLE);
+                    aucun_post.setVisibility(View.INVISIBLE);
+
                 }
                 if (postList.size() == 0) {
                     aucun_post.setVisibility(View.VISIBLE);

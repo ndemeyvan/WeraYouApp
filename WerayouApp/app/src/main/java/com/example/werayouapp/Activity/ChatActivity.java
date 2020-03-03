@@ -107,7 +107,6 @@ public class ChatActivity extends AppCompatActivity {
     TextView user_status;
     RequestQueue requestQueue;
     String URL = "https://fcm.googleapis.com/fcm/send";
-    FirebaseMessaging messaging;
 
 
 
@@ -131,8 +130,8 @@ public class ChatActivity extends AppCompatActivity {
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
-        FirebaseMessaging.getInstance();
-        messaging.unsubscribeFromTopic(userID);
+        String topic = "news";
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(userID);
         //
         mRecyclerView = findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -709,21 +708,21 @@ public class ChatActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         setStatus("offline");
-        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+//        FirebaseMessaging.getInstance().subscribeToTopic(userID);
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+//        FirebaseMessaging.getInstance().subscribeToTopic(userID);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setStatus("online");
-        FirebaseMessaging.getInstance().subscribeToTopic("");
+//        FirebaseMessaging.getInstance().subscribeToTopic("");
 
     }
 
@@ -731,7 +730,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         setStatus("online");
-        FirebaseMessaging.getInstance().subscribeToTopic("");
+//        FirebaseMessaging.getInstance().subscribeToTopic("");
 
     }
 

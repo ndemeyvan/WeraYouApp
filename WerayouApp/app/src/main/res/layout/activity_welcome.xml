@@ -31,20 +31,20 @@
         android:id="@+id/btn_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:background="@null"
         android:text="next"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/btn_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
         android:background="@null"
         android:text="passer"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/black" />
 
 </RelativeLayout>
