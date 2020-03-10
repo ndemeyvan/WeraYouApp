@@ -51,7 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * A simple {@link Fragment} subclass.
  */
 public class MeFragment extends Fragment {
-    FirebaseAuth user;
+
     String userSex;
     ImageView cardView2;
     private DatabaseReference usersDb;
@@ -62,6 +62,7 @@ public class MeFragment extends Fragment {
     private String profileImageUrl;
     TextView cherche;
     TextView sexe;
+    FirebaseAuth user;
     private String userID;
     private String prenom;
     TextView TextChange;

@@ -67,7 +67,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         toobarTitle = findViewById(R.id.toobarTitle);
         mCountryCode = findViewById(R.id.country_code_text);
         toobarTitle.setText("Werayou");
-
+        HomeFragment homeFragment = new HomeFragment();
 
         //
         user = FirebaseAuth.getInstance();
@@ -94,10 +94,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             switch (item.getItemId()) {
                 case R.id.home:
                     toobarTitle.setText("Werayou");
-                    Bundle bundle = new Bundle();
-                    bundle.putString("country", mCountryCode.getSelectedCountryName());
                     fragment = new HomeFragment();
-                    fragment.setArguments(bundle);
                     loadFragment(fragment);
                     mCountryCode.setVisibility(View.VISIBLE);
                     return true;
