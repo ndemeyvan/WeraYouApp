@@ -46,6 +46,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     FirebaseAuth user;
     String userID;
     CountryCodePicker mCountryCode;
+    FragmentCommunicator fragmentCommunicator;
 
     //implements AHBottomNavigation.OnTabSelectedListener
 
@@ -68,7 +69,12 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         mCountryCode = findViewById(R.id.country_code_text);
         toobarTitle.setText("Werayou");
         HomeFragment homeFragment = new HomeFragment();
-
+        mCountryCode.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                fragmentCommunicator.passData(mCountryCode.getSelectedCountryName());
+            }
+        });
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
@@ -79,10 +85,19 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     }
 
+    public void passVal(FragmentCommunicator fragmentCommunicator) {
+        this.fragmentCommunicator = fragmentCommunicator;
+    }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    public interface FragmentCommunicator {
+        public void passData(String name);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

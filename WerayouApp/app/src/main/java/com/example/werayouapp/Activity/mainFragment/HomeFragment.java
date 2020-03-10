@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.werayouapp.Activity.ActivityPrincipal;
 import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.ArrayAdapter;
 import com.example.werayouapp.model.Cards;
@@ -30,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +42,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment  {
     View v;
     Cards cards[];
     private com.example.werayouapp.adapter.ArrayAdapter arrayAdapter;
@@ -55,6 +58,7 @@ public class HomeFragment extends Fragment {
     ImageView right;
     ImageView left;
     Cards obj;
+    String contry;
     //ProgressDialog dialog;
     //
     private String userSex;
@@ -75,12 +79,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         v = inflater.inflate(R.layout.fragment_home2, container, false);
         user = FirebaseAuth.getInstance();
         currentUser = user.getCurrentUser().getUid();
         messageDeDernierCards = v.findViewById(R.id.messageDeDernierCards);
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
-        checkUserSex();
+        getUserData();
         right = v.findViewById(R.id.right);
         left = v.findViewById(R.id.leftButton);
         rowsItems = new ArrayList<Cards>();
@@ -89,7 +94,6 @@ public class HomeFragment extends Fragment {
         flingContainer.setAdapter(arrayAdapter);
         progressBar = v.findViewById(R.id.progressBar);
         // dialog = ProgressDialog.show(getActivity(), "","Loading. Please wait...", true);
-
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -226,6 +230,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        ((ActivityPrincipal) getActivity()).passVal(new ActivityPrincipal.FragmentCommunicator() {
+            @Override
+            public void passData(String name) {
+                Toast.makeText(getContext(), name.toLowerCase(), Toast.LENGTH_SHORT).show();
+                contry=name.toLowerCase();
+                checkUserSex();
+            }
+        });
+
 
         return v;
     }
@@ -256,7 +269,6 @@ public class HomeFragment extends Fragment {
                                 getTwoUsersSex();
                                 break;
                         }
-                        //getOppositeSexUsers();
                     }
                 }
             }
@@ -268,14 +280,13 @@ public class HomeFragment extends Fragment {
         });
     }
 
-
     public void getOppositeSexUsers() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)&& dataSnapshot.child("pays").getValue().toString().equals(contry)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
@@ -319,7 +330,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser)&& dataSnapshot.child("pays").getValue().toString().equals(contry)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
@@ -361,6 +372,64 @@ public class HomeFragment extends Fragment {
     static void makeToast(Context ctx, String s) {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
+
+    ///recupere les information de l'utilisateur
+    public void getUserData() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
+                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        data(dataSnapshot);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                data(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+    }
+
+    void data(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+            if (map.get("pays") != null) {
+                 contry = map.get("pays").toString();
+                 checkUserSex();
+            }
+            //
+        }
+
+    }
+
 
 
 }
