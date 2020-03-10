@@ -64,7 +64,8 @@
         app:titleTextColor="@color/white">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center_horizontal">
 
             <TextView
                 android:id="@+id/toobarTitle"
@@ -79,6 +80,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/country_code_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                app:ccp_contentColor="@color/white"
+                app:ccp_defaultNameCode="CM"
+                app:ccp_showFlag="true"
+                app:ccp_showFullName="true"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toobarTitle"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 </androidx.constraintlayout.widget.ConstraintLayout>

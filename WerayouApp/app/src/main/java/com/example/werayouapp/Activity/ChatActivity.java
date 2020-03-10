@@ -324,7 +324,7 @@ public class ChatActivity extends AppCompatActivity {
         }
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         String date = saveCurrentDate;
         final HashMap<String, Object> messageMap = new HashMap<>();
@@ -383,7 +383,7 @@ public class ChatActivity extends AppCompatActivity {
         }
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         String date = saveCurrentDate;
         final HashMap<String, Object> messageMap = new HashMap<>();
@@ -545,7 +545,7 @@ public class ChatActivity extends AppCompatActivity {
 
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         String date = saveCurrentDate;
         final HashMap<String, Object> messageMap = new HashMap<>();
@@ -566,6 +566,7 @@ public class ChatActivity extends AppCompatActivity {
         contact.setId_recepteur(recepteur);
         contact.setId_expediteur(expediteur);
         contact.setDernier_message(message);
+        contact.setIsnew("non");
         //
         reference.child("dernier_message")
                 .child(expediteur)
@@ -579,6 +580,7 @@ public class ChatActivity extends AppCompatActivity {
                         contact.setId_recepteur(expediteur);
                         contact.setId_expediteur(recepteur);
                         contact.setDernier_message(message);
+                        contact.setIsnew("oui");
                         //
                         reference.child("dernier_message")
                                 .child(recepteur)

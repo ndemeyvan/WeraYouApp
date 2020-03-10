@@ -27,14 +27,14 @@
         android:id="@+id/cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:visibility="visible"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/show_message">
+        app:layout_constraintTop_toBottomOf="@+id/dateTime">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -55,6 +55,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:id="@+id/dateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="date "
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/show_message"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/show_message"
+        app:layout_constraintTop_toBottomOf="@+id/show_message" />
 
 
 

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.hbb20.CountryCodePicker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +45,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     //
     FirebaseAuth user;
     String userID;
+    CountryCodePicker mCountryCode;
 
     //implements AHBottomNavigation.OnTabSelectedListener
 
@@ -62,7 +65,9 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         //bottomNavigation.setOnTabSelectedListener(this);
         toolbar = findViewById(R.id.toolbar);
         toobarTitle = findViewById(R.id.toobarTitle);
+        mCountryCode = findViewById(R.id.country_code_text);
         toobarTitle.setText("Werayou");
+
 
         //
         user = FirebaseAuth.getInstance();
@@ -89,25 +94,34 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             switch (item.getItemId()) {
                 case R.id.home:
                     toobarTitle.setText("Werayou");
+                    Bundle bundle = new Bundle();
+                    bundle.putString("country", mCountryCode.getSelectedCountryName());
                     fragment = new HomeFragment();
+                    fragment.setArguments(bundle);
                     loadFragment(fragment);
+                    mCountryCode.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.friends:
+                    mCountryCode.setVisibility(View.INVISIBLE);
                     toobarTitle.setText("+ d'amis");
                     fragment = new FriendsFragment();
                     loadFragment(fragment);
+
                     return true;
                 case R.id.amies:
+                    mCountryCode.setVisibility(View.INVISIBLE);
                     toobarTitle.setText("mes amis");
                     fragment = new MyFriendFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.message:
+                    mCountryCode.setVisibility(View.INVISIBLE);
                     toobarTitle.setText("Message");
                     fragment = new MessageFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.me:
+                    mCountryCode.setVisibility(View.INVISIBLE);
                     toobarTitle.setText("Moi");
                     fragment = new MeFragment();
                     loadFragment(fragment);

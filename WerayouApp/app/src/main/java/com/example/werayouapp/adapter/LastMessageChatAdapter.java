@@ -66,6 +66,10 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
         userID = user.getCurrentUser().getUid();
         final String id = lastMessageModelList.get(i).getId_recepteur();
         String dernier_message = lastMessageModelList.get(i).getDernier_message();
+        String isnew = lastMessageModelList.get(i).getIsnew();
+        if (isnew.equals("oui")){
+            holder.isnewmessage.setVisibility(View.VISIBLE);
+        }
         holder.createdDate.setVisibility(View.GONE);
         if (dernier_message.equals("image")) {
             holder.image.setVisibility(View.VISIBLE);
@@ -74,7 +78,6 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
             holder.commentaire.setText(dernier_message);
             holder.commentaire.setVisibility(View.VISIBLE);
             holder.image.setVisibility(View.INVISIBLE);
-
         }
         holder.layout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_simple));
         holder.profil_image.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +183,7 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
         TextView createdDate;
         ConstraintLayout layout;
         ImageView image;
-
+        CircleImageView  isnewmessage;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -191,6 +194,7 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
             createdDate = itemView.findViewById(R.id.createdDate);
             image = itemView.findViewById(R.id.image);
             layout = itemView.findViewById(R.id.layout);
+            isnewmessage=itemView.findViewById(R.id.isnewmessage);
         }
 
     }

@@ -6,16 +6,18 @@ public class DisplayAllChat {
     String id_expediteur;
     String id_recepteur;
     String dernier_message;
+    String isnew;
 
     public DisplayAllChat() {
 
     }
 
-    public DisplayAllChat(String date, String id_expediteur, String id_recepteur, String dernier_message) {
+    public DisplayAllChat(String date, String id_expediteur, String id_recepteur, String dernier_message, String isnew) {
         this.date = date;
         this.id_expediteur = id_expediteur;
         this.id_recepteur = id_recepteur;
         this.dernier_message = dernier_message;
+        this.isnew = isnew;
     }
 
     public String getDate() {
@@ -48,5 +50,13 @@ public class DisplayAllChat {
 
     public void setDernier_message(String dernier_message) {
         this.dernier_message = dernier_message;
+    }
+
+    public String getIsnew() {
+        return isnew;
+    }
+
+    public void setIsnew(String isnew) {
+        this.isnew = isnew;
     }
 }
