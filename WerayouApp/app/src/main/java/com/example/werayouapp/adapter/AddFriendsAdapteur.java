@@ -72,7 +72,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
     @Override
     public AddFriendsAdapteur.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        requestQueue= Volley.newRequestQueue(context);
+        requestQueue = Volley.newRequestQueue(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.add_friends_item, parent, false);
@@ -113,23 +113,23 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                 JSONObject json = new JSONObject();
                 try {
                     //json.put("to","/topics/"+id_user);
-                    json.put("to","/topics/"+id_user);
+                    json.put("to", "/topics/" + id_user);
 
                     JSONObject notificationObj = new JSONObject();
-                    notificationObj.put("title","news cpmment");
-                    notificationObj.put("body","any body");
+                    notificationObj.put("title", "news cpmment");
+                    notificationObj.put("body", "any body");
 
                     JSONObject extraData = new JSONObject();
-                    extraData.put("id_recepteur","");
-                    extraData.put("type","new_friends_notification");
-                    extraData.put("id_post","");
+                    extraData.put("id_recepteur", "");
+                    extraData.put("type", "new_friends_notification");
+                    extraData.put("id_post", "");
                     extraData.put("id_user", "");
                     extraData.put("description", "");
                     extraData.put("image", "");
                     extraData.put("date", "");
 
-                    json.put("notification",notificationObj);
-                    json.put("data",extraData);
+                    json.put("notification", notificationObj);
+                    json.put("data", extraData);
 
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
                             json,
@@ -142,23 +142,20 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.d("MUR", "onError: "+error.networkResponse);
+                            Log.d("MUR", "onError: " + error.networkResponse);
                         }
                     }
-                    ){
+                    ) {
                         @Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String,String> header = new HashMap<>();
-                            header.put("content-type","application/json");
-                            header.put("authorization","key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
+                            Map<String, String> header = new HashMap<>();
+                            header.put("content-type", "application/json");
+                            header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
                             return header;
                         }
                     };
                     requestQueue.add(request);
-                }
-                catch (JSONException e)
-
-                {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

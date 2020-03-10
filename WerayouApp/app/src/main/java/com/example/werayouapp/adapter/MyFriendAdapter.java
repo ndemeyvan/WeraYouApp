@@ -2,6 +2,7 @@ package com.example.werayouapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,8 @@ import com.example.werayouapp.Activity.ChatActivity;
 import com.example.werayouapp.Activity.ProfilActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.MyFriendModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +32,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +48,8 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
     private FirebaseAuth user;
     private String userID;
     private DatabaseReference usersDb;
+    private boolean isLock;
+    private String id_user;
 
 
     public MyFriendAdapter(List<MyFriendModel> myFriendModelList, Context context) {
@@ -61,16 +70,22 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyFriendAdapter.ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull final MyFriendAdapter.ViewHolder holder, int i) {
+
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
-        final String id_user = myFriendModelList.get(i).getId();
+        id_user = myFriendModelList.get(i).getId();
+        checkifIsBlcoked(holder, userID);
         holder.writeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("id", id_user);
-                context.startActivity(intent);
+                if (isLock == true) {
+                    makeToast("Debloquer l'utilisateur d'abord");
+                } else {
+                    Intent intent = new Intent(context, ChatActivity.class);
+                    intent.putExtra("id", id_user);
+                    context.startActivity(intent);
+                }
             }
         });
         //
@@ -100,6 +115,12 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         holder.blockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //block user here
+                if (isLock == true) {
+                    unLock(holder);
+                } else {
+                    blockUser(holder);
+                }
 
 
             }
@@ -177,6 +198,88 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         });
 
 
+    }
+
+    void checkifIsBlcoked(final ViewHolder viewHolder, final String UserId) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(UserId).child("connections").child("bloquer");
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(UserId)) {
+                    viewHolder.blockButton.setText("Debloquer");
+                    isLock = true;
+                    viewHolder.writeButton.setBackgroundColor(Color.parseColor("#999999"));
+                    viewHolder.writeButton.setTextColor(Color.parseColor("#000000"));
+                } else {
+                    isLock = false;
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    void blockUser(final ViewHolder holder) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        final String date = saveCurrentDate;
+        final Map<String, String> user_data = new HashMap<>();
+        user_data.put("updatedDate", date);
+        user_data.put("id", id_user);
+        DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
+        boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                makeToast("bloquer");
+                isLock = true;
+            }
+        });
+    }
+
+    void unLock(final ViewHolder viewHolder) {
+        /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    snapshot.getRef().removeValue();
+                    makeToast("Debloquer");
+                    viewHolder.blockButton.setText("Bloquer");
+                    isLock = false;
+                    viewHolder.writeButton.setBackgroundColor(Color.parseColor("#4CAF50"));
+                    viewHolder.writeButton.setTextColor(Color.parseColor("#FFFFFF"));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    void makeToast(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
 

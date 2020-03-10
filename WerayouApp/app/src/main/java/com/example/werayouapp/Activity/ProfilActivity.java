@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -68,8 +70,10 @@ public class ProfilActivity extends AppCompatActivity {
     Button addButton;
     Button deniedButton;
     boolean isFriend;
+    boolean isLock;
     //
     String userID;
+    private boolean iamblocked;
 
 
     @Override
@@ -117,7 +121,9 @@ public class ProfilActivity extends AppCompatActivity {
         });
         progressBar = findViewById(R.id.progressBar);
         postList = new ArrayList<>();
-        CheckifIsFriend();
+        checkifIsFriend();
+        checkifIBlcoked();
+        checkifSheBlcokedMe();
         getUserData();
         getPost();
         //action d'ecrire ou accepter
@@ -125,12 +131,21 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isFriend == true) {
-                    Intent intent = new Intent(ProfilActivity.this, ChatActivity.class);
-                    intent.putExtra("id", id_user);
-                    startActivity(intent);
+                    if (isLock==true){
+                        makeToast("Debloquer l'utilisateur d'abord");
+                    }else {
+                        if (iamblocked==true){
+                            Intent intent = new Intent(ProfilActivity.this, ChatActivity.class);
+                            intent.putExtra("id", id_user);
+                            startActivity(intent);
+                        }else{
+                            makeToast("Vous avez ete bloquer");
+                        }
+
+                    }
                     //il faudra une condition pour verifier si l'utilisateur est bloque ou pas
                 } else {
-                    makeToast("vous pouvez accepter cette personne comme amies");
+
                     accpet();
                 }
             }
@@ -143,13 +158,37 @@ public class ProfilActivity extends AppCompatActivity {
                     //makeToast("vous n'etes pas amies vous pouvez refuser vous pouvez refuser sa demande");
                     reject();
                 } else {
-                    //makeToast("vous etes  amies et vous pouvez la bloquer");
-                    // blockUser();
+                    if (isLock==true){
+                        unLock();
+                    }else{
+                        //bloquer un utilisateur
+                        blockUser();
+                    }
                 }
             }
         });
 
+    }
 
+    void unLock(){
+        /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer").child(id_user);
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    snapshot.getRef().removeValue();
+                    deniedButton.setText("Bloquer");
+                    isLock=false;
+                    addButton.setBackgroundColor(Color.parseColor("#4CAF50"));
+                    addButton.setTextColor(Color.parseColor("#FFFFFF"));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     //recupere tout ce que l'utilisateur a poste
@@ -199,7 +238,6 @@ public class ProfilActivity extends AppCompatActivity {
         db.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
                 /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
                 DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("accepter").child(id_user);
                 db.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -207,6 +245,7 @@ public class ProfilActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             snapshot.getRef().removeValue();
+                            finish();
                         }
                     }
 
@@ -231,6 +270,9 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 makeToast("bloquer");
+
+                isLock=true;
+                checkifIBlcoked();
             }
         });
     }
@@ -336,8 +378,7 @@ public class ProfilActivity extends AppCompatActivity {
 
     }
 
-
-    void CheckifIsFriend() {
+    void checkifIsFriend() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("mesAmis");
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -375,6 +416,82 @@ public class ProfilActivity extends AppCompatActivity {
         });
     }
 
+    void checkifIBlcoked() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer");
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(currentUser)) {
+                    deniedButton.setText("Debloquer");
+                    isLock = true;
+                    addButton.setBackgroundColor(Color.parseColor("#999999"));
+                    addButton.setTextColor(Color.parseColor("#000000"));
+                } else {
+                    isLock = false;
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    void checkifSheBlcokedMe() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("bloquer");
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(id_user)) {
+                    deniedButton.setVisibility(View.INVISIBLE);
+                    addButton.setVisibility(View.INVISIBLE);
+                    iamblocked = true;
+                } else {
+                    iamblocked = false;
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     //accepter une demande
     void accpet() {
         Calendar calendar = Calendar.getInstance();
@@ -390,7 +507,7 @@ public class ProfilActivity extends AppCompatActivity {
         db.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
+                makeToast("vous pouvez ecrire a cette personne ");
                 /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
                 DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("accepter").child(id_user);
                 db.addListenerForSingleValueEvent(new ValueEventListener() {
