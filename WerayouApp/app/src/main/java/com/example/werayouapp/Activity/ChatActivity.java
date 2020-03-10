@@ -257,6 +257,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         readMessage(userID, id_user);
+        setLastMessageStatuts("non",id_user,userID);
     }
 
 
@@ -698,9 +699,30 @@ public class ChatActivity extends AppCompatActivity {
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+    }
+
+    void setLastMessageStatuts(String status,String expediteur,String recepteur){
+
+        Map<String, Object> user_data = new HashMap<>();
+        user_data.put("isnew", status);
+        DatabaseReference userDb = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child("dernier_message")
+                .child(recepteur)
+                .child("contacts")
+                .child(expediteur);
+        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
                 //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
                 //startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+
 
             }
         });

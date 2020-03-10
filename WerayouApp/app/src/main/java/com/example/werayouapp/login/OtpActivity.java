@@ -140,7 +140,7 @@ public class OtpActivity extends AppCompatActivity {
         users.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.hasChild(mCurrentUser.getUid())) {
+                if (!dataSnapshot.hasChild(mCurrentUser.getUid())) {
                     Intent homeIntent = new Intent(OtpActivity.this, ActivityPrincipal.class);
                     homeIntent.putExtra("country", country);
                     homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
