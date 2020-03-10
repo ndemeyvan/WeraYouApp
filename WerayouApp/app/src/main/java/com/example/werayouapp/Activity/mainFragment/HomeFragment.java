@@ -2,6 +2,8 @@ package com.example.werayouapp.Activity.mainFragment;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -48,9 +50,9 @@ public class HomeFragment extends Fragment  {
     private com.example.werayouapp.adapter.ArrayAdapter arrayAdapter;
     private int i;
     private SwipeFlingAdapterView flingContainer;
-    //String oppositeUserSex;
+    SharedPreferences sharedpreferences;
+
     FirebaseAuth user;
-    ListView listView;
     List<Cards> rowsItems;
     ProgressBar progressBar;
     TextView messageDeDernierCards;
@@ -59,6 +61,7 @@ public class HomeFragment extends Fragment  {
     ImageView left;
     Cards obj;
     String contry;
+    String myPref="countryPref";
     //ProgressDialog dialog;
     //
     private String userSex;
@@ -81,11 +84,20 @@ public class HomeFragment extends Fragment  {
         // Inflate the layout for this fragment
 
         v = inflater.inflate(R.layout.fragment_home2, container, false);
+        sharedpreferences = getActivity().getSharedPreferences(myPref,
+                Context.MODE_PRIVATE);
         user = FirebaseAuth.getInstance();
         currentUser = user.getCurrentUser().getUid();
         messageDeDernierCards = v.findViewById(R.id.messageDeDernierCards);
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
-        getUserData();
+
+        if (sharedpreferences.contains("lastCountrySave")) {
+            contry=sharedpreferences.getString("lastCountrySave", "");
+            checkUserSex(contry);
+        }else{
+            getUserData();
+        }
+
         right = v.findViewById(R.id.right);
         left = v.findViewById(R.id.leftButton);
         rowsItems = new ArrayList<Cards>();
@@ -230,12 +242,21 @@ public class HomeFragment extends Fragment  {
             }
         });
 
+
+
         ((ActivityPrincipal) getActivity()).passVal(new ActivityPrincipal.FragmentCommunicator() {
             @Override
             public void passData(String name) {
                 Toast.makeText(getContext(), name.toLowerCase(), Toast.LENGTH_SHORT).show();
                 contry=name.toLowerCase();
-                checkUserSex();
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("lastCountrySave", contry);
+                editor.commit();
+                Intent i = new Intent(getContext(), ActivityPrincipal.class);
+                getActivity().finish();
+                getActivity().overridePendingTransition(0, 0);
+                startActivity(i);
+                getActivity().overridePendingTransition(0, 0);
             }
         });
 
@@ -244,7 +265,8 @@ public class HomeFragment extends Fragment  {
     }
 
 
-    public void checkUserSex() {
+
+    public void checkUserSex(final String contry) {
         Log.i("currentUser", currentUser);
         db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
         db.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -258,15 +280,15 @@ public class HomeFragment extends Fragment  {
                             case "Homme":
                                 oppositeUserSex = "Femme";
                                 Log.i("Recherche", oppositeUserSex);
-                                getOppositeSexUsers();
+                                getOppositeSexUsers(contry,oppositeUserSex);
                                 break;
                             case "Femme":
                                 oppositeUserSex = "Homme";
                                 Log.i("Recherche", oppositeUserSex);
-                                getOppositeSexUsers();
+                                getOppositeSexUsers(contry,oppositeUserSex);
                                 break;
                             case "Les deux":
-                                getTwoUsersSex();
+                                getTwoUsersSex(contry);
                                 break;
                         }
                     }
@@ -280,7 +302,7 @@ public class HomeFragment extends Fragment  {
         });
     }
 
-    public void getOppositeSexUsers() {
+    public void getOppositeSexUsers(final String contry, final String oppositeUserSex) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -324,7 +346,7 @@ public class HomeFragment extends Fragment  {
         }
     }
 
-    public void getTwoUsersSex() {
+    public void getTwoUsersSex(final String contry) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -423,7 +445,7 @@ public class HomeFragment extends Fragment  {
             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
             if (map.get("pays") != null) {
                  contry = map.get("pays").toString();
-                 checkUserSex();
+                 checkUserSex(contry);
             }
             //
         }
