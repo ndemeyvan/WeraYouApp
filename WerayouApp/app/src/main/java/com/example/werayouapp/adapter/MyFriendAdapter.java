@@ -50,6 +50,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
     private DatabaseReference usersDb;
     private boolean isLock;
     private String id_user;
+    private boolean iamblocked;
 
 
     public MyFriendAdapter(List<MyFriendModel> myFriendModelList, Context context) {
@@ -76,15 +77,20 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         userID = user.getCurrentUser().getUid();
         id_user = myFriendModelList.get(i).getId();
         checkifIsBlcoked(holder, userID);
+        checkifSheBlcokedMe(holder);
         holder.writeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isLock == true) {
                     makeToast("Debloquer l'utilisateur d'abord");
                 } else {
-                    Intent intent = new Intent(context, ChatActivity.class);
-                    intent.putExtra("id", id_user);
-                    context.startActivity(intent);
+                    if (iamblocked == true) {
+                        Intent intent = new Intent(context, ChatActivity.class);
+                        intent.putExtra("id", id_user);
+                        context.startActivity(intent);
+                    } else {
+                        makeToast("Vous avez ete bloquer");
+                    }
                 }
             }
         });
@@ -274,6 +280,43 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    void checkifSheBlcokedMe(final ViewHolder holder) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("bloquer");
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(id_user)) {
+                    holder.blockButton.setVisibility(View.INVISIBLE);
+                    holder.writeButton.setVisibility(View.INVISIBLE);
+                    iamblocked = true;
+                } else {
+                    iamblocked = false;
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

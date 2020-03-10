@@ -141,7 +141,6 @@ public class ProfilActivity extends AppCompatActivity {
                         }else{
                             makeToast("Vous avez ete bloquer");
                         }
-
                     }
                     //il faudra une condition pour verifier si l'utilisateur est bloque ou pas
                 } else {
