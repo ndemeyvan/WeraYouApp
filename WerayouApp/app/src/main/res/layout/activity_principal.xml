@@ -71,8 +71,6 @@
                 android:id="@+id/toobarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="5dp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -84,16 +82,27 @@
                 android:id="@+id/country_code_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:gravity="center_horizontal"
                 app:ccp_contentColor="@color/white"
-                app:ccp_defaultNameCode="CM"
+                app:ccp_defaultNameCode="FR"
                 app:ccp_showFlag="true"
                 app:ccp_showFullName="true"
                 app:ccp_showNameCode="false"
                 app:ccp_showPhoneCode="false"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView3"
                 app:layout_constraintStart_toEndOf="@+id/toobarTitle"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_add_photo"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>

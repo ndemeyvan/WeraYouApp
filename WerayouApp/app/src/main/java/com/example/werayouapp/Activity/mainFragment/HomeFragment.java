@@ -86,6 +86,7 @@ public class HomeFragment extends Fragment  {
         v = inflater.inflate(R.layout.fragment_home2, container, false);
         sharedpreferences = getActivity().getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
+
         user = FirebaseAuth.getInstance();
         currentUser = user.getCurrentUser().getUid();
         messageDeDernierCards = v.findViewById(R.id.messageDeDernierCards);
@@ -177,10 +178,12 @@ public class HomeFragment extends Fragment  {
             @Override
             public void onAdapterAboutToEmpty(int i) {
                 if (i <= 0) {
+                    messageDeDernierCards.setText("il n'y a plus de proposition pour " + contry);
                     messageDeDernierCards.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
+                    messageDeDernierCards.setText("il n'y a plus de proposition pour " + contry);
                     messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);

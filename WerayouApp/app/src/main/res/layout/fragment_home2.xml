@@ -35,7 +35,6 @@
         android:id="@+id/messageDeDernierCards"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="il n'y a plus de proposition"
         android:textColor="@color/black"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/frame"

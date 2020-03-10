@@ -7,8 +7,11 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,11 +45,12 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     ImageView add_image;
     Toolbar toolbar;
     TextView toobarTitle;
-    //
+    SharedPreferences sharedpreferences;
     FirebaseAuth user;
     String userID;
     CountryCodePicker mCountryCode;
     FragmentCommunicator fragmentCommunicator;
+    String myPref="countryCode";
 
     //implements AHBottomNavigation.OnTabSelectedListener
 
@@ -55,7 +59,19 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+        mCountryCode = findViewById(R.id.country_code_text);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        sharedpreferences =getSharedPreferences(myPref,
+                Context.MODE_PRIVATE);
+        if (sharedpreferences.contains("LastCountryCode")) {
+           String contryCode=sharedpreferences.getString("LastCountryCode", "");
+            mCountryCode.setDefaultCountryUsingNameCode(contryCode);
+            mCountryCode.resetToDefaultCountry();
+            Log.i("ValueCode",contryCode);
+        }else{
+            mCountryCode.setDefaultCountryUsingNameCode("FR");
+        }
+
         setSupportActionBar(toolbar);
         // bottomNavigation= (AHBottomNavigation) findViewById(R.id.bottomNavigationView);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -66,12 +82,16 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         //bottomNavigation.setOnTabSelectedListener(this);
         toolbar = findViewById(R.id.toolbar);
         toobarTitle = findViewById(R.id.toobarTitle);
-        mCountryCode = findViewById(R.id.country_code_text);
+
         toobarTitle.setText("Werayou");
         HomeFragment homeFragment = new HomeFragment();
         mCountryCode.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
+                String countryCode = mCountryCode.getSelectedCountryNameCode();
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("LastCountryCode", countryCode);
+                editor.commit();
                 fragmentCommunicator.passData(mCountryCode.getSelectedCountryName());
             }
         });
