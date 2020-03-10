@@ -59,6 +59,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+
         mCountryCode = findViewById(R.id.country_code_text);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         sharedpreferences =getSharedPreferences(myPref,
@@ -99,6 +100,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
         FirebaseMessaging.getInstance().subscribeToTopic(userID);
+        setStatus("online");
         //
 
         // this.createNavItems();
@@ -234,6 +236,13 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        setStatus("online");
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         setStatus("offline");
@@ -257,13 +266,13 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        setStatus("offline");
-        FirebaseMessaging.getInstance().subscribeToTopic(userID);
-
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        setStatus("offline");
+//        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+//
+//    }
 
     /*private void loadFragment(Fragment fragment) {
         // load fragment

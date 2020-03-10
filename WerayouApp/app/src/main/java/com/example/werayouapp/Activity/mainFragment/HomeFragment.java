@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment  {
 
             @Override
             public void onAdapterAboutToEmpty(int i) {
-                if (i <= 0) {
+                if (i < 0) {
                     messageDeDernierCards.setText("il n'y a plus de proposition pour " + contry);
                     messageDeDernierCards.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
@@ -260,11 +260,28 @@ public class HomeFragment extends Fragment  {
                 getActivity().overridePendingTransition(0, 0);
                 startActivity(i);
                 getActivity().overridePendingTransition(0, 0);
+                setStatus("online");
             }
         });
 
 
         return v;
+    }
+
+    void setStatus(String status){
+        Map<String, Object> user_data = new HashMap<>();
+        user_data.put("isOnline", status);
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
+        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                //startActivity(intent);
+                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+
+
+            }
+        });
     }
 
 
@@ -310,7 +327,7 @@ public class HomeFragment extends Fragment  {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
+                rowsItems.clear();
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)&& dataSnapshot.child("pays").getValue().toString().equals(contry)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
@@ -421,7 +438,6 @@ public class HomeFragment extends Fragment  {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                data(dataSnapshot);
 
             }
 

@@ -84,7 +84,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
         storageReference = FirebaseStorage.getInstance().getReference();
         profile_image = findViewById(R.id.profile_image);
         imageButton = findViewById(R.id.imageButton);
@@ -296,8 +295,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             Map<String, Object> user_data = new HashMap<>();
             user_data.put("nom", nom);
             user_data.put("prenom", prenom);
-//            user_data.put("pays", country);
-            user_data.put("pays", "cameroon");
+            user_data.put("pays", country);
             user_data.put("phone", user.getCurrentUser().getPhoneNumber());
             user_data.put("ville", ville);
             user_data.put("age", ageUser);

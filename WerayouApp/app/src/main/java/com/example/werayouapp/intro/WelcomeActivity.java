@@ -127,6 +127,8 @@ public class WelcomeActivity extends AppCompatActivity {
         finish();
     }
 
+
+
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 

@@ -55,7 +55,7 @@ public class OtpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verification_code);
 
         mAuth = FirebaseAuth.getInstance();
-        mCurrentUser = mAuth.getCurrentUser();
+
 
         mAuthVerificationId = getIntent().getStringExtra("AuthCredentials");
         country = getIntent().getStringExtra("country");
@@ -135,6 +135,7 @@ public class OtpActivity extends AppCompatActivity {
 
     // cherche a savoir si l'utilisateur a actuel a deja likez
     void checkifHaveAccount() {
+        mCurrentUser = mAuth.getCurrentUser();
         DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid());
         users.addChildEventListener(new ChildEventListener() {
             @Override
