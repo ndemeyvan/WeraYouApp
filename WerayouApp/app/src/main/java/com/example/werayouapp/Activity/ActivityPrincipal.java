@@ -64,7 +64,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_principal);
 
         mCountryCode = findViewById(R.id.country_code_text);
-        showCase(mCountryCode);
+        showCase(mCountryCode,"Faite le tour du monde","chezcher parmis plus de 100 pays ou se trouve votre ame soeur");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         sharedpreferences =getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
@@ -111,10 +111,10 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     }
 
-    void showCase(View view){
+    void showCase(View view,String title ,String content){
         new GuideView.Builder(this)
-                .setTitle("Guide Title Text")
-                .setContentText("Guide Description Text\n .....Guide Description Text\n .....Guide Description Text .....")
+                .setTitle(title)
+                .setContentText(content)
                 .setTargetView(view)
                 .setDismissType(DismissType.outside) //optional - default dismissible by TargetView
                 .build()

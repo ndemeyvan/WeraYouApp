@@ -16,6 +16,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+
 public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
 
     Context context;
