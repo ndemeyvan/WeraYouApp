@@ -39,6 +39,9 @@ import com.hbb20.CountryCodePicker;
 import java.util.HashMap;
 import java.util.Map;
 
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+
 public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //AHBottomNavigation bottomNavigation;
@@ -61,6 +64,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_principal);
 
         mCountryCode = findViewById(R.id.country_code_text);
+        showCase(mCountryCode);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         sharedpreferences =getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
@@ -105,6 +109,16 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
         // this.createNavItems();
 
+    }
+
+    void showCase(View view){
+        new GuideView.Builder(this)
+                .setTitle("Guide Title Text")
+                .setContentText("Guide Description Text\n .....Guide Description Text\n .....Guide Description Text .....")
+                .setTargetView(view)
+                .setDismissType(DismissType.outside) //optional - default dismissible by TargetView
+                .build()
+                .show();
     }
 
     public void passVal(FragmentCommunicator fragmentCommunicator) {

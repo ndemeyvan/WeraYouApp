@@ -84,7 +84,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
                 if (isLock == true) {
                     makeToast("Debloquer l'utilisateur d'abord");
                 } else {
-                    if (iamblocked == true) {
+                    if (iamblocked == false) {
                         Intent intent = new Intent(context, ChatActivity.class);
                         intent.putExtra("id", id_user);
                         context.startActivity(intent);
@@ -116,8 +116,6 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         //
         getUserData(holder, id_user);
 
-        /**/
-
         holder.blockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +125,6 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
                 } else {
                     blockUser(holder);
                 }
-
 
             }
         });
@@ -289,12 +286,12 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(id_user)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(userID)) {
                     holder.blockButton.setVisibility(View.INVISIBLE);
                     holder.writeButton.setVisibility(View.INVISIBLE);
-                    iamblocked = true;
-                } else {
                     iamblocked = false;
+                } else {
+                    iamblocked = true;
 
                 }
             }
