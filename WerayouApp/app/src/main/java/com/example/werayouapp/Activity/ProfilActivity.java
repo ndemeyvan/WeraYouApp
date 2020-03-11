@@ -134,7 +134,7 @@ public class ProfilActivity extends AppCompatActivity {
                     if (isLock==true){
                         makeToast("Debloquer l'utilisateur d'abord");
                     }else {
-                        if (iamblocked==true){
+                        if (iamblocked==false){
                             Intent intent = new Intent(ProfilActivity.this, ChatActivity.class);
                             intent.putExtra("id", id_user);
                             startActivity(intent);
@@ -269,7 +269,6 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 makeToast("bloquer");
-
                 isLock=true;
                 checkifIBlcoked();
             }
@@ -458,12 +457,12 @@ public class ProfilActivity extends AppCompatActivity {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(id_user)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(currentUser)) {
                     deniedButton.setVisibility(View.INVISIBLE);
                     addButton.setVisibility(View.INVISIBLE);
-                    iamblocked = true;
-                } else {
                     iamblocked = false;
+                } else {
+                    iamblocked = true;
 
                 }
             }

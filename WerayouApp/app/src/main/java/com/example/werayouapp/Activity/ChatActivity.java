@@ -14,14 +14,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +36,6 @@ import com.example.werayouapp.UtilsForChat.DisplayAllChat;
 import com.example.werayouapp.UtilsForChat.ModelChat;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,7 +61,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,12 +78,12 @@ public class ChatActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     CircleImageView profil_image;
     TextView nom_profil;
-    //
     FirebaseAuth user;
     String userID;
     String nom;
     DisplayAllChat contact;
-    //
+    LinearLayout linearLayout;
+    boolean isLock;
     EmojiconEditText editText;
     ImageButton emojiButton;
     ImageButton sendButton;
@@ -97,7 +93,9 @@ public class ChatActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
     DatabaseReference reference;
     StorageReference storageReference;
+
     byte[] final_image;
+    boolean iamblocked;
     Uri mImageUri;
     private static final int MAX_LENGTH = 100;
     private boolean isWithImage = false;
@@ -106,20 +104,20 @@ public class ChatActivity extends AppCompatActivity {
     EmojIconActions emojIcon;
     TextView user_status;
     RequestQueue requestQueue;
+    TextView iBlockHim;
     String URL = "https://fcm.googleapis.com/fcm/send";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
         storageReference = FirebaseStorage.getInstance().getReference();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         profil_image = findViewById(R.id.profil_image);
         nom_profil = findViewById(R.id.nom_profil);
-        id_user = getIntent().getStringExtra("id");
+
         editText = findViewById(R.id.editText);
         editText.setEmojiconSize(50);
         sendButton = findViewById(R.id.sendButton);
@@ -127,7 +125,10 @@ public class ChatActivity extends AppCompatActivity {
         imageToSend = findViewById(R.id.imageToSend);
         emojiButton = findViewById(R.id.emojiButton);
         user_status=findViewById(R.id.user_status);
+        iBlockHim=findViewById(R.id.iBlockHim);
+        linearLayout=findViewById(R.id.linearLayout);
         //
+        id_user = getIntent().getStringExtra("id");
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
         String topic = "news";
@@ -169,6 +170,8 @@ public class ChatActivity extends AppCompatActivity {
         //emodi
         //appel de fonction
         getUserData();
+        checkifIsBlcoked(userID,id_user);
+
         requestQueue= Volley.newRequestQueue(this);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,17 +252,73 @@ public class ChatActivity extends AppCompatActivity {
 
         });
 
+
+
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setImage();
             }
         });
-
         readMessage(userID, id_user);
         setLastMessageStatuts("non",id_user,userID);
     }
 
+
+
+    void checkifIsBlcoked(final String myID, final String herID) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(myID).child("connections").child("bloquer").child(herID);
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    iBlockHim.setText("Debloquer cette personne d'abord");
+                    iBlockHim.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    linearLayout.setVisibility(View.GONE);
+                    Log.i("Status ","present dans mes gens bloquer");
+                }else{
+                   checkifSheBlcokedMe(herID,myID);
+                    Log.i("Status ","absent dans mes gens bloquer");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    void checkifSheBlcokedMe(String id_user,final String userID) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("bloquer").child(userID);
+       db.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               if (dataSnapshot.exists()){
+                   Log.i("Status ","il ma bloquer");
+
+                   iBlockHim.setText("Vous avez ete bloquer par " +nom);
+                   iBlockHim.setVisibility(View.VISIBLE);
+                   mRecyclerView.setVisibility(View.INVISIBLE);
+                   linearLayout.setVisibility(View.GONE);
+               }else {
+                   Log.i("Status ","il ne ma pas bloquer");
+
+                   mRecyclerView.setVisibility(View.VISIBLE);
+                   iBlockHim.setVisibility(View.GONE);
+                   mRecyclerView.setVisibility(View.VISIBLE);
+                   linearLayout.setVisibility(View.VISIBLE);
+               }
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError databaseError) {
+
+           }
+       });
+    }
 
     //cette methode appele l'activite de choix d'image
     void setImage() {

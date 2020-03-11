@@ -65,7 +65,7 @@ public class MyFriendFragment extends Fragment {
         return v;
     }
 
-    //recupere tout ce que l'utilisateur a poste
+    //recupere toutes les amies
     void getAsk() {
         //adding an event listener to fetch values
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis");

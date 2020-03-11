@@ -49,8 +49,8 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
     private String userID;
     private DatabaseReference usersDb;
     private boolean isLock;
-    private String id_user;
     private boolean iamblocked;
+    private String id_user;
 
 
     public MyFriendAdapter(List<MyFriendModel> myFriendModelList, Context context) {
@@ -76,7 +76,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
         id_user = myFriendModelList.get(i).getId();
-        checkifIsBlcoked(holder, userID);
+        checkifIsBlcoked(holder, userID, id_user);
         checkifSheBlcokedMe(holder);
         holder.writeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +123,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
                 if (isLock == true) {
                     unLock(holder);
                 } else {
-                    blockUser(holder);
+                    blockUser();
                 }
 
             }
@@ -139,7 +139,6 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
     }
 
     public void getUserData(final ViewHolder holder, final String id) {
-
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -203,19 +202,18 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
 
     }
 
-    void checkifIsBlcoked(final ViewHolder viewHolder, final String UserId) {
+    void checkifIsBlcoked(final ViewHolder viewHolder, final String UserId,final String id_user) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(UserId).child("connections").child("bloquer");
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(UserId)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(id_user)) {
                     viewHolder.blockButton.setText("Debloquer");
                     isLock = true;
                     viewHolder.writeButton.setBackgroundColor(Color.parseColor("#999999"));
                     viewHolder.writeButton.setTextColor(Color.parseColor("#000000"));
                 } else {
                     isLock = false;
-
                 }
             }
 
@@ -241,7 +239,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         });
     }
 
-    void blockUser(final ViewHolder holder) {
+    void blockUser() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
