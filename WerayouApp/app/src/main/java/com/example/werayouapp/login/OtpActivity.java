@@ -122,16 +122,16 @@ public class OtpActivity extends AppCompatActivity {
         }
     }
 
-//    public void sendUserToSetup() {
-//
-//        Intent homeIntent = new Intent(OtpActivity.this, SetupActivity.class);
-//        homeIntent.putExtra("country", country);
-//
-//        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(homeIntent);
-//        finish();
-//    }
+    public void sendUserToSetup() {
+
+        Intent homeIntent = new Intent(OtpActivity.this, SetupActivity.class);
+        homeIntent.putExtra("country", country);
+
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(homeIntent);
+        finish();
+    }
 
     // cherche a savoir si l'utilisateur a actuel a deja likez
     void checkifHaveAccount() {
