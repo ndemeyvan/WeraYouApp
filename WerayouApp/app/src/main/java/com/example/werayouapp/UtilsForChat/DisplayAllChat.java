@@ -1,5 +1,7 @@
 package com.example.werayouapp.UtilsForChat;
 
+import java.util.Date;
+
 public class DisplayAllChat {
 
     String date;
@@ -7,17 +9,19 @@ public class DisplayAllChat {
     String id_recepteur;
     String dernier_message;
     String isnew;
+    long serverTime;
 
     public DisplayAllChat() {
 
     }
 
-    public DisplayAllChat(String date, String id_expediteur, String id_recepteur, String dernier_message, String isnew) {
+    public DisplayAllChat(String date, String id_expediteur, String id_recepteur, String dernier_message, String isnew, long serverTime) {
         this.date = date;
         this.id_expediteur = id_expediteur;
         this.id_recepteur = id_recepteur;
         this.dernier_message = dernier_message;
         this.isnew = isnew;
+        this.serverTime = serverTime;
     }
 
     public String getDate() {
@@ -58,5 +62,13 @@ public class DisplayAllChat {
 
     public void setIsnew(String isnew) {
         this.isnew = isnew;
+    }
+
+    public long getServerTime() {
+        return serverTime;
+    }
+
+    public void setServerTime(long serverTime) {
+        this.serverTime = serverTime;
     }
 }

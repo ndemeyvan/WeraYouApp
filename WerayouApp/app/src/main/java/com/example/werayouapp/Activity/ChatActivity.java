@@ -44,6 +44,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
@@ -61,6 +62,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +91,7 @@ public class ChatActivity extends AppCompatActivity {
     ImageButton sendButton;
     ImageButton imageButton;
     ImageView imageToSend;
+    ImageView resetImage;
     List<ModelChat> modelChatList;
     ChatAdapter chatAdapter;
     DatabaseReference reference;
@@ -117,7 +120,7 @@ public class ChatActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         profil_image = findViewById(R.id.profil_image);
         nom_profil = findViewById(R.id.nom_profil);
-
+        resetImage=findViewById(R.id.resetImage);
         editText = findViewById(R.id.editText);
         editText.setEmojiconSize(50);
         sendButton = findViewById(R.id.sendButton);
@@ -171,6 +174,16 @@ public class ChatActivity extends AppCompatActivity {
         //appel de fonction
         getUserData();
         checkifIsBlcoked(userID,id_user);
+        //annuler lenvoi d'une image
+        resetImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isWithImage=false;
+                imageToSend.setVisibility(View.GONE);
+                resetImage.setVisibility(View.GONE);
+
+            }
+        });
 
         requestQueue= Volley.newRequestQueue(this);
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -182,16 +195,20 @@ public class ChatActivity extends AppCompatActivity {
                     sendMessageWithImage(userID, id_user);
                     isWithImage = false;
                     imageToSend.setVisibility(View.GONE);
+                    resetImage.setVisibility(View.GONE);
+
                 } else if (!msg.isEmpty() && isWithImage == false) {
                     editText.setText("");
                     sendmessage(userID, id_user, msg);
                     isWithImage = false;
                     imageToSend.setVisibility(View.GONE);
+                    resetImage.setVisibility(View.GONE);
 
                 } else if (!msg.isEmpty() && isWithImage == true) {
                     editText.setText("");
                     isWithImage = false;
                     imageToSend.setVisibility(View.GONE);
+                    resetImage.setVisibility(View.GONE);
                     sendMessageWithImageAndMessage(userID, id_user, msg);
 
                 }
@@ -349,7 +366,6 @@ public class ChatActivity extends AppCompatActivity {
                 mImageUri = result.getUri();
                 File actualImage = new File(mImageUri.getPath());
                 try {
-
                     Bitmap compressedImage = new Compressor(this)
                             .setMaxWidth(250)
                             .setMaxHeight(250)
@@ -362,6 +378,7 @@ public class ChatActivity extends AppCompatActivity {
                     isWithImage = true;
                     if (isWithImage == true) {
                         imageToSend.setVisibility(View.VISIBLE);
+                        resetImage.setVisibility(View.VISIBLE);
                     }
 
                 } catch (Exception e) {
@@ -421,7 +438,9 @@ public class ChatActivity extends AppCompatActivity {
                         reference.child("dernier_message")
                                 .child(recepteur)
                                 .child("contacts")
-                                .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .child(expediteur)
+                                .setValue(contact)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 dialog.dismiss();
@@ -471,21 +490,21 @@ public class ChatActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        //
-                        contact = new DisplayAllChat();
-                        contact.setId_recepteur(expediteur);
-                        contact.setId_expediteur(recepteur);
-                        contact.setDernier_message("image");
-                        //
-                        reference.child("dernier_message")
-                                .child(recepteur)
-                                .child("contacts")
-                                .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                dialog.dismiss();
-                            }
-                        });
+                //
+                contact = new DisplayAllChat();
+                contact.setId_recepteur(expediteur);
+                contact.setId_expediteur(recepteur);
+                contact.setDernier_message("image");
+                //
+                reference.child("dernier_message")
+                        .child(recepteur)
+                        .child("contacts")
+                        .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        dialog.dismiss();
+                    }
+                });
                     }
                 });
 
@@ -625,33 +644,37 @@ public class ChatActivity extends AppCompatActivity {
         contact.setId_recepteur(recepteur);
         contact.setId_expediteur(expediteur);
         contact.setDernier_message(message);
+        Date jour= new Date();
+        final long time = jour.getTime();
+        contact.setServerTime(time);
         contact.setIsnew("non");
         //
         reference.child("dernier_message")
-                .child(expediteur)
-                .child("contacts")
-                .child(recepteur).setValue(contact)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        //
-                        contact = new DisplayAllChat();
-                        contact.setId_recepteur(expediteur);
-                        contact.setId_expediteur(recepteur);
-                        contact.setDernier_message(message);
-                        contact.setIsnew("oui");
-                        //
-                        reference.child("dernier_message")
-                                .child(recepteur)
-                                .child("contacts")
-                                .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+            .child(expediteur)
+            .child("contacts")
+            .child(recepteur).setValue(contact)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+            //
+            contact = new DisplayAllChat();
+            contact.setId_recepteur(expediteur);
+            contact.setId_expediteur(recepteur);
+            contact.setDernier_message(message);
+            contact.setServerTime(time);
+            contact.setIsnew("oui");
+            //
+            reference.child("dernier_message")
+                    .child(recepteur)
+                    .child("contacts")
+                    .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
 
-                            }
-                        });
-                    }
-                });
+                }
+            });
+            }
+        });
 
 
     }

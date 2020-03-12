@@ -173,4 +173,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+    <ImageView
+        android:id="@+id/resetImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/imageToSend"
+        app:layout_constraintStart_toEndOf="@+id/imageToSend"
+        app:layout_constraintTop_toTopOf="@+id/imageToSend"
+        app:srcCompat="@drawable/close" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

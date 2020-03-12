@@ -1,17 +1,22 @@
 package com.example.werayouapp.model;
+import java.util.Collections;
+import java.util.Date;
 
-public class LastMessageModel {
+public class LastMessageModel{
     String id_recepteur;
     String dernier_message;
     String isnew;
+    long serverTime;
+
 
     public LastMessageModel() {
     }
 
-    public LastMessageModel(String id_recepteur, String dernier_message, String isnew) {
+    public LastMessageModel(String id_recepteur, String dernier_message, String isnew, long serverTime) {
         this.id_recepteur = id_recepteur;
         this.dernier_message = dernier_message;
         this.isnew = isnew;
+        this.serverTime = serverTime;
     }
 
     public String getId_recepteur() {
@@ -37,4 +42,13 @@ public class LastMessageModel {
     public void setIsnew(String isnew) {
         this.isnew = isnew;
     }
+
+    public long getServerTime() {
+        return serverTime;
+    }
+
+    public void setServerTime(long serverTime) {
+        this.serverTime = serverTime;
+    }
+
 }
