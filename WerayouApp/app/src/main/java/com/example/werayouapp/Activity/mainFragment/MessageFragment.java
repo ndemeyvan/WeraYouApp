@@ -33,6 +33,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -83,8 +84,7 @@ public class MessageFragment extends Fragment {
     void getMessage() {
         //adding an event listener to fetch values
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("dernier_message").child(userID).child("contacts");
-        Query query = db.orderByChild("serverTime");
-        query.addValueEventListener(new ValueEventListener() {
+        db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
@@ -94,6 +94,7 @@ public class MessageFragment extends Fragment {
                     modelChatList.add(comment);
                     message.setVisibility(View.INVISIBLE);
                 }
+                Collections.sort(modelChatList);
 
                 // commentNumber=commentList.size();
 
