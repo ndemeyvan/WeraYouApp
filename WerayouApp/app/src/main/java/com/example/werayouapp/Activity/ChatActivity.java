@@ -252,16 +252,15 @@ public class ChatActivity extends AppCompatActivity {
 
         });
 
-
-
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setImage();
             }
         });
+
         readMessage(userID, id_user);
-        setLastMessageStatuts("non",id_user,userID);
+
     }
 
 
@@ -705,6 +704,7 @@ public class ChatActivity extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                setLastMessageStatuts("non",id_user,userID);
                 modelChatList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ModelChat chat = snapshot.getValue(ModelChat.class);
@@ -765,26 +765,39 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void setLastMessageStatuts(String status,String expediteur,String recepteur){
-
-        Map<String, Object> user_data = new HashMap<>();
+        final Map<String, Object> user_data = new HashMap<>();
         user_data.put("isnew", status);
-        DatabaseReference userDb = FirebaseDatabase
+        final DatabaseReference db = FirebaseDatabase
                 .getInstance()
                 .getReference()
                 .child("dernier_message")
                 .child(recepteur)
                 .child("contacts")
                 .child(expediteur);
-        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                //startActivity(intent);
-                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    db.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                            //startActivity(intent);
+                            // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+                        }
+                    });
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
+
+
+
     }
 
     @Override

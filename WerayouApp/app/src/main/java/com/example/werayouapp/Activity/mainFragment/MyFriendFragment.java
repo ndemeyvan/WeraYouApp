@@ -34,7 +34,7 @@ import java.util.List;
 public class MyFriendFragment extends Fragment {
     RecyclerView mRecyclerView;
     List<MyFriendModel> friendsModelList;
-    RecyclerView.Adapter adapter;
+    MyFriendAdapter adapter;
     String userID;
     FirebaseAuth user;
     TextView message;
@@ -85,6 +85,7 @@ public class MyFriendFragment extends Fragment {
                 adapter = new MyFriendAdapter(friendsModelList, getActivity());
                 //adding adapter to recyclerview
                 mRecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
                 // adapter.notifyDataSetChanged();
             }
 
