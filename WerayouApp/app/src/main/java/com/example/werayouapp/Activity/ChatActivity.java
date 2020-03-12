@@ -217,7 +217,6 @@ public class ChatActivity extends AppCompatActivity {
                 try {
                 //json.put("to","/topics/"+id_user);
                     json.put("to","/topics/"+id_user);
-
                     JSONObject notificationObj = new JSONObject();
                     notificationObj.put("title","Message");
                     notificationObj.put("body","any body");
@@ -417,10 +416,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         //
+        Date jour= new Date();
+        final long time = jour.getTime();
         contact = new DisplayAllChat();
         contact.setId_recepteur(recepteur);
         contact.setId_expediteur(expediteur);
         contact.setDernier_message("image");
+        contact.setServerTime(time);
         //
         reference.child("dernier_message")
                 .child(expediteur)
@@ -434,6 +436,7 @@ public class ChatActivity extends AppCompatActivity {
                         contact.setId_recepteur(expediteur);
                         contact.setId_expediteur(recepteur);
                         contact.setDernier_message("image");
+                        contact.setServerTime(time);
                         //
                         reference.child("dernier_message")
                                 .child(recepteur)
@@ -478,7 +481,10 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         //
+        Date jour= new Date();
+        final long time = jour.getTime();
         contact = new DisplayAllChat();
+        contact.setServerTime(time);
         contact.setId_recepteur(recepteur);
         contact.setId_expediteur(expediteur);
         contact.setDernier_message("image");
@@ -495,6 +501,7 @@ public class ChatActivity extends AppCompatActivity {
                 contact.setId_recepteur(expediteur);
                 contact.setId_expediteur(recepteur);
                 contact.setDernier_message("image");
+                contact.setServerTime(time);
                 //
                 reference.child("dernier_message")
                         .child(recepteur)
