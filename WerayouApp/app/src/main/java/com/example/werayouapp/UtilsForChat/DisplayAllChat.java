@@ -9,7 +9,7 @@ public class DisplayAllChat {
     String id_recepteur;
     String dernier_message;
     String isnew;
-    long serverTime;
+    Long serverTime;
 
     public DisplayAllChat() {
 

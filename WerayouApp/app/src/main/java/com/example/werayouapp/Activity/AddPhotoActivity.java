@@ -40,6 +40,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -255,6 +256,8 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         String date = saveCurrentDate;
+        Date jour= new Date();
+        final long time = jour.getTime();
         Map<String, Object> post_data = new HashMap<>();
         post_data.put("image", downloadUri.toString());
         post_data.put("description", description);
@@ -262,6 +265,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         post_data.put("id_user", userID);
         post_data.put("statut", "public");
         post_data.put("createdDate", date);
+        post_data.put("serverTime",time);
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(key);
         userDb.setValue(post_data).addOnCompleteListener(new OnCompleteListener<Void>() {

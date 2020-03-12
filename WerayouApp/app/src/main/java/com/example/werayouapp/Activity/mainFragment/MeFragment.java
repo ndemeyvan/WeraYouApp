@@ -41,6 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -147,6 +148,8 @@ public class MeFragment extends Fragment {
                     aucun_post.setVisibility(View.INVISIBLE);
 
                 }
+                Collections.sort(postList);
+
                 if (postList.size() == 0) {
                     aucun_post.setVisibility(View.VISIBLE);
                     progressBarTwo.setVisibility(View.INVISIBLE);
