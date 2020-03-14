@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment  {
     String myPref="countryPref";
     //ProgressDialog dialog;
     //
-    private String userSex;
+    private String recherche;
     private String oppositeUserSex;
     //
     private String currentUser;
@@ -185,12 +185,12 @@ public class HomeFragment extends Fragment  {
             @Override
             public void onAdapterAboutToEmpty(int i) {
                 if (i == 0) {
-                    messageDeDernierCards.setText("il n'y a plus de proposition");
+                    messageDeDernierCards.setText("il n'y a plus de proposition ");
                     messageDeDernierCards.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    messageDeDernierCards.setText("il n'y a plus de proposition");
+                    messageDeDernierCards.setText("il n'y a plus de proposition " );
                     messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
@@ -319,19 +319,14 @@ public class HomeFragment extends Fragment  {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child("sexe").getValue() != null) {
-                        userSex = dataSnapshot.child("sexe").getValue().toString();
-                        Log.i("monSex", userSex);
-                        switch (userSex) {
+                    if (dataSnapshot.child("recherche").getValue() != null) {
+                        recherche = dataSnapshot.child("recherche").getValue().toString();
+                        switch (recherche) {
                             case "Homme":
-                                oppositeUserSex = "Femme";
-                                Log.i("Recherche", oppositeUserSex);
-                                getOppositeSexUsers(contry,oppositeUserSex);
+                                getOppositeSexUsers(contry,recherche);
                                 break;
                             case "Femme":
-                                oppositeUserSex = "Homme";
-                                Log.i("Recherche", oppositeUserSex);
-                                getOppositeSexUsers(contry,oppositeUserSex);
+                                getOppositeSexUsers(contry,recherche);
                                 break;
                             case "Les deux":
                                 getTwoUsersSex(contry);
@@ -354,7 +349,7 @@ public class HomeFragment extends Fragment  {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)&& dataSnapshot.child("pays").getValue().toString().equals(contry)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)&& dataSnapshot.child("pays").getValue().toString().equals(contry)&& !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
@@ -363,12 +358,16 @@ public class HomeFragment extends Fragment  {
                     arrayAdapter.notifyDataSetChanged();
                     //
                 }
-                if (rowsItems.size()==0){
-                    progressBar.setVisibility(View.INVISIBLE);
-                    messageDeDernierCards.setText("il n'y a pas de proposition");
+                if (rowsItems.size() == 0) {
+                    messageDeDernierCards.setText("il n'y a pas de proposition ");
                     messageDeDernierCards.setVisibility(View.VISIBLE);
-                }else{
-
+                    right.setEnabled(false);
+                    left.setEnabled(false);
+                } else {
+                    messageDeDernierCards.setText("il n'y a pas de proposition " );
+                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+                    right.setEnabled(true);
+                    left.setEnabled(true);
                 }
 
             }
@@ -393,13 +392,9 @@ public class HomeFragment extends Fragment  {
             }
         });
         //
-        if (rowsItems.size()==0){
+        if (rowsItems.size() <= 0) {
+            //dialog.dismiss();
             progressBar.setVisibility(View.INVISIBLE);
-
-            messageDeDernierCards.setText("il n'y a pas de proposition");
-            messageDeDernierCards.setVisibility(View.VISIBLE);
-        }else{
-
         }
     }
 
@@ -409,7 +404,7 @@ public class HomeFragment extends Fragment  {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser)&& dataSnapshot.child("pays").getValue().toString().equals(contry)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser)&& dataSnapshot.child("pays").getValue().toString().equals(contry)&&!dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
@@ -418,12 +413,16 @@ public class HomeFragment extends Fragment  {
                     arrayAdapter.notifyDataSetChanged();
                     //
                 }
-                if (rowsItems.size()==0){
-                    progressBar.setVisibility(View.INVISIBLE);
-                    messageDeDernierCards.setText("il n'y a pas de proposition");
+                if (rowsItems.size() == 0) {
+                    messageDeDernierCards.setText("il n'y a pas de proposition ");
                     messageDeDernierCards.setVisibility(View.VISIBLE);
-                }else{
-
+                    right.setEnabled(false);
+                    left.setEnabled(false);
+                } else {
+                    messageDeDernierCards.setText("il n'y a pas de proposition " );
+                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+                    right.setEnabled(true);
+                    left.setEnabled(true);
                 }
 
             }
@@ -448,13 +447,9 @@ public class HomeFragment extends Fragment  {
             }
         });
         //
-        if (rowsItems.size()==0){
+        if (rowsItems.size() <= 0) {
+            //dialog.dismiss();
             progressBar.setVisibility(View.INVISIBLE);
-
-            messageDeDernierCards.setText("il n'y a pas de proposition");
-            messageDeDernierCards.setVisibility(View.VISIBLE);
-        }else{
-
         }
     }
 
