@@ -41,6 +41,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.shape.ShapeType;
+import co.mobiwise.materialintro.view.MaterialIntroView;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -264,9 +271,28 @@ public class HomeFragment extends Fragment  {
             }
         });
 
+        showCase();
+
 
         return v;
     }
+
+    void showCase(){
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "HomeFragment");
+        sequence.setConfig(config);
+        sequence.addSequenceItem(left,
+                "swipper a gauche sur la carte ou appuyer ici pour si un profil ne vous interesse pas ", "OK");
+
+        sequence.addSequenceItem(right,
+                "swipper a droite sur la carte ou appuyer ici pour si un profil  vous interesse. ", "OK");
+
+        sequence.start();
+
+
+    }
+
 
     void setStatus(String status){
         Map<String, Object> user_data = new HashMap<>();

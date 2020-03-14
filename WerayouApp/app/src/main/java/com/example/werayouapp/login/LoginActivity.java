@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private String number;
     private String countryName;
+    String countryCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String country_code = mCountryCode.getFullNumberWithPlus();
                 String phone_number = mPhoneNumber.getText().toString();
-                 countryName = mCountryCode.getSelectedCountryName();
+                countryName = mCountryCode.getSelectedCountryName();
+                countryCode = mCountryCode.getDefaultCountryNameCode();
                 String complete_phone_number = "+" + country_code + phone_number;
 
                 if (country_code.isEmpty() || phone_number.isEmpty()) {
@@ -115,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent otpIntent = new Intent(LoginActivity.this, OtpActivity.class);
                                 otpIntent.putExtra("AuthCredentials", s);
                                 otpIntent.putExtra("country", countryName);
+                                otpIntent.putExtra("countryCode", countryCode);
                                 startActivity(otpIntent);
                                 finish();
                             }

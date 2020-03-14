@@ -1,23 +1,17 @@
 package com.example.werayouapp.adapter;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.Cards;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
-import smartdevelop.ir.eram.showcaseviewlib.GuideView;
-import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
 
 public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
 

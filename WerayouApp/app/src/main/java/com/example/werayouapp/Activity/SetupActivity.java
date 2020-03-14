@@ -77,7 +77,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     private static StorageReference storageReference;
     EditText Apropos;
     Spinner spinnerTwo;
-
+    private String countryCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +100,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         radio_homme = (RadioButton) findViewById(R.id.radio_homme);
         radio_femme = (RadioButton) findViewById(R.id.radio_femme);
         country = getIntent().getStringExtra("country");
+        countryCode = getIntent().getStringExtra("countryCode");
+
+
         ArrayAdapter arrayAdapterTwo = new ArrayAdapter(this, android.R.layout.simple_spinner_item, recherche);
         arrayAdapterTwo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
@@ -207,8 +210,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 } else {
                     toast("choisir votre sexe svp ");
                 }
-
-
                 //////////
                 /////////// envoi des fichier dans la base de donnee
                 if (ischange) {
@@ -307,6 +308,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             user_data.put("id", userID);
             user_data.put("apropos", apropos);
             user_data.put("isOnline", "true");
+            user_data.put("countryCode", countryCode);
+
 
             DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
             userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {

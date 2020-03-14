@@ -538,7 +538,6 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                     likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " Commentaires");
 
                 }
-
                 //creating adapter
                 adapter = new CommentAdapter(commentList, DetailPhotoActivity.this);
                 //adding adapter to recyclerview

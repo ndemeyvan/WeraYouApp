@@ -1,12 +1,10 @@
 package com.example.werayouapp.Activity;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,29 +16,37 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.werayouapp.Activity.mainFragment.MyFriendFragment;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
-import com.example.werayouapp.Utiles.BottomNavigationBehavior;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hbb20.CountryCodePicker;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import smartdevelop.ir.eram.showcaseviewlib.GuideView;
-import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.shape.ShapeType;
+import co.mobiwise.materialintro.view.MaterialIntroView;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 
 public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -54,20 +60,26 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     CountryCodePicker mCountryCode;
     FragmentCommunicator fragmentCommunicator;
     String myPref="countryCode";
-
-    //implements AHBottomNavigation.OnTabSelectedListener
-
+    DatabaseReference usersDb;
+//  String countryCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-
         mCountryCode = findViewById(R.id.country_code_text);
-        showCase(mCountryCode,"Faite le tour du monde","chezcher parmis plus de 100 pays ou se trouve votre ame soeur");
+        //
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
+        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+        setStatus("online");
+        //
+//        getUserData();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        add_image=findViewById(R.id.add_image);
         sharedpreferences =getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
+
         if (sharedpreferences.contains("LastCountryCode")) {
            String contryCode=sharedpreferences.getString("LastCountryCode", "");
             mCountryCode.setDefaultCountryUsingNameCode(contryCode);
@@ -75,14 +87,12 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             Log.i("ValueCode",contryCode);
         }else{
             mCountryCode.setDefaultCountryUsingNameCode("FR");
+            mCountryCode.resetToDefaultCountry();
         }
 
         setSupportActionBar(toolbar);
-        // bottomNavigation= (AHBottomNavigation) findViewById(R.id.bottomNavigationView);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        BottomNavigationView navigation =  findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
-//        layoutParams.setBehavior(new BottomNavigationBehavior());
         loadFragment(new HomeFragment());
         //bottomNavigation.setOnTabSelectedListener(this);
         toolbar = findViewById(R.id.toolbar);
@@ -100,25 +110,23 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                 fragmentCommunicator.passData(mCountryCode.getSelectedCountryName());
             }
         });
-        //
-        user = FirebaseAuth.getInstance();
-        userID = user.getCurrentUser().getUid();
-        FirebaseMessaging.getInstance().subscribeToTopic(userID);
-        setStatus("online");
-        //
+
 
         // this.createNavItems();
+        showCase();
+
 
     }
 
-    void showCase(View view,String title ,String content){
-        new GuideView.Builder(this)
-                .setTitle(title)
-                .setContentText(content)
-                .setTargetView(view)
-                .setDismissType(DismissType.outside) //optional - default dismissible by TargetView
-                .build()
-                .show();
+    void showCase(){
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
+        sequence.setConfig(config);
+        sequence.addSequenceItem(mCountryCode,
+                "Hi  , cliquez ici pour choisir un pays ou recherchez votre âme sœur. Par defaut elle est sur france et en bas est charger les utilisateurs de votre pays actuel .", "OK");
+        sequence.start();
+
     }
 
     public void passVal(FragmentCommunicator fragmentCommunicator) {
@@ -223,11 +231,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                 startActivity(gogotoSearch);
                 //finish
                 return true;
-            /*case R.id.edit:
-                Intent intent = new Intent(ActivityPrincipal.this, SettingActivity.class);
-                startActivity(intent);
-                //finish();
-                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -243,8 +246,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                 //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
                 //startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-
-
             }
         });
     }
@@ -280,97 +281,58 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        setStatus("offline");
-//        FirebaseMessaging.getInstance().subscribeToTopic(userID);
+//    ///recupere les information de l'utilisateur
+//    public void getUserData() {
+//        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//        db.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                    data(dataSnapshot);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                data(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//
+//
+//    }
+//
+//     void data(DataSnapshot dataSnapshot) {
+//        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+//            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+//            if (map.get("countryCode") != null) {
+//                 countryCode = map.get("countryCode").toString();
+//            }
+//        }
+//
 //
 //    }
 
-    /*private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameLayout, fragment);
-        transaction.addToBackStack(null);
-
-
-       // private void createNavItems() {
-        //CREATE ITEMS
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem("", R.drawable.ic_home, R.color.color_tab_1);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem("", R.drawable.ic_aadd_friend, R.color.color_tab_2);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem("", R.drawable.ic_conversation, R.color.color_tab_3);
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem("", R.drawable.ic_account, R.color.color_tab_4);
-
-
-        // Add items
-        bottomNavigation.addItem(item1);
-        bottomNavigation.addItem(item2);
-        bottomNavigation.addItem(item3);
-        bottomNavigation.addItem(item4);
-        //PROPERTIES
-        bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FFFFFF"));
-        bottomNavigation.setCurrentItem(0);
-        bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
-        bottomNavigation.setBehaviorTranslationEnabled(false);
-
-// Change colors
-        bottomNavigation.setAccentColor(Color.parseColor("#ff2e55"));
-        bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
-
-// Force to tint the drawable (useful for font with icon for example)
-        //bottomNavigation.setForceTint(true);
-
-// Display color under navigation bar (API 21+)
-// Don't forget these lines in your style-v21
-// <item name="android:windowTranslucentNavigation">true</item>
-//<item name="android:fitsSystemWindows">true</item>
-        //bottomNavigation.setTranslucentNavigationEnabled(true);
-        //bottomNavigation.setColored(true);
-        bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#ff2e55"));
-        //
-        // Add or remove notification for each item
-        //bottomNavigation.setNotification("1", 0);*/
-// OR
-      /* AHNotification notification = new AHNotification.Builder()
-                .setText("new")
-                .setBackgroundColor(ContextCompat.getColor(ActivityPrincipal.this, R.color.colorPrimary))
-                .setTextColor(ContextCompat.getColor(ActivityPrincipal.this, R.color.white))
-                .build();
-        bottomNavigation.setNotification(notification, 1);
-        //*/
-
-
 }
-
-
-
-
-  /*  @Override
-    public boolean onTabSelected(int position, boolean wasSelected) {
-        if(position==0) {
-            HomeFragment home=new HomeFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,home).commit();
-            toobarTitle.setText("Werayou");
-            return true;
-        }else if(position==1) {
-            FriendsFragment friend=new FriendsFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,friend).commit();
-            toobarTitle.setText("+ d'amies");
-            return true;
-        }else if(position==2) {
-            MessageFragment message=new MessageFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,message).commit();
-            toobarTitle.setText("Messages");
-            return true;
-        }
-        else if(position==3) {
-            MeFragment me=new MeFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,me).commit();
-            toobarTitle.setText("Moi");
-            return true;
-        }
-
-        return false;
-    }*/
-

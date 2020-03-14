@@ -48,6 +48,7 @@ public class OtpActivity extends AppCompatActivity {
 
     private TextView mOtpFeedback;
     private String country;
+    private String countryCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,8 @@ public class OtpActivity extends AppCompatActivity {
 
         mAuthVerificationId = getIntent().getStringExtra("AuthCredentials");
         country = getIntent().getStringExtra("country");
+        countryCode = getIntent().getStringExtra("countryCode");
+
 
 
         mOtpFeedback = findViewById(R.id.otp_form_feedback);
@@ -126,6 +129,8 @@ public class OtpActivity extends AppCompatActivity {
 
         Intent homeIntent = new Intent(OtpActivity.this, SetupActivity.class);
         homeIntent.putExtra("country", country);
+        homeIntent.putExtra("countryCode", countryCode);
+
 
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
