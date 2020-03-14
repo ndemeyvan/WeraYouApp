@@ -53,7 +53,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.ViewHolder> {
-    String id_user;
     List<FriendsModel> friendsModelList;
     Context context;
     private String nom;
@@ -84,7 +83,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
     public void onBindViewHolder(@NonNull AddFriendsAdapteur.ViewHolder holder, int i) {
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
-        id_user = friendsModelList.get(i).getId();
+        final String id_user = friendsModelList.get(i).getId();
         getUserData(holder, id_user);
         holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +106,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         holder.addFirendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                accpet();
+                accpet(id_user);
 
                 //send notification
                 JSONObject json = new JSONObject();
@@ -165,7 +164,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         holder.deniedFirendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reject();
+                reject(id_user);
             }
         });
         holder.constraintLayout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_simple));
@@ -177,7 +176,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
     }
 
     //accepter une demande
-    void accpet() {
+    void accpet(final String id_user) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
@@ -230,7 +229,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
     }
 
     //refuser une demande
-    void reject() {
+    void reject(final String id_user) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
