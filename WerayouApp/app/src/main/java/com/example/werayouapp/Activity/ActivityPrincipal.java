@@ -61,7 +61,8 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     FragmentCommunicator fragmentCommunicator;
     String myPref="countryCode";
     DatabaseReference usersDb;
-//  String countryCode;
+    String countryCode;
+    String pays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +100,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         toobarTitle = findViewById(R.id.toobarTitle);
 
         toobarTitle.setText("Werayou");
-        HomeFragment homeFragment = new HomeFragment();
+
         mCountryCode.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
@@ -124,7 +125,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
         sequence.setConfig(config);
         sequence.addSequenceItem(mCountryCode,
-                "Hi  , cliquez ici pour choisir un pays ou recherchez votre âme sœur. Par defaut elle est sur france et en bas est charger les utilisateurs de votre pays actuel .", "OK");
+                "Hi  , cliquez ici pour choisir un pays ou rechercher votre âme sœur. Par defaut elle est sur la FRANCE cependant , en bas sont charger les utilisateurs de votre pays actuel ", "OK");
         sequence.start();
 
     }
@@ -281,7 +282,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     }
 
-//    ///recupere les information de l'utilisateur
+    ///recupere les information de l'utilisateur
 //    public void getUserData() {
 //        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
 //        db.addChildEventListener(new ChildEventListener() {
@@ -329,6 +330,9 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 //            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 //            if (map.get("countryCode") != null) {
 //                 countryCode = map.get("countryCode").toString();
+//            }
+//            if (map.get("pays") != null) {
+//                pays = map.get("pays").toString();
 //            }
 //        }
 //

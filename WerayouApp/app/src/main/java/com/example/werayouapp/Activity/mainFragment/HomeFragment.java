@@ -103,7 +103,7 @@ public class HomeFragment extends Fragment  {
             contry=sharedpreferences.getString("lastCountrySave", "");
             checkUserSex(contry);
         }else{
-            getUserData();
+
         }
 
         right = v.findViewById(R.id.right);
@@ -184,7 +184,7 @@ public class HomeFragment extends Fragment  {
 
             @Override
             public void onAdapterAboutToEmpty(int i) {
-                if (i < 0) {
+                if (i <= 0) {
                     messageDeDernierCards.setText("il n'y a plus de proposition pour " + contry);
                     messageDeDernierCards.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
@@ -442,60 +442,60 @@ public class HomeFragment extends Fragment  {
     }
 
     ///recupere les information de l'utilisateur
-    public void getUserData() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
-        db.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
-                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        data(dataSnapshot);
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-
-    }
-
-    void data(DataSnapshot dataSnapshot) {
-        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
-            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-            if (map.get("pays") != null) {
-                 contry = map.get("pays").toString();
-                 checkUserSex(contry);
-            }
-            //
-        }
-    }
+//    public void getUserData() {
+//        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
+//        db.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
+//                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        data(dataSnapshot);
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//
+//
+//    }
+//
+//    void data(DataSnapshot dataSnapshot) {
+//        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+//            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+//            if (map.get("pays") != null) {
+//                 contry = map.get("pays").toString();
+//                 checkUserSex(contry);
+//            }
+//            //
+//        }
+//    }
 
 
 
