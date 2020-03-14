@@ -82,12 +82,12 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                 Context.MODE_PRIVATE);
 
         if (sharedpreferences.contains("LastCountryCode")) {
-           String contryCode=sharedpreferences.getString("LastCountryCode", "");
+            String contryCode=sharedpreferences.getString("LastCountryCode", "");
             mCountryCode.setDefaultCountryUsingNameCode(contryCode);
             mCountryCode.resetToDefaultCountry();
             Log.i("ValueCode",contryCode);
         }else{
-            mCountryCode.setDefaultCountryUsingNameCode("FR");
+            mCountryCode.setDefaultCountryUsingNameCode(checkCountryCode());
             mCountryCode.resetToDefaultCountry();
         }
 
@@ -338,5 +338,27 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 //
 //
 //    }
+
+    public String checkCountryCode() {
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.child("countryCode").getValue() != null) {
+                         countryCode = dataSnapshot.child("countryCode").getValue().toString();
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return countryCode;
+    }
 
 }

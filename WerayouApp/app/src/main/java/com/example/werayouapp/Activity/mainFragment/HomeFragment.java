@@ -184,13 +184,13 @@ public class HomeFragment extends Fragment  {
 
             @Override
             public void onAdapterAboutToEmpty(int i) {
-                if (i <= 0) {
-                    messageDeDernierCards.setText("il n'y a plus de proposition pour " + contry);
+                if (i == 0) {
+                    messageDeDernierCards.setText("il n'y a plus de proposition pour ");
                     messageDeDernierCards.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    messageDeDernierCards.setText("il n'y a plus de proposition pour " + contry);
+                    messageDeDernierCards.setText("il n'y a plus de proposition pour ");
                     messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
@@ -363,49 +363,12 @@ public class HomeFragment extends Fragment  {
                     arrayAdapter.notifyDataSetChanged();
                     //
                 }
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //pas vraiment neccesaire pour l'instant
-                //rowsItems.clear();
-                // getOppositeSexUsers();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        //
-        if (rowsItems.size() <= 0) {
-            //dialog.dismiss();
-            progressBar.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    public void getTwoUsersSex(final String contry) {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
-        db.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser)&& dataSnapshot.child("pays").getValue().toString().equals(contry)) {
-                    //
-                    Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
+                if (rowsItems.size()==0){
                     progressBar.setVisibility(View.INVISIBLE);
-                    rowsItems.add(item);
-                    //dialog.dismiss();
-                    arrayAdapter.notifyDataSetChanged();
-                    //
+                    messageDeDernierCards.setText("il n'y a pas de proposition");
+                    messageDeDernierCards.setVisibility(View.VISIBLE);
+                }else{
+
                 }
 
             }
@@ -430,9 +393,68 @@ public class HomeFragment extends Fragment  {
             }
         });
         //
-        if (rowsItems.size() <= 0) {
-            //dialog.dismiss();
+        if (rowsItems.size()==0){
             progressBar.setVisibility(View.INVISIBLE);
+
+            messageDeDernierCards.setText("il n'y a pas de proposition");
+            messageDeDernierCards.setVisibility(View.VISIBLE);
+        }else{
+
+        }
+    }
+
+    public void getTwoUsersSex(final String contry) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser)&& dataSnapshot.child("pays").getValue().toString().equals(contry)) {
+                    //
+                    Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
+                    progressBar.setVisibility(View.INVISIBLE);
+                    rowsItems.add(item);
+                    //dialog.dismiss();
+                    arrayAdapter.notifyDataSetChanged();
+                    //
+                }
+                if (rowsItems.size()==0){
+                    progressBar.setVisibility(View.INVISIBLE);
+                    messageDeDernierCards.setText("il n'y a pas de proposition");
+                    messageDeDernierCards.setVisibility(View.VISIBLE);
+                }else{
+
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                //pas vraiment neccesaire pour l'instant
+                //rowsItems.clear();
+                // getOppositeSexUsers();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        //
+        if (rowsItems.size()==0){
+            progressBar.setVisibility(View.INVISIBLE);
+
+            messageDeDernierCards.setText("il n'y a pas de proposition");
+            messageDeDernierCards.setVisibility(View.VISIBLE);
+        }else{
+
         }
     }
 
