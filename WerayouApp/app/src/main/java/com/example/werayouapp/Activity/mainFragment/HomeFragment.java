@@ -283,10 +283,10 @@ public class HomeFragment extends Fragment  {
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "HomeFragment");
         sequence.setConfig(config);
         sequence.addSequenceItem(left,
-                "swipper a gauche sur la carte ou appuyer ici pour si un profil ne vous interesse pas ", "OK");
+                "swipper à gauche sur la carte ou appuyez ici si vous n'êtes pas intéressé par un profil", "OK");
 
         sequence.addSequenceItem(right,
-                "swipper a droite sur la carte ou appuyer ici pour si un profil  vous interesse. ", "OK");
+                "swipper à droite sur la carte ou appuyez ici si vous êtes intéressé par un profil. ", "OK");
 
         sequence.start();
 
