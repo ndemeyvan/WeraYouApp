@@ -1,25 +1,18 @@
 package com.example.werayouapp.Activity.mainFragment;
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.werayouapp.Activity.ActivityPrincipal;
 import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.ArrayAdapter;
@@ -34,17 +27,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import co.mobiwise.materialintro.shape.Focus;
-import co.mobiwise.materialintro.shape.FocusGravity;
-import co.mobiwise.materialintro.shape.ShapeType;
-import co.mobiwise.materialintro.view.MaterialIntroView;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
@@ -69,7 +55,6 @@ public class HomeFragment extends Fragment  {
     Cards obj;
     String contry;
     String myPref="countryPref";
-    //ProgressDialog dialog;
     //
     private String recherche;
     //
@@ -301,7 +286,7 @@ public class HomeFragment extends Fragment  {
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "HomeFragment");
         sequence.setConfig(config);
         sequence.addSequenceItem(left,
-                "swipper à gauche sur la carte ou appuyez ici si vous n'êtes pas intéressé par un profil", "OK");
+                "Hi , swipper à gauche sur la carte ou appuyez ici si vous n'êtes pas intéressé par un profil", "OK");
 
         sequence.addSequenceItem(right,
                 "swipper à droite sur la carte ou appuyez ici si vous êtes intéressé par un profil. ", "OK");

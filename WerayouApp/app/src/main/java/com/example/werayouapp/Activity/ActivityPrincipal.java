@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.werayouapp.Activity.mainFragment.MyFriendFragment;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
@@ -38,15 +36,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hbb20.CountryCodePicker;
-import com.squareup.picasso.Picasso;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import co.mobiwise.materialintro.shape.Focus;
-import co.mobiwise.materialintro.shape.FocusGravity;
-import co.mobiwise.materialintro.shape.ShapeType;
-import co.mobiwise.materialintro.view.MaterialIntroView;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
@@ -146,9 +137,8 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
         sequence.setConfig(config);
         sequence.addSequenceItem(mCountryCode,
-                "Hi  , cliquez ici pour choisir un pays ou rechercher votre âme sœur. Par defaut elle est sur la FRANCE cependant , en bas sont charger les utilisateurs de votre pays actuel ", "OK");
+                "Cliquez ici pour choisir un pays ou rechercher votre âme sœur. Par defaut elle est sur  votre pays actuel ", "OK");
         sequence.start();
-
 
     }
 
