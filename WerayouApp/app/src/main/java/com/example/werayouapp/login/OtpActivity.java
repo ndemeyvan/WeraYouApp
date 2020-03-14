@@ -31,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -56,13 +57,9 @@ public class OtpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verification_code);
 
         mAuth = FirebaseAuth.getInstance();
-
-
         mAuthVerificationId = getIntent().getStringExtra("AuthCredentials");
         country = getIntent().getStringExtra("country");
         countryCode = getIntent().getStringExtra("countryCode");
-
-
 
         mOtpFeedback = findViewById(R.id.otp_form_feedback);
         mOtpProgress = findViewById(R.id.otp_progress_bar);
@@ -76,10 +73,10 @@ public class OtpActivity extends AppCompatActivity {
 
                 String otp = mOtpText.getText().toString();
 
-                if(otp.isEmpty()){
+                if (otp.isEmpty()) {
 
                     mOtpFeedback.setVisibility(View.VISIBLE);
-                    mOtpFeedback.setText("Please fill in the form and try again.");
+                    mOtpFeedback.setText("s'il vous plait remplir le formulaire");
 
                 } else {
 
@@ -107,7 +104,7 @@ public class OtpActivity extends AppCompatActivity {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
                                 mOtpFeedback.setVisibility(View.VISIBLE);
-                                mOtpFeedback.setText("There was an error verifying OTP");
+                                mOtpFeedback.setText("Une erreur est survenue lors de la verification , recommencer l\'operation svp");
                             }
                         }
                         mOtpProgress.setVisibility(View.INVISIBLE);
@@ -120,32 +117,19 @@ public class OtpActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(mCurrentUser != null){
+        if (mCurrentUser != null) {
             checkifHaveAccount();
         }
-    }
-
-    public void sendUserToSetup() {
-
-        Intent homeIntent = new Intent(OtpActivity.this, SetupActivity.class);
-        homeIntent.putExtra("country", country);
-        homeIntent.putExtra("countryCode", countryCode);
-
-
-        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(homeIntent);
-        finish();
     }
 
     // cherche a savoir si l'utilisateur a actuel a deja likez
     void checkifHaveAccount() {
         mCurrentUser = mAuth.getCurrentUser();
         DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid());
-        users.addChildEventListener(new ChildEventListener() {
+        users.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (!dataSnapshot.hasChild(mCurrentUser.getUid())) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
                     Intent homeIntent = new Intent(OtpActivity.this, ActivityPrincipal.class);
                     homeIntent.putExtra("country", country);
                     homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -163,22 +147,7 @@ public class OtpActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });

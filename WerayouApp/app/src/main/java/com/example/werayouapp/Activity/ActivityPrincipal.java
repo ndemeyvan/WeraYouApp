@@ -1,10 +1,12 @@
 package com.example.werayouapp.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.werayouapp.Activity.mainFragment.MyFriendFragment;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
@@ -59,7 +62,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     String userID;
     CountryCodePicker mCountryCode;
     FragmentCommunicator fragmentCommunicator;
-    String myPref="countryCode";
+    String myPref = "countryCode";
     DatabaseReference usersDb;
     String countryCode;
     String pays;
@@ -77,22 +80,40 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         //
 //        getUserData();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        add_image=findViewById(R.id.add_image);
-        sharedpreferences =getSharedPreferences(myPref,
+        add_image = findViewById(R.id.add_image);
+        sharedpreferences = getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
 
         if (sharedpreferences.contains("LastCountryCode")) {
-            String contryCode=sharedpreferences.getString("LastCountryCode", "");
+            String contryCode = sharedpreferences.getString("LastCountryCode", "");
             mCountryCode.setDefaultCountryUsingNameCode(contryCode);
             mCountryCode.resetToDefaultCountry();
-            Log.i("ValueCode",contryCode);
-        }else{
-            mCountryCode.setDefaultCountryUsingNameCode(checkCountryCode());
-            mCountryCode.resetToDefaultCountry();
+            Log.i("ValueCode", contryCode);
+        } else {
+            usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+            usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (dataSnapshot.child("countryCode").getValue() != null) {
+                            countryCode = dataSnapshot.child("countryCode").getValue().toString();
+                            mCountryCode.setDefaultCountryUsingNameCode(countryCode);
+                            mCountryCode.resetToDefaultCountry();
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
 
         setSupportActionBar(toolbar);
-        BottomNavigationView navigation =  findViewById(R.id.bottomNavigationView);
+        BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new HomeFragment());
         //bottomNavigation.setOnTabSelectedListener(this);
@@ -119,7 +140,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     }
 
-    void showCase(){
+    void showCase() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
@@ -127,6 +148,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         sequence.addSequenceItem(mCountryCode,
                 "Hi  , cliquez ici pour choisir un pays ou rechercher votre âme sœur. Par defaut elle est sur la FRANCE cependant , en bas sont charger les utilisateurs de votre pays actuel ", "OK");
         sequence.start();
+
 
     }
 
@@ -237,7 +259,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         }
     }
 
-    void setStatus(String status){
+    void setStatus(String status) {
         Map<String, Object> user_data = new HashMap<>();
         user_data.put("isOnline", status);
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
@@ -339,26 +361,5 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 //
 //    }
 
-    public String checkCountryCode() {
-        usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child("countryCode").getValue() != null) {
-                         countryCode = dataSnapshot.child("countryCode").getValue().toString();
-
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return countryCode;
-    }
 
 }

@@ -39,13 +39,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-
     private CountryCodePicker mCountryCode;
     private EditText mPhoneNumber;
-
     private Button mGenerateBtn;
     private ProgressBar mLoginProgress;
-
     private TextView mLoginFeedbackText;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private String number;
@@ -165,7 +162,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(homeIntent);
         finish();
     }
-
 
 
 }

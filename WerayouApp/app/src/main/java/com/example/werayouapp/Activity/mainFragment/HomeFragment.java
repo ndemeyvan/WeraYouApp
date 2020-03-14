@@ -72,12 +72,12 @@ public class HomeFragment extends Fragment  {
     //ProgressDialog dialog;
     //
     private String recherche;
-    private String oppositeUserSex;
     //
     private String currentUser;
 
     //
     private DatabaseReference usersDb;
+    private String pays;
 
 
     public HomeFragment() {
@@ -103,8 +103,26 @@ public class HomeFragment extends Fragment  {
             contry=sharedpreferences.getString("lastCountrySave", "");
             checkUserSex(contry);
         }else{
+            db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (dataSnapshot.child("pays").getValue() != null) {
+                           String  myCountry = dataSnapshot.child("pays").getValue().toString();
+                            checkUserSex(myCountry);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
         }
+
 
         right = v.findViewById(R.id.right);
         left = v.findViewById(R.id.leftButton);
@@ -333,6 +351,7 @@ public class HomeFragment extends Fragment  {
                                 break;
                         }
                     }
+
                 }
             }
 

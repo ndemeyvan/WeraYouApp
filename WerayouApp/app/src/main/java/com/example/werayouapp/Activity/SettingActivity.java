@@ -314,7 +314,12 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     //
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        interesse = recherche[i];
+        if (recherche[i].equals("Que recherchez vous ?")){
+            makeToast("choisir un sexe correcte");
+        }else{
+            interesse = recherche[i];
+        }
+
     }
 
     //
