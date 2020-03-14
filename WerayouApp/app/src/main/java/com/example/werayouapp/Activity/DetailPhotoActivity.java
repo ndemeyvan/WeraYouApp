@@ -382,16 +382,13 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         like.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Log.e("nombreLike", snap.getChildrenCount() + "");
-                    likeNumber = snap.getChildrenCount();
-                    if (likeNumber <= 0) {
-                        likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " Commentaires");
-                    } else {
-                        likecommentsNumbers.setText((likeNumber - 1) + " Like(s) - " + commentNumber + " Commentaires");
-                        //likecommentsNumbers.setText((likeNumber) +" Like(s) - " + commentNumber + " Commentaires");
+                if (dataSnapshot.exists()){
+                    likeNumber=dataSnapshot.getChildrenCount();
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " Commentaires");
 
-                    }
+                }else{
+                    likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + " Commentaires");
+
                 }
             }
 
