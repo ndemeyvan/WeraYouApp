@@ -191,7 +191,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 ///////////
                 final String apropos = Apropos.getText().toString();
                 final String ville = ville_user.getText().toString();
@@ -212,10 +211,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 }
                 //////////
                 /////////// envoi des fichier dans la base de donnee
-                if (ischange) {
+              //  if (ischange) {
                     if (!interesse.equals("Que recherchez vous ?")) {
                         //
-                        if (!TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)) {
+                        if (TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)) {
 
                             button.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.VISIBLE);
@@ -268,11 +267,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                         toast("Que recherchez vous ?");
                     }
 
-                } else {
-
-                    stockage(null, nom, prenom, ville, ageUser, apropos);
-
-                }
+//                } else {
+//                    stockage(null, nom, prenom, ville, ageUser, apropos);
+//                }
             }
         });
     }
@@ -280,13 +277,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     public void stockage(@NonNull Task<Uri> task, String nom, String prenom, String ville, String ageUser, String apropos) {
         Uri downloadUri;
         if (task != null) {
-
             downloadUri = task.getResult();
-
         } else {
-
             downloadUri = mImageUri;
-
         }
         if (downloadUri != null) {
             Calendar calendar = Calendar.getInstance();
@@ -309,8 +302,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             user_data.put("apropos", apropos);
             user_data.put("isOnline", "true");
             user_data.put("countryCode", countryCode);
-
-
             DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
             userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
