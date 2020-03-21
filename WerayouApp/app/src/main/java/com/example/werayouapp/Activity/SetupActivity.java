@@ -101,6 +101,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         radio_femme = (RadioButton) findViewById(R.id.radio_femme);
         country = getIntent().getStringExtra("country");
         countryCode = getIntent().getStringExtra("countryCode");
+        Log.i("CountryCode",countryCode);
 
 
         ArrayAdapter arrayAdapterTwo = new ArrayAdapter(this, android.R.layout.simple_spinner_item, recherche);

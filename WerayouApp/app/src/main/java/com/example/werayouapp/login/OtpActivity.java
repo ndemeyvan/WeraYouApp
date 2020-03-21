@@ -139,6 +139,8 @@ public class OtpActivity extends AppCompatActivity {
                 } else {
                     Intent homeIntent = new Intent(OtpActivity.this, SetupActivity.class);
                     homeIntent.putExtra("country", country);
+                    homeIntent.putExtra("countryCode", countryCode);
+
                     homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(homeIntent);

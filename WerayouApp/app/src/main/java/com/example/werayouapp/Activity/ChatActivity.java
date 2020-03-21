@@ -135,6 +135,7 @@ public class ChatActivity extends AppCompatActivity {
         id_user = getIntent().getStringExtra("id");
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
+
         String topic = "news";
         FirebaseMessaging.getInstance().unsubscribeFromTopic(userID);
         //
@@ -560,7 +561,7 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                getUserData();
+                getUserstatus();
             }
 
             @Override
@@ -581,6 +582,56 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+
+    public void getUserstatus() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+                Db.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                            if (map.get("isOnline") != null) {
+                                String status = map.get("isOnline").toString();
+                                user_status.setText(status);
+                            }
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+    }
     //cette fonction envoi uniquement les image en message
     void sendMessageWithImage(final String expediteur, final String recepteur) {
         dialog = ProgressDialog.show(ChatActivity.this, "", "envoie de l'image ...", true);

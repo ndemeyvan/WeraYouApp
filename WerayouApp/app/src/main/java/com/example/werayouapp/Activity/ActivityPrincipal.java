@@ -23,6 +23,7 @@ import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
+import com.example.werayouapp.login.OtpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -57,11 +58,15 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     DatabaseReference usersDb;
     String countryCode;
     String pays;
+    String country;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+        country = getIntent().getStringExtra("country");
         mCountryCode = findViewById(R.id.country_code_text);
         if (getIntent().hasExtra("chat_notification")){
             Intent intent = new Intent(ActivityPrincipal.this,ChatActivity.class);
@@ -143,6 +148,8 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
 
     }
+
+
 
     void showCase() {
         ShowcaseConfig config = new ShowcaseConfig();

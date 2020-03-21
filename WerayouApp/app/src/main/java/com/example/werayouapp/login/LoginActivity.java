@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                                 otpIntent.putExtra("AuthCredentials", s);
                                 otpIntent.putExtra("country", countryName);
                                 otpIntent.putExtra("countryCode", countryCode);
+                                Log.i("CountryCode",countryCode);
                                 startActivity(otpIntent);
                                 finish();
                             }
