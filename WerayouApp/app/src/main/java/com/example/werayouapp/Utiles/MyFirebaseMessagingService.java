@@ -26,7 +26,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         String title = remoteMessage.getNotification().getTitle();
         String body = remoteMessage.getNotification().getBody();
-
+        final long[] pattern ={100,300,300,300};
         Map<String, String> extraData = remoteMessage.getData();
 
         String id = extraData.get("id_user");
@@ -42,6 +42,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentTitle(title)
                         .setContentText(body)
                         .setPriority(2)
+                        .setVibrate(pattern)
                         .setSmallIcon(R.drawable.welogo)
                         .setAutoCancel(true);
 
@@ -49,6 +50,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (type.equals("chat_notification")) {
             intent = new Intent(this, ChatActivity.class);
             intent.putExtra("id", id);
+            intent.putExtra("chat_notification", "chat_notification");
         } else if (type.equals("post_notification")){
             intent = new Intent(this, DetailPhotoActivity.class);
             intent.putExtra("id_post", id_post);
@@ -56,7 +58,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.putExtra("description", description);
             intent.putExtra("image", image);
             intent.putExtra("date", date);
-
+            intent.putExtra("post_notification", "post_notification");
 
         } else if (type.equals("new_friends_notification")){
             intent = new Intent(this, ActivityPrincipal.class);
@@ -66,9 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         notificationBuilder.setContentIntent(pendingIntent);
-
-
-
+        
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 

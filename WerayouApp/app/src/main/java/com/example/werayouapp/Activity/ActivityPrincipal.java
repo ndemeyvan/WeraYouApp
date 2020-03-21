@@ -63,6 +63,19 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         mCountryCode = findViewById(R.id.country_code_text);
+        if (getIntent().hasExtra("chat_notification")){
+            Intent intent = new Intent(ActivityPrincipal.this,ChatActivity.class);
+            intent.putExtra("id",getIntent().getStringExtra("id"));
+            startActivity(intent);
+        }else if (getIntent().hasExtra("post_notification")){
+            Intent intent = new Intent(ActivityPrincipal.this,ChatActivity.class);
+            intent.putExtra("id_post",getIntent().getStringExtra("id_post"));
+            intent.putExtra("id_user",getIntent().getStringExtra("id_user"));
+            intent.putExtra("description",getIntent().getStringExtra("description"));
+            intent.putExtra("image",getIntent().getStringExtra("image"));
+            intent.putExtra("date",getIntent().getStringExtra("date"));
+            startActivity(intent);
+        }
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();

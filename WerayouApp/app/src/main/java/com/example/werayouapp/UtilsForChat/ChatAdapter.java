@@ -2,6 +2,7 @@ package com.example.werayouapp.UtilsForChat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,8 +118,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         firebaseAuth= FirebaseAuth.getInstance ();
         current_user=firebaseAuth.getCurrentUser ().getUid ();
         if (modelChatList.get ( position ).getExpediteur ().equals ( current_user )){
+
             return MSG_TYPE_RIGHT;
         }else{
+
             return MSG_TYPE_LEFT;
         }
 

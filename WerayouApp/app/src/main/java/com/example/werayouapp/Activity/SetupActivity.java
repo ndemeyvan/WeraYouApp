@@ -214,7 +214,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
               //  if (ischange) {
                     if (!interesse.equals("Que recherchez vous ?")) {
                         //
-                        if (TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)) {
+                        if (!TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)) {
 
                             button.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.VISIBLE);

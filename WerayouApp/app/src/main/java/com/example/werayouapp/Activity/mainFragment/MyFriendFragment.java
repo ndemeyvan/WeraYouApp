@@ -69,7 +69,7 @@ public class MyFriendFragment extends Fragment {
     void getAsk() {
         //adding an event listener to fetch values
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis");
-        db.addValueEventListener(new ValueEventListener() {
+        db.orderByChild("prenom").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database

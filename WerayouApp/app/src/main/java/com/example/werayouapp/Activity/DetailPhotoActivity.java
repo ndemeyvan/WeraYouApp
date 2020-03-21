@@ -621,7 +621,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                         JSONObject extraData = new JSONObject();
                         extraData.put("id_recepteur", "");
                         extraData.put("type", "post_notification");
-                        extraData.put("postID", id_post);
+                        extraData.put("id_post", id_post);
                         extraData.put("id_user", id_user);
                         extraData.put("description", description);
                         extraData.put("image", image);
