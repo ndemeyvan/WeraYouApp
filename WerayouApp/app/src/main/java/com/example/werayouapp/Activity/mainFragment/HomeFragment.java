@@ -396,9 +396,21 @@ public class HomeFragment extends Fragment  {
             }
         });
         //
-        if (rowsItems.size() <= 0) {
-            //dialog.dismiss();
+//        if (rowsItems.size() <= 0) {
+//            //dialog.dismiss();
+//        }
+        if (rowsItems.size() == 0) {
+            messageDeDernierCards.setText("il n'y a pas de proposition ");
+            messageDeDernierCards.setVisibility(View.VISIBLE);
+            right.setEnabled(false);
+            left.setEnabled(false);
             progressBar.setVisibility(View.INVISIBLE);
+
+        } else {
+            messageDeDernierCards.setText("il n'y a pas de proposition " );
+            messageDeDernierCards.setVisibility(View.INVISIBLE);
+            right.setEnabled(true);
+            left.setEnabled(true);
         }
     }
 

@@ -59,7 +59,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     String countryCode;
     String pays;
     String country;
-
+    private String code;
 
 
     @Override
@@ -92,6 +92,25 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         add_image = findViewById(R.id.add_image);
         sharedpreferences = getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
+        //
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.child("countryCode").getValue() != null) {
+                        countryCode = dataSnapshot.child("countryCode").getValue().toString();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        //
 
         if (sharedpreferences.contains("LastCountryCode")) {
             String contryCode = sharedpreferences.getString("LastCountryCode", "");
@@ -99,26 +118,24 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             mCountryCode.resetToDefaultCountry();
             Log.i("ValueCode", contryCode);
         } else {
-            usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-            usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        if (dataSnapshot.child("countryCode").getValue() != null) {
-                            countryCode = dataSnapshot.child("countryCode").getValue().toString();
-                            mCountryCode.setDefaultCountryUsingNameCode(countryCode);
-                            mCountryCode.resetToDefaultCountry();
-
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
+//                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        if (dataSnapshot.exists()) {
+//                            if (dataSnapshot.child("countryCode").getValue() != null) {
+//                                countryCode = dataSnapshot.child("countryCode").getValue().toString();
+//                                mCountryCode.setDefaultCountryUsingNameCode(countryCode);
+//                                mCountryCode.resetToDefaultCountry();
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
         }
 
         setSupportActionBar(toolbar);
@@ -151,13 +168,14 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
 
 
+
     void showCase() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
         sequence.setConfig(config);
         sequence.addSequenceItem(mCountryCode,
-                "Vous pouvez faire une recherche par pays ... cliquez ici pour choisir un pays ", "OK");
+                "Vous pouvez faire une recherche par pays ... cliquez ici pour choisir un pays , par defaut il est sur France, Mais les propositions en bas sont de votre pays. ", "OK");
         sequence.start();
 
     }
