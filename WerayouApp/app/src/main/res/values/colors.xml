@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ff2e55</color>
-    <color name="colorPrimaryDark">#D81B60</color>
+    <color name="colorPrimaryDark">#ff2e55</color>
     <color name="colorAccent">#ff2e55</color>
     <color name="button_validation_color">#ff2e55</color>
     <color name="white">#fff</color>

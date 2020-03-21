@@ -15,9 +15,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte."
+        android:text=" ATTENTION, votre photo de profil est publique, donc visible par tous les utilisateurs, elle ne doit pas être sexuellement explicite ou à caractère pornographique. Tout utilisateur qui ne respecte pas cette règle verra son compte supprimé sans préavis"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView7" />

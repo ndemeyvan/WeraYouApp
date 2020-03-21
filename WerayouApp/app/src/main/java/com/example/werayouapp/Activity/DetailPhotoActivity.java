@@ -385,7 +385,6 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                 if (dataSnapshot.exists()){
                     likeNumber=dataSnapshot.getChildrenCount();
                     likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " Commentaires");
-
                 }else{
                     likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + " Commentaires");
 
@@ -453,41 +452,6 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
 
     // cherche a savoir si l'utilisateur a actuel a deja likez
     void checkifLike() {
-//        DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes");
-//        like.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                if (dataSnapshot.hasChild(userID)) {
-//                    islike = true;
-//                    like_icon.setImageResource(R.drawable.ic_heart_empty);
-//                } else {
-//                    like_icon.setImageResource(R.drawable.ic_heart_like);
-//                    islike = false;
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-
-        //
         DatabaseReference like = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes").child(userID);
         like.addValueEventListener(new ValueEventListener() {
             @Override

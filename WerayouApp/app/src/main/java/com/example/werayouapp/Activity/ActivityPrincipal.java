@@ -137,7 +137,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
         sequence.setConfig(config);
         sequence.addSequenceItem(mCountryCode,
-                "Cliquez ici pour choisir un pays ou rechercher votre âme sœur. Par defaut elle est sur  votre pays actuel ", "OK");
+                "Vous pouvez faire une recherche par pays ... cliquez ici pour choisir un pays ", "OK");
         sequence.start();
 
     }

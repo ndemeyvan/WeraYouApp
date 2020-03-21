@@ -77,20 +77,20 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         userID = user.getCurrentUser().getUid();
         final String id_user = myFriendModelList.get(i).getId();
         getUserData(holder, id_user);
-        checkifIsBlocked(holder, userID, id_user);
+        //checkifIsBlocked(holder, userID, id_user);
         //id =id_user;
 
-        holder.writeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("id", id_user);
-                context.startActivity(intent);
-
-
-            }
-        });
+//        holder.writeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Intent intent = new Intent(context, ChatActivity.class);
+//                intent.putExtra("id", id_user);
+//                context.startActivity(intent);
+//
+//
+//            }
+//        });
         //
         holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,20 +112,20 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         });
 
 
-        holder.blockButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkifIsBlocked(holder, userID, id_user);
-                //block user here
-                if (isLock == false) {
-                    blockUser(userID, id_user);
-                    //checkifIsBlocked(holder, userID, id_user);
-                } else {
-                    unLock(holder,userID,id_user);
-                }
-
-            }
-        });
+//        holder.blockButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                checkifIsBlocked(holder, userID, id_user);
+//                //block user here
+//                if (isLock == false) {
+//                    blockUser(userID, id_user);
+//                    //checkifIsBlocked(holder, userID, id_user);
+//                } else {
+//                    unLock(holder,userID,id_user);
+//                }
+//
+//            }
+//        });
 
         holder.layout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_simple));
 
@@ -199,53 +199,53 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
 
 
     }
-
-    void checkifIsBlocked(final ViewHolder viewHolder, final String UserId, final String id_user) {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(UserId).child("connections").child("bloquer").child(id_user);
-        db.addValueEventListener(new ValueEventListener() {
-         @Override
-         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-             if (dataSnapshot.exists()) {
-                 Log.i("Status ", "je bloque");
-                 viewHolder.blockButton.setText("Debloquer");
-                 viewHolder.writeButton.setBackgroundColor(Color.parseColor("#999999"));
-                 viewHolder.writeButton.setTextColor(Color.parseColor("#000000"));
-                 isLock = true;
-             } else {
-                 Log.i("Status ", "je bloque pas");
-                 isLock = false;
-                 viewHolder.blockButton.setText("Bloquer");
-                 viewHolder.writeButton.setBackgroundColor(Color.parseColor("#4CAF50"));
-                 viewHolder.writeButton.setTextColor(Color.parseColor("#FFFFFF"));
-             }
-         }
-
-         @Override
-         public void onCancelled(@NonNull DatabaseError databaseError) {
-
-         }
-     }
-
-        );
-    }
-
-    void blockUser(String userID, String id_user) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
-        String saveCurrentDate = currentDate.format(calendar.getTime());
-        final String date = saveCurrentDate;
-        final Map<String, String> user_data = new HashMap<>();
-        user_data.put("updatedDate", date);
-        user_data.put("id", id);
-        DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
-        boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                makeToast("bloquer");
-                isLock = true;
-            }
-        });
-    }
+//
+//    void checkifIsBlocked(final ViewHolder viewHolder, final String UserId, final String id_user) {
+//        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(UserId).child("connections").child("bloquer").child(id_user);
+//        db.addValueEventListener(new ValueEventListener() {
+//         @Override
+//         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//             if (dataSnapshot.exists()) {
+//                 Log.i("Status ", "je bloque");
+//                 viewHolder.blockButton.setText("Debloquer");
+//                 viewHolder.writeButton.setBackgroundColor(Color.parseColor("#999999"));
+//                 viewHolder.writeButton.setTextColor(Color.parseColor("#000000"));
+//                 isLock = true;
+//             } else {
+//                 Log.i("Status ", "je bloque pas");
+//                 isLock = false;
+//                 viewHolder.blockButton.setText("Bloquer");
+//                 viewHolder.writeButton.setBackgroundColor(Color.parseColor("#4CAF50"));
+//                 viewHolder.writeButton.setTextColor(Color.parseColor("#FFFFFF"));
+//             }
+//         }
+//
+//         @Override
+//         public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//         }
+//     }
+//
+//        );
+//    }
+//
+//    void blockUser(String userID, String id_user) {
+//        Calendar calendar = Calendar.getInstance();
+//        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+//        String saveCurrentDate = currentDate.format(calendar.getTime());
+//        final String date = saveCurrentDate;
+//        final Map<String, String> user_data = new HashMap<>();
+//        user_data.put("updatedDate", date);
+//        user_data.put("id", id);
+//        DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
+//        boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                makeToast("bloquer");
+//                isLock = true;
+//            }
+//        });
+//    }
 
     void unLock(final ViewHolder viewHolder, final String userID, final String id_user) {
         /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
@@ -351,8 +351,6 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
             progressBar = itemView.findViewById(R.id.progressBar);
             nom_profil = itemView.findViewById(R.id.nom_profil);
             seeProfilText = itemView.findViewById(R.id.seeProfilText);
-            writeButton = itemView.findViewById(R.id.writeButton);
-            blockButton = itemView.findViewById(R.id.blockButton);
             layout = itemView.findViewById(R.id.layout);
 
         }

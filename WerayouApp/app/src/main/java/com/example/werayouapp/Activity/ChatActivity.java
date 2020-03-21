@@ -120,16 +120,16 @@ public class ChatActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         profil_image = findViewById(R.id.profil_image);
         nom_profil = findViewById(R.id.nom_profil);
-        resetImage=findViewById(R.id.resetImage);
+        resetImage = findViewById(R.id.resetImage);
         editText = findViewById(R.id.editText);
         editText.setEmojiconSize(50);
         sendButton = findViewById(R.id.sendButton);
         imageButton = findViewById(R.id.imageButton);
         imageToSend = findViewById(R.id.imageToSend);
         emojiButton = findViewById(R.id.emojiButton);
-        user_status=findViewById(R.id.user_status);
-        iBlockHim=findViewById(R.id.iBlockHim);
-        linearLayout=findViewById(R.id.linearLayout);
+        user_status = findViewById(R.id.user_status);
+        iBlockHim = findViewById(R.id.iBlockHim);
+        linearLayout = findViewById(R.id.linearLayout);
         //
         id_user = getIntent().getStringExtra("id");
         user = FirebaseAuth.getInstance();
@@ -173,19 +173,19 @@ public class ChatActivity extends AppCompatActivity {
         //emodi
         //appel de fonction
         getUserData();
-        checkifIsBlcoked(userID,id_user);
+        checkifIsBlcoked(userID, id_user);
         //annuler lenvoi d'une image
         resetImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isWithImage=false;
+                isWithImage = false;
                 imageToSend.setVisibility(View.GONE);
                 resetImage.setVisibility(View.GONE);
 
             }
         });
 
-        requestQueue= Volley.newRequestQueue(this);
+        requestQueue = Volley.newRequestQueue(this);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -215,23 +215,23 @@ public class ChatActivity extends AppCompatActivity {
                 //send notification
                 JSONObject json = new JSONObject();
                 try {
-                //json.put("to","/topics/"+id_user);
-                    json.put("to","/topics/"+id_user);
+                    //json.put("to","/topics/"+id_user);
+                    json.put("to", "/topics/" + id_user);
                     JSONObject notificationObj = new JSONObject();
-                    notificationObj.put("title","Message");
-                    notificationObj.put("body","any body");
+                    notificationObj.put("title", "New message");
+                    notificationObj.put("body", msg);
 
                     JSONObject extraData = new JSONObject();
-                    extraData.put("id_recepteur",id_user);
-                    extraData.put("type","chat_notification");
-                    extraData.put("id_post","");
+                    extraData.put("id_recepteur", id_user);
+                    extraData.put("type", "chat_notification");
+                    extraData.put("id_post", "");
                     extraData.put("id_user", userID);
                     extraData.put("description", "");
                     extraData.put("image", "");
                     extraData.put("date", "");
 
-                    json.put("notification",notificationObj);
-                    json.put("data",extraData);
+                    json.put("notification", notificationObj);
+                    json.put("data", extraData);
 
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
                             json,
@@ -244,23 +244,20 @@ public class ChatActivity extends AppCompatActivity {
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.d("MUR", "onError: "+error.networkResponse);
+                            Log.d("MUR", "onError: " + error.networkResponse);
                         }
                     }
-                    ){
+                    ) {
                         @Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String,String> header = new HashMap<>();
-                            header.put("content-type","application/json");
-                            header.put("authorization","key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
+                            Map<String, String> header = new HashMap<>();
+                            header.put("content-type", "application/json");
+                            header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
                             return header;
                         }
                     };
                     requestQueue.add(request);
-                }
-                catch (JSONException e)
-
-                {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -280,21 +277,20 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-
     void checkifIsBlcoked(final String myID, final String herID) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(myID).child("connections").child("bloquer").child(herID);
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     iBlockHim.setText("Debloquer cette personne d'abord");
                     iBlockHim.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     linearLayout.setVisibility(View.GONE);
-                    Log.i("Status ","present dans mes gens bloquer");
-                }else{
-                   checkifSheBlcokedMe(herID,myID);
-                    Log.i("Status ","absent dans mes gens bloquer");
+                    Log.i("Status ", "present dans mes gens bloquer");
+                } else {
+                    checkifSheBlcokedMe(herID, myID);
+                    Log.i("Status ", "absent dans mes gens bloquer");
                 }
             }
 
@@ -306,33 +302,33 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    void checkifSheBlcokedMe(String id_user,final String userID) {
+    void checkifSheBlcokedMe(String id_user, final String userID) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("bloquer").child(userID);
-       db.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               if (dataSnapshot.exists()){
-                   Log.i("Status ","il ma bloquer");
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Log.i("Status ", "il ma bloquer");
 
-                   iBlockHim.setText("Vous avez ete bloquer par " +nom);
-                   iBlockHim.setVisibility(View.VISIBLE);
-                   mRecyclerView.setVisibility(View.INVISIBLE);
-                   linearLayout.setVisibility(View.GONE);
-               }else {
-                   Log.i("Status ","il ne ma pas bloquer");
+                    iBlockHim.setText("Vous avez ete bloquer par " + nom);
+                    iBlockHim.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    linearLayout.setVisibility(View.GONE);
+                } else {
+                    Log.i("Status ", "il ne ma pas bloquer");
 
-                   mRecyclerView.setVisibility(View.VISIBLE);
-                   iBlockHim.setVisibility(View.GONE);
-                   mRecyclerView.setVisibility(View.VISIBLE);
-                   linearLayout.setVisibility(View.VISIBLE);
-               }
-           }
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    iBlockHim.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    linearLayout.setVisibility(View.VISIBLE);
+                }
+            }
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-           }
-       });
+            }
+        });
     }
 
     //cette methode appele l'activite de choix d'image
@@ -416,7 +412,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         //
-        Date jour= new Date();
+        Date jour = new Date();
         final long time = jour.getTime();
         contact = new DisplayAllChat();
         contact.setId_recepteur(recepteur);
@@ -444,11 +440,11 @@ public class ChatActivity extends AppCompatActivity {
                                 .child(expediteur)
                                 .setValue(contact)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                dialog.dismiss();
-                            }
-                        });
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        dialog.dismiss();
+                                    }
+                                });
                     }
                 });
 
@@ -481,7 +477,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         //
-        Date jour= new Date();
+        Date jour = new Date();
         final long time = jour.getTime();
         contact = new DisplayAllChat();
         contact.setServerTime(time);
@@ -496,22 +492,22 @@ public class ChatActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                //
-                contact = new DisplayAllChat();
-                contact.setId_recepteur(expediteur);
-                contact.setId_expediteur(recepteur);
-                contact.setDernier_message("image");
-                contact.setServerTime(time);
-                //
-                reference.child("dernier_message")
-                        .child(recepteur)
-                        .child("contacts")
-                        .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        dialog.dismiss();
-                    }
-                });
+                        //
+                        contact = new DisplayAllChat();
+                        contact.setId_recepteur(expediteur);
+                        contact.setId_expediteur(recepteur);
+                        contact.setDernier_message("image");
+                        contact.setServerTime(time);
+                        //
+                        reference.child("dernier_message")
+                                .child(recepteur)
+                                .child("contacts")
+                                .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                dialog.dismiss();
+                            }
+                        });
                     }
                 });
 
@@ -542,11 +538,9 @@ public class ChatActivity extends AppCompatActivity {
                             if (map.get("isOnline") != null) {
 
                                 String status = map.get("isOnline").toString();
-                                if (status.equals("true")){
-                                    user_status.setText("online");
-                                }else{
-                                    user_status.setText("offline");
-                                }
+
+                                    user_status.setText(status);
+
                             }
                             if (map.get("image") != null) {
                                 String profileImageUrl = map.get("image").toString();
@@ -565,7 +559,7 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                getUserData();
             }
 
             @Override
@@ -651,37 +645,37 @@ public class ChatActivity extends AppCompatActivity {
         contact.setId_recepteur(recepteur);
         contact.setId_expediteur(expediteur);
         contact.setDernier_message(message);
-        Date jour= new Date();
+        Date jour = new Date();
         final long time = jour.getTime();
         contact.setServerTime(time);
         contact.setIsnew("non");
         //
         reference.child("dernier_message")
-            .child(expediteur)
-            .child("contacts")
-            .child(recepteur).setValue(contact)
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-            //
-            contact = new DisplayAllChat();
-            contact.setId_recepteur(expediteur);
-            contact.setId_expediteur(recepteur);
-            contact.setDernier_message(message);
-            contact.setServerTime(time);
-            contact.setIsnew("oui");
-            //
-            reference.child("dernier_message")
-                    .child(recepteur)
-                    .child("contacts")
-                    .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
+                .child(expediteur)
+                .child("contacts")
+                .child(recepteur).setValue(contact)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //
+                        contact = new DisplayAllChat();
+                        contact.setId_recepteur(expediteur);
+                        contact.setId_expediteur(recepteur);
+                        contact.setDernier_message(message);
+                        contact.setServerTime(time);
+                        contact.setIsnew("oui");
+                        //
+                        reference.child("dernier_message")
+                                .child(recepteur)
+                                .child("contacts")
+                                .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
 
-                }
-            });
-            }
-        });
+                            }
+                        });
+                    }
+                });
 
 
     }
@@ -734,7 +728,7 @@ public class ChatActivity extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                setLastMessageStatuts("non",id_user,userID);
+                setLastMessageStatuts("non", id_user, userID);
                 modelChatList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ModelChat chat = snapshot.getValue(ModelChat.class);
@@ -781,7 +775,7 @@ public class ChatActivity extends AppCompatActivity {
         return randomStringBuilder.toString();
     }
 
-    void setStatus(String status){
+    void setStatus(String status) {
         Map<String, Object> user_data = new HashMap<>();
         user_data.put("isOnline", status);
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
@@ -794,7 +788,7 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    void setLastMessageStatuts(String status,String expediteur,String recepteur){
+    void setLastMessageStatuts(String status, String expediteur, String recepteur) {
         final Map<String, Object> user_data = new HashMap<>();
         user_data.put("isnew", status);
         final DatabaseReference db = FirebaseDatabase
@@ -807,7 +801,7 @@ public class ChatActivity extends AppCompatActivity {
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     db.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -824,8 +818,6 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
     }

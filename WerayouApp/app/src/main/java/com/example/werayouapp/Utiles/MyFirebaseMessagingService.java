@@ -41,6 +41,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 new NotificationCompat.Builder(this, "WERAYOUCHANNEL")
                         .setContentTitle(title)
                         .setContentText(body)
+                        .setPriority(2)
                         .setSmallIcon(R.drawable.welogo)
                         .setAutoCancel(true);
 
