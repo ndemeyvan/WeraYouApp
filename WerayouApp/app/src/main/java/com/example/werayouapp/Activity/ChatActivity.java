@@ -110,6 +110,9 @@ public class ChatActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     TextView iBlockHim;
     String URL = "https://fcm.googleapis.com/fcm/send";
+    private String Mon_nom;
+    private String Mon_prenom;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +178,7 @@ public class ChatActivity extends AppCompatActivity {
         //emodi
         //appel de fonction
         getUserData();
+        getMyInfo();
         checkifIsBlcoked(userID, id_user);
         //annuler lenvoi d'une image
         resetImage.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +224,7 @@ public class ChatActivity extends AppCompatActivity {
                     //json.put("to","/topics/"+id_user);
                     json.put("to", "/topics/" + id_user);
                     JSONObject notificationObj = new JSONObject();
-                    notificationObj.put("title", "New message");
+                    notificationObj.put("title", Mon_nom + Mon_prenom);
                     notificationObj.put("body", msg);
 
                     JSONObject extraData = new JSONObject();
@@ -541,7 +545,7 @@ public class ChatActivity extends AppCompatActivity {
 
                                 String status = map.get("isOnline").toString();
 
-                                    user_status.setText(status);
+                                user_status.setText(status);
 
                             }
                             if (map.get("image") != null) {
@@ -632,6 +636,58 @@ public class ChatActivity extends AppCompatActivity {
 
 
     }
+
+    public void getMyInfo() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+                Db.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                            if (map.get("nom") != null) {
+                                Mon_nom = map.get("nom").toString();
+                            }
+                            if (map.get("prenom") != null) {
+                                Mon_prenom = map.get("prenom").toString();
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+    }
+
     //cette fonction envoi uniquement les image en message
     void sendMessageWithImage(final String expediteur, final String recepteur) {
         dialog = ProgressDialog.show(ChatActivity.this, "", "envoie de l'image ...", true);

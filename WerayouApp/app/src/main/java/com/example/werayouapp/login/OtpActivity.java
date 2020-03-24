@@ -132,17 +132,14 @@ public class OtpActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     Intent homeIntent = new Intent(OtpActivity.this, ActivityPrincipal.class);
                     homeIntent.putExtra("country", country);
-                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(homeIntent);
                     finish();
                 } else {
                     Intent homeIntent = new Intent(OtpActivity.this, SetupActivity.class);
                     homeIntent.putExtra("country", country);
                     homeIntent.putExtra("countryCode", countryCode);
-
-                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(homeIntent);
                     finish();
                 }

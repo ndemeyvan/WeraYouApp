@@ -1,10 +1,13 @@
 package com.example.werayouapp.Activity.mainFragment;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.werayouapp.Activity.ActivityPrincipal;
 import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.ArrayAdapter;
@@ -27,17 +31,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment  {
+public class HomeFragment extends Fragment {
     View v;
     Cards cards[];
     private com.example.werayouapp.adapter.ArrayAdapter arrayAdapter;
@@ -54,7 +60,7 @@ public class HomeFragment extends Fragment  {
     ImageView left;
     Cards obj;
     String contry;
-    String myPref="countryPref";
+    String myPref = "countryPref";
     //
     private String recherche;
     //
@@ -85,16 +91,16 @@ public class HomeFragment extends Fragment  {
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
         if (sharedpreferences.contains("lastCountrySave")) {
-            contry=sharedpreferences.getString("lastCountrySave", "");
+            contry = sharedpreferences.getString("lastCountrySave", "");
             checkUserSex(contry);
-        }else{
+        } else {
             db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
             db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         if (dataSnapshot.child("pays").getValue() != null) {
-                           String  myCountry = dataSnapshot.child("pays").getValue().toString();
+                            String myCountry = dataSnapshot.child("pays").getValue().toString();
                             checkUserSex(myCountry);
                         }
                     }
@@ -193,7 +199,7 @@ public class HomeFragment extends Fragment  {
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    messageDeDernierCards.setText("il n'y a plus de proposition " );
+                    messageDeDernierCards.setText("il n'y a plus de proposition ");
                     messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
@@ -256,12 +262,11 @@ public class HomeFragment extends Fragment  {
         });
 
 
-
         ((ActivityPrincipal) getActivity()).passVal(new ActivityPrincipal.FragmentCommunicator() {
             @Override
             public void passData(String name) {
                 Toast.makeText(getContext(), name.toLowerCase(), Toast.LENGTH_SHORT).show();
-                contry=name.toLowerCase();
+                contry = name.toLowerCase();
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("lastCountrySave", contry);
                 editor.commit();
@@ -280,13 +285,13 @@ public class HomeFragment extends Fragment  {
         return v;
     }
 
-    void showCase(){
+    void showCase() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "HomeFragment");
         sequence.setConfig(config);
         sequence.addSequenceItem(left,
-                "Si un profil ne vous intéresse pas, cliquez sur le CROIX en bas de l'image ou faites glisser l'image vers la gauche", "OK");
+                "Si un profil ne vous intéresse pas, cliquez sur la CROIX en bas de l'image ou faites glisser l'image vers la gauche", "OK");
 
         sequence.addSequenceItem(right,
                 "Si un profil vous intéresse, cliquez sur le COEUR en bas de l'image ou faites glisser l'image vers la droite, l'utilisateur reçoit votre demande d'ami . ", "OK");
@@ -297,7 +302,7 @@ public class HomeFragment extends Fragment  {
     }
 
 
-    void setStatus(String status){
+    void setStatus(String status) {
         Map<String, Object> user_data = new HashMap<>();
         user_data.put("isOnline", status);
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
@@ -314,7 +319,6 @@ public class HomeFragment extends Fragment  {
     }
 
 
-
     public void checkUserSex(final String contry) {
         Log.i("currentUser", currentUser);
         db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
@@ -326,10 +330,10 @@ public class HomeFragment extends Fragment  {
                         recherche = dataSnapshot.child("recherche").getValue().toString();
                         switch (recherche) {
                             case "Homme":
-                                getOppositeSexUsers(contry,recherche);
+                                getOppositeSexUsers(contry, recherche);
                                 break;
                             case "Femme":
-                                getOppositeSexUsers(contry,recherche);
+                                getOppositeSexUsers(contry, recherche);
                                 break;
                             case "Les deux":
                                 getTwoUsersSex(contry);
@@ -353,7 +357,7 @@ public class HomeFragment extends Fragment  {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex)&& dataSnapshot.child("pays").getValue().toString().equals(contry)&& !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex) && dataSnapshot.child("pays").getValue().toString().equals(contry) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
@@ -368,7 +372,7 @@ public class HomeFragment extends Fragment  {
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    messageDeDernierCards.setText("il n'y a pas de proposition " );
+                    messageDeDernierCards.setText("il n'y a pas de proposition ");
                     messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
@@ -407,7 +411,7 @@ public class HomeFragment extends Fragment  {
             progressBar.setVisibility(View.INVISIBLE);
 
         } else {
-            messageDeDernierCards.setText("il n'y a pas de proposition " );
+            messageDeDernierCards.setText("il n'y a pas de proposition ");
             messageDeDernierCards.setVisibility(View.INVISIBLE);
             right.setEnabled(true);
             left.setEnabled(true);
@@ -420,7 +424,7 @@ public class HomeFragment extends Fragment  {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser)&& dataSnapshot.child("pays").getValue().toString().equals(contry)&&!dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("pays").getValue().toString().equals(contry) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
@@ -435,7 +439,7 @@ public class HomeFragment extends Fragment  {
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    messageDeDernierCards.setText("il n'y a pas de proposition " );
+                    messageDeDernierCards.setText("il n'y a pas de proposition ");
                     messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
@@ -473,63 +477,5 @@ public class HomeFragment extends Fragment  {
     static void makeToast(Context ctx, String s) {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
-
-    ///recupere les information de l'utilisateur
-//    public void getUserData() {
-//        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
-//        db.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
-//                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        data(dataSnapshot);
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//
-//
-//    }
-//
-//    void data(DataSnapshot dataSnapshot) {
-//        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
-//            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-//            if (map.get("pays") != null) {
-//                 contry = map.get("pays").toString();
-//                 checkUserSex(contry);
-//            }
-//            //
-//        }
-//    }
-
-
 
 }

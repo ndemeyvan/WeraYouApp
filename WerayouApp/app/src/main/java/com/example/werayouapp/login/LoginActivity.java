@@ -53,10 +53,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
-
         mCountryCode = findViewById(R.id.country_code_text);
         mPhoneNumber = findViewById(R.id.phone_number_text);
         mGenerateBtn = findViewById(R.id.generate_btn);
@@ -158,8 +156,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void sendUserToHome() {
         Intent homeIntent = new Intent(LoginActivity.this, ActivityPrincipal.class);
-        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);
         finish();
     }

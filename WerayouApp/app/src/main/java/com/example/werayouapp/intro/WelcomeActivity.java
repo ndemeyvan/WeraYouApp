@@ -30,7 +30,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
-    private Button btnSkip, btnNext;
+    private Button btnNext;
     private PrefManager prefManager;
 
     @Override
@@ -53,7 +53,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        btnSkip = (Button) findViewById(R.id.btn_skip);
+
         btnNext = (Button) findViewById(R.id.btn_next);
 
 
@@ -75,12 +75,7 @@ public class WelcomeActivity extends AppCompatActivity {
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchHomeScreen();
-            }
-        });
+
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,11 +135,11 @@ public class WelcomeActivity extends AppCompatActivity {
             if (position == layouts.length - 1) {
                 // last page. make button text to GOT IT
                 btnNext.setText("commencer");
-                btnSkip.setVisibility(View.GONE);
+
             } else {
                 // still pages are left
                 btnNext.setText("next");
-                btnSkip.setVisibility(View.VISIBLE);
+
             }
         }
 

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.werayouapp.Activity.mainFragment.MyFriendFragment;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
@@ -37,8 +39,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hbb20.CountryCodePicker;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
@@ -68,17 +72,17 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_principal);
         country = getIntent().getStringExtra("country");
         mCountryCode = findViewById(R.id.country_code_text);
-        if (getIntent().hasExtra("chat_notification")){
-            Intent intent = new Intent(ActivityPrincipal.this,ChatActivity.class);
-            intent.putExtra("id",getIntent().getStringExtra("id"));
+        if (getIntent().hasExtra("chat_notification")) {
+            Intent intent = new Intent(ActivityPrincipal.this, ChatActivity.class);
+            intent.putExtra("id", getIntent().getStringExtra("id"));
             startActivity(intent);
-        }else if (getIntent().hasExtra("post_notification")){
-            Intent intent = new Intent(ActivityPrincipal.this,ChatActivity.class);
-            intent.putExtra("id_post",getIntent().getStringExtra("id_post"));
-            intent.putExtra("id_user",getIntent().getStringExtra("id_user"));
-            intent.putExtra("description",getIntent().getStringExtra("description"));
-            intent.putExtra("image",getIntent().getStringExtra("image"));
-            intent.putExtra("date",getIntent().getStringExtra("date"));
+        } else if (getIntent().hasExtra("post_notification")) {
+            Intent intent = new Intent(ActivityPrincipal.this, ChatActivity.class);
+            intent.putExtra("id_post", getIntent().getStringExtra("id_post"));
+            intent.putExtra("id_user", getIntent().getStringExtra("id_user"));
+            intent.putExtra("description", getIntent().getStringExtra("description"));
+            intent.putExtra("image", getIntent().getStringExtra("image"));
+            intent.putExtra("date", getIntent().getStringExtra("date"));
             startActivity(intent);
         }
         //
@@ -93,23 +97,22 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         sharedpreferences = getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
         //
-        usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child("countryCode").getValue() != null) {
-                        countryCode = dataSnapshot.child("countryCode").getValue().toString();
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//        usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    if (dataSnapshot.child("countryCode").getValue() != null) {
+//                        countryCode = dataSnapshot.child("countryCode").getValue().toString();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
         //
 
         if (sharedpreferences.contains("LastCountryCode")) {
@@ -118,24 +121,24 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             mCountryCode.resetToDefaultCountry();
             Log.i("ValueCode", contryCode);
         } else {
-//                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        if (dataSnapshot.exists()) {
-//                            if (dataSnapshot.child("countryCode").getValue() != null) {
-//                                countryCode = dataSnapshot.child("countryCode").getValue().toString();
-//                                mCountryCode.setDefaultCountryUsingNameCode(countryCode);
-//                                mCountryCode.resetToDefaultCountry();
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
+            usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+            usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (dataSnapshot.child("countryCode").getValue() != null) {
+                            countryCode = dataSnapshot.child("countryCode").getValue().toString();
+                            mCountryCode.setDefaultCountryUsingNameCode(countryCode);
+                            mCountryCode.resetToDefaultCountry();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
         setSupportActionBar(toolbar);
@@ -167,15 +170,15 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     }
 
 
-
-
     void showCase() {
+        //, par defaut il est sur France, Mais les propositions en bas sont de votre pays.
+
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
         sequence.setConfig(config);
         sequence.addSequenceItem(mCountryCode,
-                "Vous pouvez faire une recherche par pays ... cliquez ici pour choisir un pays , par defaut il est sur France, Mais les propositions en bas sont de votre pays. ", "OK");
+                "Vous pouvez faire une recherche par pays ... cliquez ici pour choisir un pays.", "OK");
         sequence.start();
 
     }
@@ -332,7 +335,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     }
 
-    ///recupere les information de l'utilisateur
+//    /recupere les information de l'utilisateur
 //    public void getUserData() {
 //        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
 //        db.addChildEventListener(new ChildEventListener() {
