@@ -224,7 +224,7 @@ public class ChatActivity extends AppCompatActivity {
                     //json.put("to","/topics/"+id_user);
                     json.put("to", "/topics/" + id_user);
                     JSONObject notificationObj = new JSONObject();
-                    notificationObj.put("title", Mon_nom + Mon_prenom);
+                    notificationObj.put("title", Mon_nom + " " + Mon_prenom);
                     notificationObj.put("body", msg);
 
                     JSONObject extraData = new JSONObject();
@@ -542,10 +542,12 @@ public class ChatActivity extends AppCompatActivity {
                                 toolbar.setTitle("Publication de " + prenomFinal + " " + nomFinal);
                             }
                             if (map.get("isOnline") != null) {
-
                                 String status = map.get("isOnline").toString();
-
-                                user_status.setText(status);
+                                if (status.equals("online")) {
+                                    user_status.setText("En ligne");
+                                } else {
+                                    user_status.setText("Hors ligne");
+                                }
 
                             }
                             if (map.get("image") != null) {
@@ -600,7 +602,11 @@ public class ChatActivity extends AppCompatActivity {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                             if (map.get("isOnline") != null) {
                                 String status = map.get("isOnline").toString();
-                                user_status.setText(status);
+                                if (status.equals("online")) {
+                                    user_status.setText("En ligne");
+                                } else {
+                                    user_status.setText("Hors ligne");
+                                }
                             }
 
 

@@ -65,7 +65,6 @@ public class HomeFragment extends Fragment {
     private String recherche;
     //
     private String currentUser;
-
     //
     private DatabaseReference usersDb;
     private String pays;
@@ -113,7 +112,6 @@ public class HomeFragment extends Fragment {
             });
 
         }
-
 
         right = v.findViewById(R.id.right);
         left = v.findViewById(R.id.leftButton);
@@ -275,15 +273,15 @@ public class HomeFragment extends Fragment {
                 getActivity().overridePendingTransition(0, 0);
                 startActivity(i);
                 getActivity().overridePendingTransition(0, 0);
-                setStatus("online");
+
             }
         });
 
         showCase();
 
-
         return v;
     }
+
 
     void showCase() {
         ShowcaseConfig config = new ShowcaseConfig();
@@ -300,24 +298,6 @@ public class HomeFragment extends Fragment {
 
 
     }
-
-
-    void setStatus(String status) {
-        Map<String, Object> user_data = new HashMap<>();
-        user_data.put("isOnline", status);
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
-        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                //startActivity(intent);
-                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-
-
-            }
-        });
-    }
-
 
     public void checkUserSex(final String contry) {
         Log.i("currentUser", currentUser);
@@ -423,7 +403,6 @@ public class HomeFragment extends Fragment {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("pays").getValue().toString().equals(contry) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
@@ -474,8 +453,5 @@ public class HomeFragment extends Fragment {
     }
 
 
-    static void makeToast(Context ctx, String s) {
-        Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
-    }
 
 }

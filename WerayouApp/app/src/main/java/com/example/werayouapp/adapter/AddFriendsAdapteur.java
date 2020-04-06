@@ -1,6 +1,7 @@
 package com.example.werayouapp.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.werayouapp.Activity.DetailPhotoActivity;
 import com.example.werayouapp.Activity.ProfilActivity;
 import com.example.werayouapp.R;
 import com.example.werayouapp.model.FriendsModel;
@@ -107,7 +110,6 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
             @Override
             public void onClick(View view) {
                 accpet(id_user);
-
                 //send notification
                 JSONObject json = new JSONObject();
                 try {
@@ -164,7 +166,23 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         holder.deniedFirendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reject(id_user);
+                new AlertDialog.Builder(context)
+                        .setTitle("refuser ?")
+                        .setMessage("Voulez vous supprimer cette demande ?")
+
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                reject(id_user);
+                            }
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
             }
         });
         holder.constraintLayout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_simple));

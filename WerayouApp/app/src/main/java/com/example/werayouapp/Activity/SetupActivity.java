@@ -213,9 +213,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 //////////
                 /////////// envoi des fichier dans la base de donnee
               //  if (ischange) {
-                    if (!interesse.equals("Que recherchez vous ?")) {
+                    if (!interesse.equals("Que recherchez vous ?") ) {
                         //
-                        if (!TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)) {
+                        if (!TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)&& sexe!=null) {
 
                             button.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.VISIBLE);
@@ -309,7 +309,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 public void onComplete(@NonNull Task<Void> task) {
                     Intent intent = new Intent(SetupActivity.this, ActivityPrincipal.class);
                     startActivity(intent);
-                    //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                     finish();
                 }
             });
@@ -322,4 +321,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        user.signOut();
+    }
 }

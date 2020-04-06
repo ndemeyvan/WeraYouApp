@@ -39,14 +39,10 @@ public class OtpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-
     private String mAuthVerificationId;
-
     private EditText mOtpText;
     private Button mVerifyBtn;
-
     private ProgressBar mOtpProgress;
-
     private TextView mOtpFeedback;
     private String country;
     private String countryCode;
@@ -79,10 +75,8 @@ public class OtpActivity extends AppCompatActivity {
                     mOtpFeedback.setText("s'il vous plait remplir le formulaire");
 
                 } else {
-
                     mOtpProgress.setVisibility(View.VISIBLE);
                     mVerifyBtn.setEnabled(false);
-
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mAuthVerificationId, otp);
                     signInWithPhoneAuthCredential(credential);
                 }
@@ -99,7 +93,6 @@ public class OtpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             checkifHaveAccount();
-                            // ...
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
@@ -131,15 +124,12 @@ public class OtpActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Intent homeIntent = new Intent(OtpActivity.this, ActivityPrincipal.class);
-                    homeIntent.putExtra("country", country);
                     startActivity(homeIntent);
                     finish();
                 } else {
                     Intent homeIntent = new Intent(OtpActivity.this, SetupActivity.class);
                     homeIntent.putExtra("country", country);
                     homeIntent.putExtra("countryCode", countryCode);
-//                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(homeIntent);
                     finish();
                 }

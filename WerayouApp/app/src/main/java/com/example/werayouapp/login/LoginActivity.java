@@ -129,7 +129,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (mCurrentUser != null) {
-            sendUserToHome();
+            Intent homeIntent = new Intent(LoginActivity.this, ActivityPrincipal.class);
+            startActivity(homeIntent);
+            finish();
         }
     }
 
@@ -140,7 +142,6 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             sendUserToHome();
-                            // ...
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
@@ -155,7 +156,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendUserToHome() {
-        Intent homeIntent = new Intent(LoginActivity.this, ActivityPrincipal.class);
+//        Intent homeIntent = new Intent(LoginActivity.this, ActivityPrincipal.class);
+        Intent homeIntent = new Intent(LoginActivity.this, SetupActivity.class);
+        homeIntent.putExtra("country", "cameroon");
+        homeIntent.putExtra("countryCode", "CM");
         startActivity(homeIntent);
         finish();
     }

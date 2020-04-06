@@ -1,12 +1,10 @@
 package com.example.werayouapp.Activity;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.werayouapp.Activity.mainFragment.MyFriendFragment;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
@@ -39,10 +36,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hbb20.CountryCodePicker;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
@@ -62,7 +57,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     DatabaseReference usersDb;
     String countryCode;
     String pays;
-    String country;
     private String code;
 
 
@@ -70,8 +64,15 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        country = getIntent().getStringExtra("country");
         mCountryCode = findViewById(R.id.country_code_text);
+        user = FirebaseAuth.getInstance();
+        userID = user.getCurrentUser().getUid();
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        add_image = findViewById(R.id.add_image);
+        sharedpreferences = getSharedPreferences(myPref,
+                Context.MODE_PRIVATE);
+
         if (getIntent().hasExtra("chat_notification")) {
             Intent intent = new Intent(ActivityPrincipal.this, ChatActivity.class);
             intent.putExtra("id", getIntent().getStringExtra("id"));
@@ -85,35 +86,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             intent.putExtra("date", getIntent().getStringExtra("date"));
             startActivity(intent);
         }
-        //
-        user = FirebaseAuth.getInstance();
-        userID = user.getCurrentUser().getUid();
-        FirebaseMessaging.getInstance().subscribeToTopic(userID);
-        setStatus("online");
-        //
-//        getUserData();
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        add_image = findViewById(R.id.add_image);
-        sharedpreferences = getSharedPreferences(myPref,
-                Context.MODE_PRIVATE);
-        //
-//        usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//        usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    if (dataSnapshot.child("countryCode").getValue() != null) {
-//                        countryCode = dataSnapshot.child("countryCode").getValue().toString();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-        //
+
 
         if (sharedpreferences.contains("LastCountryCode")) {
             String contryCode = sharedpreferences.getString("LastCountryCode", "");
@@ -122,7 +95,43 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             Log.i("ValueCode", contryCode);
         } else {
             usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-            usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            usersDb
+
+//                    .addChildEventListener(new ChildEventListener() {
+//                @Override
+//                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                    if (dataSnapshot.exists()) {
+//                        if (dataSnapshot.child("countryCode").getValue() != null) {
+//                            countryCode = dataSnapshot.child("countryCode").getValue().toString();
+//                            mCountryCode.setDefaultCountryUsingNameCode(countryCode);
+//                            mCountryCode.resetToDefaultCountry();
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                }
+//
+//                @Override
+//                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                }
+//
+//                @Override
+//                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                }
+//            });
+
+
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
@@ -139,16 +148,18 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
                 }
             });
+
+//            mCountryCode.setDefaultCountryUsingNameCode(countryCode);
+//            mCountryCode.resetToDefaultCountry();
         }
 
         setSupportActionBar(toolbar);
         BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         loadFragment(new HomeFragment());
-        //bottomNavigation.setOnTabSelectedListener(this);
         toolbar = findViewById(R.id.toolbar);
         toobarTitle = findViewById(R.id.toobarTitle);
-
         toobarTitle.setText("Werayou");
 
         mCountryCode.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
@@ -162,17 +173,13 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             }
         });
 
-
-        // this.createNavItems();
         showCase();
-
 
     }
 
 
     void showCase() {
         //, par defaut il est sur France, Mais les propositions en bas sont de votre pays.
-
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
@@ -181,6 +188,10 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                 "Vous pouvez faire une recherche par pays ... cliquez ici pour choisir un pays.", "OK");
         sequence.start();
 
+    }
+
+    public interface FragmentCommunicator {
+        public void passData(String name);
     }
 
     public void passVal(FragmentCommunicator fragmentCommunicator) {
@@ -194,9 +205,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         finish();
     }
 
-    public interface FragmentCommunicator {
-        public void passData(String name);
-    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -242,7 +251,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     };
 
     private void loadFragment(Fragment fragment) {
-        // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frameLayout, fragment);
         transaction.addToBackStack(null);
@@ -259,18 +267,12 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.add_photo:
                 Intent gogotoSearch = new Intent(getApplicationContext(), AddPhotoActivity.class);
                 startActivity(gogotoSearch);
                 //finish
                 return true;
-            /*case R.id.setting:
-                Intent intent = new Intent(ActivityPrincipal.this, SettingActivity.class);
-                startActivity(intent);
-                //finish();
-                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -278,7 +280,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.add_photo:
                 Intent gogotoSearch = new Intent(getApplicationContext(), AddPhotoActivity.class);
@@ -297,9 +298,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                //startActivity(intent);
-                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+
             }
         });
     }
@@ -334,63 +333,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         FirebaseMessaging.getInstance().subscribeToTopic(userID);
 
     }
-
-//    /recupere les information de l'utilisateur
-//    public void getUserData() {
-//        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//        db.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                    data(dataSnapshot);
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                data(dataSnapshot);
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//
-//
-//    }
-//
-//     void data(DataSnapshot dataSnapshot) {
-//        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
-//            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-//            if (map.get("countryCode") != null) {
-//                 countryCode = map.get("countryCode").toString();
-//            }
-//            if (map.get("pays") != null) {
-//                pays = map.get("pays").toString();
-//            }
-//        }
-//
-//
-//    }
 
 
 }
