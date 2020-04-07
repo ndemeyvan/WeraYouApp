@@ -1,13 +1,14 @@
 package com.example.werayouapp.Activity;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,19 +17,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.example.werayouapp.Activity.mainFragment.MyFriendFragment;
 import com.example.werayouapp.Activity.mainFragment.FriendsFragment;
 import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
-import com.example.werayouapp.login.OtpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +46,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    //AHBottomNavigation bottomNavigation;
+
+    AHBottomNavigation bottomNavigation;
     ImageView add_image;
     Toolbar toolbar;
     TextView toobarTitle;
@@ -95,43 +98,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             Log.i("ValueCode", contryCode);
         } else {
             usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-            usersDb
-
-//                    .addChildEventListener(new ChildEventListener() {
-//                @Override
-//                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                    if (dataSnapshot.exists()) {
-//                        if (dataSnapshot.child("countryCode").getValue() != null) {
-//                            countryCode = dataSnapshot.child("countryCode").getValue().toString();
-//                            mCountryCode.setDefaultCountryUsingNameCode(countryCode);
-//                            mCountryCode.resetToDefaultCountry();
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                }
-//
-//                @Override
-//                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                }
-//
-//                @Override
-//                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                }
-//            });
-
-
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
+            usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
@@ -149,15 +116,16 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                 }
             });
 
-//            mCountryCode.setDefaultCountryUsingNameCode(countryCode);
-//            mCountryCode.resetToDefaultCountry();
         }
 
-        setSupportActionBar(toolbar);
-        BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+//        setSupportActionBar(toolbar);
+//        BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//
         loadFragment(new HomeFragment());
+        bottomNavigation=findViewById(R.id.bottomNavigationView);
+        this.createNavItems();
+
         toolbar = findViewById(R.id.toolbar);
         toobarTitle = findViewById(R.id.toobarTitle);
         toobarTitle.setText("Werayou");
@@ -176,6 +144,69 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         showCase();
 
     }
+
+    void notification(){
+        bottomNavigation.setNotification("new", 1);
+
+    }
+
+    private void createNavItems()
+    {
+        //CREATE ITEMS
+        AHBottomNavigationItem home=new AHBottomNavigationItem("Home",R.drawable.ic_home);
+        AHBottomNavigationItem addfriend=new AHBottomNavigationItem("Ask",R.drawable.ic_add_friend);
+        AHBottomNavigationItem friend=new AHBottomNavigationItem("Messages",R.drawable.ic_friend);
+        AHBottomNavigationItem me=new AHBottomNavigationItem("Moi",R.drawable.ic_account);
+        //ADD ITEMS TO BAR
+
+        bottomNavigation.addItem(home);
+        bottomNavigation.addItem(addfriend);
+        bottomNavigation.addItem(friend);
+        bottomNavigation.addItem(me);
+
+        notification();
+        //notification
+
+        //PROPERTIES
+        bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FEFEFE"));
+
+        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+            @Override
+            public boolean onTabSelected(int position, boolean wasSelected) {
+                if(position==0)
+                {
+                    toobarTitle.setText("Werayou");
+                    HomeFragment fragment=new HomeFragment();
+                    loadFragment(fragment);
+
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
+                }else if(position==1)
+                {
+                    toobarTitle.setText("+ d'amis");
+                    FriendsFragment fragment=new FriendsFragment();
+                    loadFragment(fragment);
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
+                }else if(position==2)
+                {
+                    toobarTitle.setText("Messages");
+                    MessageFragment fragment=new MessageFragment();
+                    loadFragment(fragment);
+
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
+                }else if(position==3)
+                {
+                    toobarTitle.setText("Moi");
+                    MeFragment fragment=new MeFragment();
+                    loadFragment(fragment);
+
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
+                }
+                return true;
+            }
+        });
+
+    }
+
 
 
     void showCase() {

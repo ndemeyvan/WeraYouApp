@@ -848,8 +848,6 @@ public class ChatActivity extends AppCompatActivity {
                     ModelChat chat = snapshot.getValue(ModelChat.class);
                     if (chat.getRecepteur().equals(monId) && chat.getExpediteur().equals(sonID) || chat.getRecepteur().equals(sonID) && chat.getExpediteur().equals(monId)) {
                         modelChatList.add(chat);
-
-
                     }
                     chatAdapter = new ChatAdapter(getApplicationContext(), modelChatList, true);
                     mRecyclerView.setAdapter(chatAdapter);
