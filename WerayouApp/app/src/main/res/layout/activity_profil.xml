@@ -128,7 +128,7 @@
                                 android:id="@+id/textView4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Pays :"
+                                android:text="@string/country"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -153,7 +153,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Ville :"
+                                android:text="@string/town"
 
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
@@ -181,7 +181,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Age :"
+                                android:text="@string/age"
                                 android:textColor="@color/black"
 
                                 android:textSize="16sp"
@@ -208,7 +208,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Sexe : "
+                                android:text="@string/sexe"
                                 android:textColor="@color/black"
 
                                 android:textSize="16sp"
@@ -237,7 +237,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
 
-                                android:text="Cherche :"
+                                android:text="@string/cherche"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -273,7 +273,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:background="@drawable/add_firend_buttton_background"
-                        android:text="Accepter"
+                        android:text="@string/accept"
                         android:textAllCaps="false"
                         android:textColor="@color/white" />
 
@@ -283,7 +283,7 @@
                         android:layout_height="35dp"
                         android:layout_marginLeft="20dp"
                         android:background="@drawable/backgroun_button_validation"
-                        android:text="Refuser"
+                        android:text="@string/denied"
                         android:textAllCaps="false"
                         android:textColor="@color/white" />
 
@@ -322,7 +322,7 @@
             android:id="@+id/aucun_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cette personne n'a rien publier pour l'instant"
+            android:text="@string/no_post_person"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:visibility="invisible"

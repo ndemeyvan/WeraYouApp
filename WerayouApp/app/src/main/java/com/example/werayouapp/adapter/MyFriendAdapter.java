@@ -72,7 +72,6 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final MyFriendAdapter.ViewHolder holder, final int i) {
-
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
         final String id_user = myFriendModelList.get(i).getId();

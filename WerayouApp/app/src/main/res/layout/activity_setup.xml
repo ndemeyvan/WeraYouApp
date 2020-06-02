@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:ems="10"
-                android:hint="quel est votre ville ?"
+                android:hint="@string/what_is_your_town"
                 android:inputType="textPersonName"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -163,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:ems="10"
-                android:hint="quel est votre age ?"
+                android:hint="@string/what_is_your_age"
                 android:inputType="number"
                 android:textSize="14sp"
                 android:background="@drawable/background_add_image_profil"
@@ -173,14 +173,14 @@
                 app:layout_constraintEnd_toEndOf="@+id/ville_user"
                 app:layout_constraintStart_toStartOf="@+id/ville_user"
                 app:layout_constraintTop_toBottomOf="@+id/ville_user"
-                tools:hint="Quel est votre age" />
+                />
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Quel est votre sex ?"
+                android:text="@string/your_sex"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/spinner"
@@ -203,13 +203,13 @@
                     android:id="@+id/radio_homme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Homme" />
+                    android:text="@string/homme" />
 
                 <RadioButton
                     android:id="@+id/radio_femme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Femme" />
+                    android:text="@string/femme" />
             </RadioGroup>
             <Spinner
                 android:id="@+id/spinnerTwo"
@@ -227,7 +227,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="45dp"
                 android:background="@drawable/backgroun_button_validation"
-                android:text="Enregistrer"
+                android:text="@string/register"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
@@ -248,7 +248,7 @@
                 android:ems="10"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:hint="Quel est votre nom ?"
+                android:hint="@string/what_is_your_name"
                 android:inputType="textPersonName"
                 android:padding="10dp"
                 android:textSize="14sp"
@@ -268,7 +268,7 @@
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:hint="Quel est votre prenom"
+                android:hint="@string/what_is_your_secon_name"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="@+id/user_nom"
                 app:layout_constraintStart_toStartOf="@+id/user_nom"
@@ -283,7 +283,7 @@
                 android:ems="10"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:hint="Dire quelque chose a propos de vous . ( 118 caractere maximum )"
+                android:hint="@string/say_someThing_118"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
                 android:textSize="14sp"

@@ -1,6 +1,10 @@
 package com.example.werayouapp.Activity.mainFragment;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,7 +51,8 @@ public class MessageFragment extends Fragment {
     DatabaseReference reference;
     FirebaseAuth user;
     String userID;
-
+    SharedPreferences sharedpreferences;
+    String myPref = "firstOpen";
 
     public MessageFragment() {
         // Required empty public constructor
@@ -76,6 +81,27 @@ public class MessageFragment extends Fragment {
 
         //getLastMessage();
         getMessage();
+        sharedpreferences = getActivity().getSharedPreferences(myPref,
+                Context.MODE_PRIVATE);
+        if (!sharedpreferences.contains(myPref)) {
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Weareyou")
+                    .setMessage("Pour des raisons de stabilité, veuillez fermer l'application et la relancer.")
+                    .setCancelable(false)
+                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                    // The dialog is automatically dismissed when a dialog button is clicked.
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putBoolean(myPref, true);
+                            editor.commit();
+                            getActivity().finishAffinity();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
 
         return v;
     }

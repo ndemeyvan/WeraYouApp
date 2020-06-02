@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,6 +61,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
     Toolbar toolbar;
     Uri mImageUri;
     StorageReference storageReference;
+
     //
     String userID;
     FirebaseAuth user;
@@ -97,6 +102,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                 setImage();
             }
         });
+
     }
 
     @Override

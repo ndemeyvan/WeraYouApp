@@ -117,6 +117,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
+
         //
         rootView = findViewById(R.id.root_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -156,14 +157,15 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         mRecyclerView.setLayoutManager(mLayoutManager);
         // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setNestedScrollingEnabled(true);
         commentList = new ArrayList<>();
-        getComments();
         //
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference();
         getLikeCount();
         checkifLike();
+        getComments();
+
         like_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -596,7 +598,6 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                     comment_data.put("commentaire", commentaire);
                     comment_data.put("createdDate", date);
                     comment_data.put("id_commentaire", key);
-
                     DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("commentaires").child(key);
                     userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -608,56 +609,55 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
 
                         }
                     });
-                    //send notification
-                    JSONObject json = new JSONObject();
-                    try {
-                        //json.put("to","/topics/"+id_user);
-                        json.put("to", "/topics/" + id_user);
+                    if (id_user!=userID){
+                        //send notification
+                        JSONObject json = new JSONObject();
+                        try {
+                            //json.put("to","/topics/"+id_user);
+                            json.put("to", "/topics/" + id_user);
+                            JSONObject notificationObj = new JSONObject();
+                            notificationObj.put("title", notificationName+" a commenté votre publication");
+                            notificationObj.put("body", commentaire);
+                            JSONObject extraData = new JSONObject();
+                            extraData.put("id_recepteur", "");
+                            extraData.put("type", "post_notification");
+                            extraData.put("id_post", id_post);
+                            extraData.put("id_user", id_user);
+                            extraData.put("description", description);
+                            extraData.put("image", image);
+                            extraData.put("date", date);
+                            json.put("notification", notificationObj);
+                            json.put("data", extraData);
 
-                        JSONObject notificationObj = new JSONObject();
-                        notificationObj.put("title", notificationName+" a commenté votre publication");
-                        notificationObj.put("body", commentaire);
+                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                                    json,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
 
-                        JSONObject extraData = new JSONObject();
-                        extraData.put("id_recepteur", "");
-                        extraData.put("type", "post_notification");
-                        extraData.put("id_post", id_post);
-                        extraData.put("id_user", id_user);
-                        extraData.put("description", description);
-                        extraData.put("image", image);
-                        extraData.put("date", date);
-
-
-                        json.put("notification", notificationObj);
-                        json.put("data", extraData);
-
-                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
-                                json,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-
-                                        Log.d("MUR", "onResponse: ");
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("MUR", "onError: " + error.networkResponse);
+                                            Log.d("MUR", "onResponse: ");
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("MUR", "onError: " + error.networkResponse);
+                                }
                             }
+                            ) {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> header = new HashMap<>();
+                                    header.put("content-type", "application/json");
+                                    header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
+                                    return header;
+                                }
+                            };
+                            requestQueue.add(request);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        ) {
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                Map<String, String> header = new HashMap<>();
-                                header.put("content-type", "application/json");
-                                header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
-                                return header;
-                            }
-                        };
-                        requestQueue.add(request);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+
 
                 } else {
                     makeToast("entrez un texte", DetailPhotoActivity.this);
@@ -698,18 +698,18 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
     @Override
     protected void onPause() {
         super.onPause();
-        setStatus("offline");
+        //setStatus("offline");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setStatus("online");
+        //setStatus("online");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        setStatus("online");
+        //setStatus("online");
     }
 }

@@ -449,11 +449,24 @@ public class ChatActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         dialog.dismiss();
+                                        updateNotification("newMessageNotif", true, recepteur);
                                     }
                                 });
                     }
                 });
 
+    }
+
+    void updateNotification(String key, boolean status, String userID) {
+        Map<String, Object> user_data = new HashMap<>();
+        user_data.put(key, status);
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
     }
 
     //cette methode sert a attribuer le type message et image pendant l'envoie
@@ -512,6 +525,8 @@ public class ChatActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 dialog.dismiss();
+                                updateNotification("newMessageNotif", true, recepteur);
+
                             }
                         });
                     }
@@ -785,6 +800,7 @@ public class ChatActivity extends AppCompatActivity {
                                 .child(expediteur).setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                updateNotification("newMessageNotif", true, recepteur);
 
                             }
                         });
@@ -894,14 +910,18 @@ public class ChatActivity extends AppCompatActivity {
     void setStatus(String status) {
         Map<String, Object> user_data = new HashMap<>();
         user_data.put("isOnline", status);
+
+//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//
+//        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//
+//
+//            }
+//        });
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-
-            }
-        });
+        userDb.child("isOnline").setValue(status);
     }
 
     void setLastMessageStatuts(String status, String expediteur, String recepteur) {
@@ -955,7 +975,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setStatus("online");
+       setStatus("online");
 //        FirebaseMessaging.getInstance().subscribeToTopic("");
 
     }

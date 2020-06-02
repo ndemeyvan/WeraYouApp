@@ -15,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="L'inscription est rapide et facile. Pour créer votre profil. Choisissez une photo et remplissez le formulaire  "
+        android:text="@string/intro_page_3_text"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textAlignment="center"

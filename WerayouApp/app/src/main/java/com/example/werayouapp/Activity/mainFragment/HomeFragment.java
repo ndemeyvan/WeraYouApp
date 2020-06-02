@@ -1,13 +1,13 @@
 package com.example.werayouapp.Activity.mainFragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.werayouapp.Activity.ActivityPrincipal;
 import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.ArrayAdapter;
@@ -45,12 +44,11 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
  */
 public class HomeFragment extends Fragment {
     View v;
-    Cards cards[];
-    private com.example.werayouapp.adapter.ArrayAdapter arrayAdapter;
-    private int i;
-    private SwipeFlingAdapterView flingContainer;
-    SharedPreferences sharedpreferences;
 
+    com.example.werayouapp.adapter.ArrayAdapter arrayAdapter;
+    int i;
+    SwipeFlingAdapterView flingContainer;
+    SharedPreferences sharedpreferences;
     FirebaseAuth user;
     List<Cards> rowsItems;
     ProgressBar progressBar;
@@ -62,28 +60,23 @@ public class HomeFragment extends Fragment {
     String contry;
     String myPref = "countryPref";
     //
-    private String recherche;
+    String recherche;
     //
-    private String currentUser;
+    String currentUser;
     //
-    private DatabaseReference usersDb;
-    private String pays;
-
+    DatabaseReference usersDb;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         v = inflater.inflate(R.layout.fragment_home2, container, false);
         sharedpreferences = getActivity().getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
-
         user = FirebaseAuth.getInstance();
         currentUser = user.getCurrentUser().getUid();
         messageDeDernierCards = v.findViewById(R.id.messageDeDernierCards);
@@ -100,7 +93,7 @@ public class HomeFragment extends Fragment {
                     if (dataSnapshot.exists()) {
                         if (dataSnapshot.child("pays").getValue() != null) {
                             String myCountry = dataSnapshot.child("pays").getValue().toString();
-                            checkUserSex(myCountry);
+                            checkUserSex(myCountry.toLowerCase());
                         }
                     }
                 }
@@ -162,32 +155,8 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-                //usersDb.child(userId).child("connections").child("accepter").child(currentUser).setValue(true);
-                isConnectionMatch(userId);
-                //makeToast(getActivity(), "Right!");
-
             }
 
-            private void isConnectionMatch(String userId) {
-                DatabaseReference currentUserConnectionsDb = usersDb.child(currentUser).child("connections").child("accepter").child(userId);
-                currentUserConnectionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            Toast.makeText(getActivity(), "new Connection", Toast.LENGTH_LONG).show();
-                            usersDb.child(dataSnapshot.getKey()).child("connections").child(currentUser).setValue(true);
-                            usersDb.child(currentUser).child("connections").child(dataSnapshot.getKey()).setValue(true);
-                            // String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
-                            //usersDb.child(dataSnapshot.getKey()).child("connections").child("correspondances").child(currentUser).child("ChatId").setValue(key);
-                            //usersDb.child(currentUser).child("connections").child("matches").child(dataSnapshot.getKey()).child("ChatId").setValue(key);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
-            }
 
             @Override
             public void onAdapterAboutToEmpty(int i) {
@@ -265,15 +234,18 @@ public class HomeFragment extends Fragment {
             public void passData(String name) {
                 Toast.makeText(getContext(), name.toLowerCase(), Toast.LENGTH_SHORT).show();
                 contry = name.toLowerCase();
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("lastCountrySave", contry);
-                editor.commit();
-                Intent i = new Intent(getContext(), ActivityPrincipal.class);
-                getActivity().finish();
-                getActivity().overridePendingTransition(0, 0);
-                startActivity(i);
-                getActivity().overridePendingTransition(0, 0);
+                if (sharedpreferences.contains("lastCountrySave")) {
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("lastCountrySave", contry);
+                    editor.commit();
+                    Intent i = new Intent(getContext(), ActivityPrincipal.class);
+                    getActivity().finish();
+                    getActivity().overridePendingTransition(0, 0);
+                    startActivity(i);
+                    //getActivity().overridePendingTransition(0, 0);
+                }else{
 
+                }
             }
         });
 
@@ -290,12 +262,9 @@ public class HomeFragment extends Fragment {
         sequence.setConfig(config);
         sequence.addSequenceItem(left,
                 "Si un profil ne vous intéresse pas, cliquez sur la CROIX en bas de l'image ou faites glisser l'image vers la gauche", "OK");
-
         sequence.addSequenceItem(right,
                 "Si un profil vous intéresse, cliquez sur le COEUR en bas de l'image ou faites glisser l'image vers la droite, l'utilisateur reçoit votre demande d'ami . ", "OK");
-
         sequence.start();
-
 
     }
 
@@ -308,16 +277,10 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     if (dataSnapshot.child("recherche").getValue() != null) {
                         recherche = dataSnapshot.child("recherche").getValue().toString();
-                        switch (recherche) {
-                            case "Homme":
-                                getOppositeSexUsers(contry, recherche);
-                                break;
-                            case "Femme":
-                                getOppositeSexUsers(contry, recherche);
-                                break;
-                            case "Les deux":
-                                getTwoUsersSex(contry);
-                                break;
+                        if (recherche.equals("Homme")||recherche.equals("Femme")){
+                            getUsers(contry, recherche);
+                        }else{
+                            getTwoUsersSex(contry);
                         }
                     }
 
@@ -331,13 +294,12 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void getOppositeSexUsers(final String contry, final String oppositeUserSex) {
+    public void getUsers(final String contry, final String oppositeUserSex) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex) && dataSnapshot.child("pays").getValue().toString().equals(contry) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex) && dataSnapshot.child("pays").getValue().toString().equals(contry.toLowerCase()) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
@@ -389,7 +351,6 @@ public class HomeFragment extends Fragment {
             right.setEnabled(false);
             left.setEnabled(false);
             progressBar.setVisibility(View.INVISIBLE);
-
         } else {
             messageDeDernierCards.setText("il n'y a pas de proposition ");
             messageDeDernierCards.setVisibility(View.INVISIBLE);
@@ -403,7 +364,7 @@ public class HomeFragment extends Fragment {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("pays").getValue().toString().equals(contry) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("pays").getValue().toString().equals(contry.toLowerCase()) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
                     //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
@@ -451,7 +412,6 @@ public class HomeFragment extends Fragment {
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
-
 
 
 }

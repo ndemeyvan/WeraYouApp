@@ -84,7 +84,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
-                                android:text="modifier"
+                                android:text="@string/modify"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:theme="@style/SpinnerThemeWhite"
@@ -137,7 +137,7 @@
                                 android:id="@+id/textView4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Pays :"
+                                android:text="@string/country"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -162,7 +162,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Ville :"
+                                android:text="@string/town"
 
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
@@ -190,7 +190,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Age :"
+                                android:text="@string/age"
                                 android:textColor="@color/black"
 
                                 android:textSize="16sp"
@@ -217,7 +217,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Sexe : "
+                                android:text="@string/sexe"
                                 android:textColor="@color/black"
 
                                 android:textSize="16sp"
@@ -246,7 +246,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
 
-                                android:text="Cherche :"
+                                android:text="@string/cherche"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -296,7 +296,7 @@
             android:id="@+id/aucun_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vous n'avez rien publier pour l'instant"
+            android:text="@string/nothing_publish"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:visibility="invisible"

@@ -193,6 +193,17 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
+    void updateNotification(String key,boolean status,String userID) {
+        Map<String, Object> user_data = new HashMap<>();
+        user_data.put(key, status);
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
+    }
     //accepter une demande
     void accpet(final String id_user) {
         Calendar calendar = Calendar.getInstance();
@@ -208,7 +219,6 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         db.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
                 /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
                 DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("accepter").child(id_user);
                 db.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -216,6 +226,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             snapshot.getRef().removeValue();
+                            updateNotification("newFriendNotif",true,id_user);
                         }
                     }
 

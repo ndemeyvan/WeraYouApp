@@ -1,8 +1,11 @@
 package com.example.werayouapp.Activity.mainFragment;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -53,7 +56,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class MeFragment extends Fragment {
 
-    String userSex;
     ImageView cardView2;
     private DatabaseReference usersDb;
     TextView nomUser;
@@ -75,7 +77,8 @@ public class MeFragment extends Fragment {
     ProgressBar progressBarTwo;
     TextView aucun_post;
     TextView villeView;
-
+    SharedPreferences sharedpreferences;
+    String myPref = "firstOpen";
 
     public MeFragment() {
         // Required empty public constructor
@@ -115,19 +118,36 @@ public class MeFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
-
-                //getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-                //getActivity().finish();
+                getActivity().finish();
             }
         });
         postList = new ArrayList<>();
         getUserData();
         getPost();
-
         Locale locale = ConfigurationCompat.getLocales(Resources.getSystem().getConfiguration()).get(0);
         Log.i("locale",locale.getDisplayName());
+        sharedpreferences = getActivity().getSharedPreferences(myPref,
+                Context.MODE_PRIVATE);
+        if (!sharedpreferences.contains(myPref)) {
 
-        // FetchPost();
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Weareyou")
+                    .setMessage("Pour des raisons de stabilité, veuillez fermer l'application et la relancer.")
+                    .setCancelable(false)
+                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                    // The dialog is automatically dismissed when a dialog button is clicked.
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putBoolean(myPref, true);
+                            editor.commit();
+                            getActivity().finishAffinity();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
         return v;
 
     }
@@ -149,7 +169,6 @@ public class MeFragment extends Fragment {
 
                 }
                 Collections.sort(postList);
-
                 if (postList.size() == 0) {
                     aucun_post.setVisibility(View.VISIBLE);
                     progressBarTwo.setVisibility(View.INVISIBLE);
@@ -160,14 +179,12 @@ public class MeFragment extends Fragment {
                 mRecyclerView.setAdapter(adapter);
                 // adapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
     }
-
 
     ///recupere les information de l'utilisateur
     public void getUserData() {
@@ -258,13 +275,10 @@ public class MeFragment extends Fragment {
                 String recherche = map.get("recherche").toString();
                 String rechercheFinal = recherche.substring(0, 1).toUpperCase() + recherche.substring(1);
                 cherche.setText(rechercheFinal);
-
-
             }
             if (map.get("sexe") != null) {
                 String userSexe = map.get("sexe").toString();
                 sexe.setText(userSexe);
-
             }
             if (map.get("pays") != null) {
                 String pays = map.get("pays").toString();

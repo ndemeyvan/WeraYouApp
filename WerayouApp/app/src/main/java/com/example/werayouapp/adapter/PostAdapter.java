@@ -51,7 +51,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Picasso.with(context).load(imagelink).into(holder.image);
         holder.progressBar.setVisibility(View.INVISIBLE);
         //holder.card_view.setAnimation ( AnimationUtils.loadAnimation ( context,R.anim.fade_scale ) );
-
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

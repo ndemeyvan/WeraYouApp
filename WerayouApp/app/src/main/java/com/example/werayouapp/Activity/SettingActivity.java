@@ -133,8 +133,8 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                //startActivity(intent);
+                Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
             }
@@ -473,8 +473,8 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                //startActivity(intent);
+                Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
                 makeToast("enregister");
@@ -488,8 +488,8 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-        //startActivity(intent);
+        Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+        startActivity(intent);
         // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
         finish();
     }

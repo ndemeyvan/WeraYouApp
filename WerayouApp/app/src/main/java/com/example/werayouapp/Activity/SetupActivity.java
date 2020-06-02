@@ -58,7 +58,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     EditText age_user;
     EditText user_prenom;
     EditText user_nom;
-    String[] recherche = {"Que recherchez vous ?", "Homme", "Femme", "Les deux"};
+    String[] recherche = {getResources().getString(R.string.what_you_want), getResources().getString(R.string.homme), getResources().getString(R.string.femme), getResources().getString(R.string.femme)};
+
     String interesse;
     Uri mImageUri;
     byte[] final_image;
@@ -180,6 +181,11 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         interesse = recherche[i];
+        if (interesse.equals("Femme")||interesse.equals("Woman")){
+            interesse="Femme";
+        }else if (interesse.equals("Homme")||interesse.equals("Man")){
+            interesse="Homme";
+        }
     }
 
     @Override
@@ -203,9 +209,12 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                     // find the radiobutton by returned id
                     radio_femme = (RadioButton) findViewById(selectedId);
                     sexe = radio_femme.getText().toString();
+                    sexe=getResources().getString(R.string.femme);
+                    sexe="Femme";
                 } else if (radio_homme.isChecked()) {
                     radio_homme = (RadioButton) findViewById(selectedId);
                     sexe = radio_homme.getText().toString();
+                    sexe="Homme";
 
                 } else {
                     toast("choisir votre sexe svp ");
@@ -213,7 +222,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 //////////
                 /////////// envoi des fichier dans la base de donnee
               //  if (ischange) {
-                    if (!interesse.equals("Que recherchez vous ?") ) {
+                    if (!interesse.equals("Que recherchez vous ?") || !interesse.equals(getResources().getString(R.string.what_you_want))) {
                         //
                         if (!TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)&& sexe!=null) {
 
@@ -276,6 +285,11 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     public void stockage(@NonNull Task<Uri> task, String nom, String prenom, String ville, String ageUser, String apropos) {
+        if (interesse.equals("Femme")||interesse.equals("Woman")){
+            interesse="Femme";
+        }else if (interesse.equals("Homme")||interesse.equals("Man")){
+            interesse="Homme";
+        }
         Uri downloadUri;
         if (task != null) {
             downloadUri = task.getResult();
@@ -290,7 +304,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             Map<String, Object> user_data = new HashMap<>();
             user_data.put("nom", nom);
             user_data.put("prenom", prenom);
-            user_data.put("pays", country);
+            user_data.put("pays", country.toLowerCase());
             user_data.put("phone", user.getCurrentUser().getPhoneNumber());
             user_data.put("ville", ville);
             user_data.put("age", ageUser);
@@ -300,8 +314,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             user_data.put("image", downloadUri.toString());
             user_data.put("forfait", "gratuit");
             user_data.put("id", userID);
+            user_data.put("newFriendNotif", false);
             user_data.put("apropos", apropos);
-            user_data.put("isOnline", "true");
+            user_data.put("isOnline", "online");
             user_data.put("countryCode", countryCode);
             DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
             userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {

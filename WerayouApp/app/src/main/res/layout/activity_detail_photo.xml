@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Commentez le premier ."
+                android:text="@string/comment_first"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/likecommentsNumbers" />
@@ -173,7 +173,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/edit_background"
-                android:hint="votre commentaire ..."
+                android:hint="@string/your_comment"
                 android:inputType="textMultiLine"
                 android:padding="8dp"
                 android:textSize="14sp"

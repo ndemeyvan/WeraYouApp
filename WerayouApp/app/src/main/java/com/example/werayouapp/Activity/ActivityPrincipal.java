@@ -1,11 +1,15 @@
 package com.example.werayouapp.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -26,6 +30,7 @@ import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
+import com.example.werayouapp.login.OtpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,14 +43,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hbb20.CountryCodePicker;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
 
     AHBottomNavigation bottomNavigation;
     ImageView add_image;
@@ -59,8 +65,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     String myPref = "countryCode";
     DatabaseReference usersDb;
     String countryCode;
-    String pays;
-    private String code;
 
 
     @Override
@@ -71,10 +75,12 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar =findViewById(R.id.toolbar);
         add_image = findViewById(R.id.add_image);
         sharedpreferences = getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
+
+        // setStatus("online");
 
         if (getIntent().hasExtra("chat_notification")) {
             Intent intent = new Intent(ActivityPrincipal.this, ChatActivity.class);
@@ -89,7 +95,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             intent.putExtra("date", getIntent().getStringExtra("date"));
             startActivity(intent);
         }
-
 
         if (sharedpreferences.contains("LastCountryCode")) {
             String contryCode = sharedpreferences.getString("LastCountryCode", "");
@@ -106,6 +111,8 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                             countryCode = dataSnapshot.child("countryCode").getValue().toString();
                             mCountryCode.setDefaultCountryUsingNameCode(countryCode);
                             mCountryCode.resetToDefaultCountry();
+                            Log.i("ValueCode", "lol");
+
                         }
                     }
                 }
@@ -121,14 +128,15 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 //        setSupportActionBar(toolbar);
 //        BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
 //        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//
-        loadFragment(new HomeFragment());
-        bottomNavigation=findViewById(R.id.bottomNavigationView);
+
+
+        bottomNavigation = findViewById(R.id.bottomNavigationView);
         this.createNavItems();
 
         toolbar = findViewById(R.id.toolbar);
         toobarTitle = findViewById(R.id.toobarTitle);
         toobarTitle.setText("Werayou");
+        loadFragment(new HomeFragment());
 
         mCountryCode.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
@@ -141,65 +149,67 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             }
         });
 
+        add_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gogotoSearch = new Intent(getApplicationContext(), AddPhotoActivity.class);
+                startActivity(gogotoSearch);
+            }
+        });
+
         showCase();
 
     }
 
-    void notification(){
-        bottomNavigation.setNotification("new", 1);
-
+    void notification(int i) {
+        bottomNavigation.setNotification("new", i);
     }
 
-    private void createNavItems()
-    {
+    private void createNavItems() {
         //CREATE ITEMS
-        AHBottomNavigationItem home=new AHBottomNavigationItem("Home",R.drawable.ic_home);
-        AHBottomNavigationItem addfriend=new AHBottomNavigationItem("Ask",R.drawable.ic_add_friend);
-        AHBottomNavigationItem friend=new AHBottomNavigationItem("Messages",R.drawable.ic_friend);
-        AHBottomNavigationItem me=new AHBottomNavigationItem("Moi",R.drawable.ic_account);
+        AHBottomNavigationItem home = new AHBottomNavigationItem("Werayou", R.drawable.ic_home);
+        AHBottomNavigationItem addfriend = new AHBottomNavigationItem("Ask", R.drawable.ic_add_friend);
+        AHBottomNavigationItem friend = new AHBottomNavigationItem("Amis", R.drawable.ic_friend);
+        AHBottomNavigationItem messages = new AHBottomNavigationItem("Messages", R.drawable.ic_conversation);
+        AHBottomNavigationItem me = new AHBottomNavigationItem("Moi", R.drawable.ic_account);
         //ADD ITEMS TO BAR
-
         bottomNavigation.addItem(home);
         bottomNavigation.addItem(addfriend);
         bottomNavigation.addItem(friend);
+        bottomNavigation.addItem(messages);
         bottomNavigation.addItem(me);
-
-        notification();
         //notification
-
+        checkifHavenotification();
         //PROPERTIES
         bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FEFEFE"));
 
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
-                if(position==0)
-                {
+                if (position == 0) {
                     toobarTitle.setText("Werayou");
-                    HomeFragment fragment=new HomeFragment();
+                    HomeFragment fragment = new HomeFragment();
                     loadFragment(fragment);
-
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
-                }else if(position==1)
-                {
-                    toobarTitle.setText("+ d'amis");
-                    FriendsFragment fragment=new FriendsFragment();
+                } else if (position == 1) {
+                    toobarTitle.setText("");
+                    FriendsFragment fragment = new FriendsFragment();
                     loadFragment(fragment);
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
-                }else if(position==2)
-                {
-                    toobarTitle.setText("Messages");
-                    MessageFragment fragment=new MessageFragment();
+                    updateNotification("newFriendNotif", false);
+                    checkifHavenotification();
+                } else if (position == 2) {
+                    toobarTitle.setText("");
+                    MyFriendFragment fragment = new MyFriendFragment();
                     loadFragment(fragment);
-
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
-                }else if(position==3)
-                {
-                    toobarTitle.setText("Moi");
-                    MeFragment fragment=new MeFragment();
+                } else if (position == 3) {
+                    toobarTitle.setText("");
+                    MessageFragment fragment = new MessageFragment();
                     loadFragment(fragment);
-
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
+                    updateNotification("newMessageNotif", false);
+                    checkifHavenotification();
+                } else if (position == 4) {
+                    toobarTitle.setText("");
+                    MeFragment fragment = new MeFragment();
+                    loadFragment(fragment);
                 }
                 return true;
             }
@@ -207,10 +217,59 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     }
 
+    void updateNotification(String key, boolean status) {
+        Map<String, Object> user_data = new HashMap<>();
+        user_data.put(key, status);
+//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//
+//            }
+//        });
+
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        userDb.child(key).setValue(status);
+    }
+
+    void checkifHavenotification() {
+        DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    if (map.get("newFriendNotif") != null) {
+                        boolean friendNotif = (boolean) map.get("newFriendNotif");
+                        if (friendNotif == true) {
+                            notification(1);
+                        } else {
+                            bottomNavigation.setNotification("", 1);
+                        }
+                    }
+                    if (map.get("newMessageNotif") != null) {
+                        boolean messageNotif = (boolean) map.get("newMessageNotif");
+                        if (messageNotif == true) {
+                            notification(3);
+                        } else {
+                            bottomNavigation.setNotification("", 3);
+                        }
+                    }
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
 
     void showCase() {
-        //, par defaut il est sur France, Mais les propositions en bas sont de votre pays.
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
@@ -222,7 +281,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     }
 
     public interface FragmentCommunicator {
-        public void passData(String name);
+         void passData(String name);
     }
 
     public void passVal(FragmentCommunicator fragmentCommunicator) {
@@ -233,9 +292,23 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-    }
+//        new AlertDialog.Builder(getApplicationContext())
+//                .setTitle("Weareyou")
+//                .setMessage("Voulez vous quitter l'application ?.")
+//                .setCancelable(false)
+//                // Specifying a listener allows you to take an action before dismissing the dialog.
+//                // The dialog is automatically dismissed when a dialog button is clicked.
+//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                    }
+//                })
+//                .setIcon(android.R.drawable.ic_dialog_alert)
+//                .show();
 
+        finish();
+
+    }
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -256,7 +329,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                     toobarTitle.setText("+ d'amis");
                     fragment = new FriendsFragment();
                     loadFragment(fragment);
-
                     return true;
                 case R.id.amies:
                     mCountryCode.setVisibility(View.INVISIBLE);
@@ -322,48 +394,60 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         }
     }
 
-    void setStatus(String status) {
-        Map<String, Object> user_data = new HashMap<>();
-        user_data.put("isOnline", status);
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
 
-            }
-        });
+        void setStatus(final String status) {
+        Map<String, Object> user_data = new HashMap<>();
+//        user_data.put("isOnline", status);
+//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//
+//            }
+//        });
+
+            DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+            userDb.child("isOnline").setValue(status);
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        setStatus("online");
+        //setStatus("online");
         FirebaseMessaging.getInstance().subscribeToTopic(userID);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        setStatus("offline");
+        //setStatus("offline");
         FirebaseMessaging.getInstance().subscribeToTopic(userID);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setStatus("online");
+        //setStatus("online");
         FirebaseMessaging.getInstance().subscribeToTopic(userID);
-
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        setStatus("online");
+        //setStatus("online");
         FirebaseMessaging.getInstance().subscribeToTopic(userID);
-
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //setStatus("offline");
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //setStatus("offline");
+    }
 }

@@ -10,7 +10,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        app:title="ajouter une photo"
+        app:title="@string/add_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -58,7 +58,7 @@
                 android:background="@drawable/background_add_image_profil"
                 android:elevation="1dp"
                 android:ems="10"
-                android:hint="Ajouter une description"
+                android:hint="@string/add_description"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
                 android:textColor="@color/black"
@@ -107,7 +107,7 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="32dp"
-                android:text="ce post sera uniquement visible sur votre mur"
+                android:text="@string/explain_post_visibility"
                 android:textAlignment="center"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
