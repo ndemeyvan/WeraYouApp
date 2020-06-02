@@ -161,12 +161,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onAdapterAboutToEmpty(int i) {
                 if (i == 0) {
-                    messageDeDernierCards.setText("il n'y a plus de proposition ");
+                    messageDeDernierCards.setText(getResources().getString(R.string.no_proposition));
                     messageDeDernierCards.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    messageDeDernierCards.setText("il n'y a plus de proposition ");
+                    messageDeDernierCards.setText(getResources().getString(R.string.no_proposition));
                     messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);

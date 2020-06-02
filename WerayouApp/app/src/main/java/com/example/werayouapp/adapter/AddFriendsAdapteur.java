@@ -167,8 +167,8 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(context)
-                        .setTitle("refuser ?")
-                        .setMessage("Voulez vous supprimer cette demande ?")
+                        .setTitle(context.getResources().getString(R.string.reject))
+                        .setMessage(context.getResources().getString(R.string.delete_ask_friend))
 
                         // Specifying a listener allows you to take an action before dismissing the dialog.
                         // The dialog is automatically dismissed when a dialog button is clicked.

@@ -209,15 +209,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                     // find the radiobutton by returned id
                     radio_femme = (RadioButton) findViewById(selectedId);
                     sexe = radio_femme.getText().toString();
-                    sexe=getResources().getString(R.string.femme);
                     sexe="Femme";
                 } else if (radio_homme.isChecked()) {
                     radio_homme = (RadioButton) findViewById(selectedId);
                     sexe = radio_homme.getText().toString();
                     sexe="Homme";
-
                 } else {
-                    toast("choisir votre sexe svp ");
+                    toast(getResources().getString(R.string.select_a_sex));
                 }
                 //////////
                 /////////// envoi des fichier dans la base de donnee
@@ -269,12 +267,12 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                         } else {
                             button.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getApplicationContext(), "remplir tous les champs", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.write_all), Toast.LENGTH_LONG).show();
                         }
                         //
 
                     } else {
-                        toast("Que recherchez vous ?");
+                        toast(getResources().getString(R.string.what_you_want));
                     }
 
 //                } else {
@@ -327,10 +325,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                     finish();
                 }
             });
-
-
         } else {
-            toast("choisir une image");
+            toast(getResources().getString(R.string.what_you_want));
         }
 
 

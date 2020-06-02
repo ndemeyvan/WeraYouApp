@@ -72,7 +72,7 @@ public class MyFriendFragment extends Fragment {
         if (!sharedpreferences.contains(myPref)) {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Weareyou")
-                    .setMessage("Pour des raisons de stabilité, veuillez fermer l'application et la relancer.")
+                    .setMessage(getResources().getString(R.string.no_proposition))
                     .setCancelable(false)
                     // Specifying a listener allows you to take an action before dismissing the dialog.
                     // The dialog is automatically dismissed when a dialog button is clicked.

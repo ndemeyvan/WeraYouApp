@@ -76,9 +76,9 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         userID = user.getCurrentUser().getUid();
         final String id_user = myFriendModelList.get(i).getId();
         getUserData(holder, id_user);
+
         //checkifIsBlocked(holder, userID, id_user);
         //id =id_user;
-
 //        holder.writeButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -91,6 +91,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
 //            }
 //        });
         //
+
         holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,6 +199,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
 
 
     }
+
 //
 //    void checkifIsBlocked(final ViewHolder viewHolder, final String UserId, final String id_user) {
 //        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(UserId).child("connections").child("bloquer").child(id_user);

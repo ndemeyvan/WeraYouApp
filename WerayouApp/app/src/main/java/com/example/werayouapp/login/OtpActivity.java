@@ -71,7 +71,7 @@ public class OtpActivity extends AppCompatActivity {
                 if (otp.isEmpty()) {
 
                     mOtpFeedback.setVisibility(View.VISIBLE);
-                    mOtpFeedback.setText("s'il vous plait remplir le formulaire");
+                    mOtpFeedback.setText(getResources().getString(R.string.write_all));
 
                 } else {
                     mOtpProgress.setVisibility(View.VISIBLE);
@@ -96,7 +96,7 @@ public class OtpActivity extends AppCompatActivity {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
                                 mOtpFeedback.setVisibility(View.VISIBLE);
-                                mOtpFeedback.setText("Une erreur est survenue lors de la verification , recommencer l\'operation svp");
+                                mOtpFeedback.setText(getResources().getString(R.string.verificcation_error));
                             }
                         }
                         mOtpProgress.setVisibility(View.INVISIBLE);

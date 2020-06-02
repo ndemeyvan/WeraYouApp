@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 String complete_phone_number = "+" + country_code + phone_number;
 
                 if (country_code.isEmpty() || phone_number.isEmpty()) {
-                    mLoginFeedbackText.setText("Please fill in the form to continue.");
+                    mLoginFeedbackText.setText(getResources().getString(R.string.write_all));
                     mLoginFeedbackText.setVisibility(View.VISIBLE);
                 } else {
                     mLoginProgress.setVisibility(View.VISIBLE);
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                mLoginFeedbackText.setText("Verification Failed, please try again.");
+                mLoginFeedbackText.setText(getResources().getString(R.string.verificcation_error));
                 mLoginFeedbackText.setVisibility(View.VISIBLE);
                 mLoginProgress.setVisibility(View.INVISIBLE);
                 mGenerateBtn.setEnabled(true);
@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
                                 mLoginFeedbackText.setVisibility(View.VISIBLE);
-                                mLoginFeedbackText.setText("Une erreur est survenu lors de la verification");
+                                mLoginFeedbackText.setText(getResources().getString(R.string.verificcation_error));
                             }
                         }
                         mLoginProgress.setVisibility(View.INVISIBLE);

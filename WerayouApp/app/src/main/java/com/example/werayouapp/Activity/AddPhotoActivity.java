@@ -236,7 +236,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                 } else {
                     progressBar.setVisibility(View.INVISIBLE);
                     post_button.setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext(), "remplir tous les champs", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.write_all), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -282,7 +282,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
                 startActivity(intent);*/
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
-                makeToast("publier");
+                makeToast(getResources().getString(R.string.is_publish));
             }
         });
         //

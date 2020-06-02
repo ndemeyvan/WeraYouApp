@@ -275,7 +275,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "SHOW");
         sequence.setConfig(config);
         sequence.addSequenceItem(mCountryCode,
-                "Vous pouvez faire une recherche par pays ... cliquez ici pour choisir un pays.", "OK");
+                getResources().getString(R.string.make_search), "OK");
         sequence.start();
 
     }
@@ -326,25 +326,25 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                     return true;
                 case R.id.friends:
                     mCountryCode.setVisibility(View.INVISIBLE);
-                    toobarTitle.setText("+ d'amis");
+                    toobarTitle.setText(getResources().getString(R.string.make_search));
                     fragment = new FriendsFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.amies:
                     mCountryCode.setVisibility(View.INVISIBLE);
-                    toobarTitle.setText("mes amis");
+                    toobarTitle.setText(getResources().getString(R.string.my_firends));
                     fragment = new MyFriendFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.message:
                     mCountryCode.setVisibility(View.INVISIBLE);
-                    toobarTitle.setText("Message");
+                    toobarTitle.setText("Messages");
                     fragment = new MessageFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.me:
                     mCountryCode.setVisibility(View.INVISIBLE);
-                    toobarTitle.setText("Moi");
+                    toobarTitle.setText(getResources().getString(R.string.me));
                     fragment = new MeFragment();
                     loadFragment(fragment);
                     return true;

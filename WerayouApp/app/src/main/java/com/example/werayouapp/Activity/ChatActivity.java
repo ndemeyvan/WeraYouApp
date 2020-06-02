@@ -554,14 +554,14 @@ public class ChatActivity extends AppCompatActivity {
                                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
                                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                                 nom_profil.setText(prenomFinal + " " + nomFinal);
-                                toolbar.setTitle("Publication de " + prenomFinal + " " + nomFinal);
+                                toolbar.setTitle(getResources().getString(R.string.publication_of) + prenomFinal + " " + nomFinal);
                             }
                             if (map.get("isOnline") != null) {
                                 String status = map.get("isOnline").toString();
                                 if (status.equals("online")) {
-                                    user_status.setText("En ligne");
+                                    user_status.setText(getResources().getString(R.string.online));
                                 } else {
-                                    user_status.setText("Hors ligne");
+                                    user_status.setText(getResources().getString(R.string.offline));
                                 }
 
                             }
@@ -618,9 +618,9 @@ public class ChatActivity extends AppCompatActivity {
                             if (map.get("isOnline") != null) {
                                 String status = map.get("isOnline").toString();
                                 if (status.equals("online")) {
-                                    user_status.setText("En ligne");
+                                    user_status.setText(getResources().getString(R.string.online));
                                 } else {
-                                    user_status.setText("Hors ligne");
+                                    user_status.setText(getResources().getString(R.string.offline));
                                 }
                             }
 

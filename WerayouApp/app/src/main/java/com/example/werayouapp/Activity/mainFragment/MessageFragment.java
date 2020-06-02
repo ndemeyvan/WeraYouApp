@@ -87,7 +87,7 @@ public class MessageFragment extends Fragment {
 
             new AlertDialog.Builder(getActivity())
                     .setTitle("Weareyou")
-                    .setMessage("Pour des raisons de stabilité, veuillez fermer l'application et la relancer.")
+                    .setMessage(getResources().getString(R.string.close_app))
                     .setCancelable(false)
                     // Specifying a listener allows you to take an action before dismissing the dialog.
                     // The dialog is automatically dismissed when a dialog button is clicked.

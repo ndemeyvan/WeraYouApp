@@ -132,14 +132,14 @@ public class ProfilActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isFriend == true) {
                     if (isLock==true){
-                        makeToast("Debloquer l'utilisateur d'abord");
+                        makeToast(getResources().getString(R.string.unlock));
                     }else {
                         if (iamblocked==false){
                             Intent intent = new Intent(ProfilActivity.this, ChatActivity.class);
                             intent.putExtra("id", id_user);
                             startActivity(intent);
                         }else{
-                            makeToast("Vous avez ete bloquer");
+                            makeToast(getResources().getString(R.string.you_are_block));
                         }
                     }
                     //il faudra une condition pour verifier si l'utilisateur est bloque ou pas
@@ -268,7 +268,7 @@ public class ProfilActivity extends AppCompatActivity {
         boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                makeToast("bloquer");
+                makeToast(getResources().getString(R.string.bloquer));
                 isLock=true;
                 checkifIBlcoked();
             }
@@ -382,13 +382,13 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser)) {
-                    deniedButton.setText("Bloquer");
-                    addButton.setText("Ecrire");
+                    deniedButton.setText(getResources().getString(R.string.bloquer));
+                    addButton.setText(getResources().getString(R.string.write));
                     isFriend = true;
                 } else {
                     isFriend = false;
-                    deniedButton.setText("Refuser");
-                    addButton.setText("Accepter");
+                    deniedButton.setText(getResources().getString(R.string.reject));
+                    addButton.setText(getResources().getString(R.string.accept));
                 }
             }
 
@@ -420,7 +420,7 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(currentUser)) {
-                    deniedButton.setText("Debloquer");
+                    deniedButton.setText(getResources().getString(R.string.unlock_simple));
                     isLock = true;
                     addButton.setBackgroundColor(Color.parseColor("#999999"));
                     addButton.setTextColor(Color.parseColor("#000000"));
@@ -505,7 +505,7 @@ public class ProfilActivity extends AppCompatActivity {
         db.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                makeToast("vous pouvez ecrire a cette personne ");
+                makeToast(getResources().getString(R.string.you_can_write));
                 /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
                 DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("accepter").child(id_user);
                 db.addListenerForSingleValueEvent(new ValueEventListener() {

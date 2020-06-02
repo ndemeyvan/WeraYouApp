@@ -192,8 +192,8 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         switch (item.getItemId()) {
             case R.id.delete:
                 new AlertDialog.Builder(DetailPhotoActivity.this)
-                        .setTitle("Supprimer")
-                        .setMessage("Voulez vous supprimer cette image ?")
+                        .setTitle(getResources().getString(R.string.delete))
+                        .setMessage(getResources().getString(R.string.delete_explain))
 
                         // Specifying a listener allows you to take an action before dismissing the dialog.
                         // The dialog is automatically dismissed when a dialog button is clicked.
@@ -223,9 +223,8 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         switch (item.getItemId()) {
             case R.id.delete:
                 new AlertDialog.Builder(DetailPhotoActivity.this)
-                        .setTitle("Supprimer")
-                        .setMessage("Voulez vous supprimer cette image ?")
-
+                        .setTitle(getResources().getString(R.string.delete))
+                        .setMessage(getResources().getString(R.string.delete_explain))
                         // Specifying a listener allows you to take an action before dismissing the dialog.
                         // The dialog is automatically dismissed when a dialog button is clicked.
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -311,7 +310,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                             //startActivity(intent);
                             // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                             //finish();
-                            makeToast("modifier", DetailPhotoActivity.this);
+                            makeToast(getResources().getString(R.string.modify), DetailPhotoActivity.this);
                             getNewDesc();
                             bottomSheetDialog.dismiss();
                         }
@@ -320,7 +319,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                 } else {
                     progressBar3.setVisibility(View.INVISIBLE);
                     button.setVisibility(View.VISIBLE);
-                    makeToast("entrer du texte ", DetailPhotoActivity.this);
+                    makeToast(getResources().getString(R.string.write_all), DetailPhotoActivity.this);
                 }
             }
         });
@@ -386,9 +385,9 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     likeNumber=dataSnapshot.getChildrenCount();
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " Commentaires");
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + getResources().getString(R.string.comments));
                 }else{
-                    likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + " Commentaires");
+                    likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + getResources().getString(R.string.comments));
 
                 }
             }
@@ -495,10 +494,10 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                 Log.e("size", commentList.size() + "");
                 commentNumber = commentList.size();
                 if (likeNumber <= 0) {
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " Commentaires");
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + getResources().getString(R.string.comments));
                 } else {
                     //likecommentsNumbers.setText((likeNumber-1) +" Like(s) - " + commentNumber + " Commentaires");
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " Commentaires");
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + getResources().getString(R.string.comments));
 
                 }
                 //creating adapter
@@ -535,7 +534,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
                                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                                 nom_profil.setText(prenomFinal + " " + nomFinal);
-                                toolbar.setTitle("Publication de " + prenomFinal + " " + nomFinal);
+                                toolbar.setTitle(getResources().getString(R.string.publication_of) + prenomFinal + " " + nomFinal);
                             }
                             if (map.get("image") != null) {
                                 String profileImageUrl = map.get("image").toString();
@@ -616,7 +615,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                             //json.put("to","/topics/"+id_user);
                             json.put("to", "/topics/" + id_user);
                             JSONObject notificationObj = new JSONObject();
-                            notificationObj.put("title", notificationName+" a commenté votre publication");
+                            notificationObj.put("title", notificationName+ getResources().getString(R.string.comment_your_post));
                             notificationObj.put("body", commentaire);
                             JSONObject extraData = new JSONObject();
                             extraData.put("id_recepteur", "");
@@ -660,7 +659,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
 
 
                 } else {
-                    makeToast("entrez un texte", DetailPhotoActivity.this);
+                    makeToast(getResources().getString(R.string.write_all), DetailPhotoActivity.this);
 
                 }
             }

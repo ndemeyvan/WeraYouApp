@@ -2,7 +2,6 @@
     <string name="app_name">WerayouApp</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="intro_page_1_text">Werayou est un réseau social qui permet à ses utilisateurs de rencontrer des amoureux et de discuter en direct</string>
     <string name="intro_page_2_text">ATTENTION, votre photo de profil est publique, donc visible par tous les utilisateurs, elle ne doit pas être sexuellement explicite ou à caractère pornographique. Tout utilisateur qui ne respecte pas cette règle verra son compte supprimé sans préavis</string>
     <string name="intro_page_3_text">L\'inscription est rapide et facile. Pour créer votre profil. Choisissez une photo et remplissez le formulaire</string>
@@ -28,20 +27,20 @@
     <string name="add_photo">Ajouter une photo</string>
     <string name="add_description">Ajouter une description</string>
     <string name="explain_post_visibility">ce post sera uniquement visible sur votre mur</string>
-    <string name="enter_message">votre message ...</string>
+    <string name="enter_message">Votre message ...</string>
     <string name="comment_first">Commentez le premier .</string>
     <string name="likes">like</string>
-    <string name="comments">comments</string>
-    <string name="your_comment">votre commentaire ...</string>
+    <string name="comments">commentaire</string>
+    <string name="your_comment">Votre commentaire ...</string>
     <string name="accept">Accepter</string>
     <string name="denied">Refuser</string>
     <string name="no_post_person">Cette personne n\'a rien publier pour l\'instant</string>
     <string name="what_is_your_name">Quel est votre nom ?</string>
     <string name="what_is_your_secon_name">Quel est votre prenom</string>
-    <string name="what_is_your_town">quel est votre ville ?</string>
+    <string name="what_is_your_town">Quel est votre ville ?</string>
     <string name="say_something">Dire quelque a propos de vous .</string>
     <string name="register">Enregistrer</string>
-    <string name="what_is_your_age">quel est votre age ?</string>
+    <string name="what_is_your_age">Quel est votre age ?</string>
     <string name="say_someThing_118">Dire quelque chose a propos de vous . ( 118 caractere maximum )</string>
     <string name="your_sex">Quel est votre sex ?</string>
     <string name="homme">Homme</string>
@@ -52,4 +51,29 @@
     <string name="see_profile">Voir profil</string>
     <string name="reject">Refuser</string>
     <string name="close_app">Pour des raisons de stabilité, veuillez fermer l\'application et la relancer.</string>
+    <string name="no_proposition">Il n\'y a plus de proposition.</string>
+    <string name="make_search">Vous pouvez faire une recherche par pays .\n Cliquez ici pour choisir un pays.</string>
+    <string name="more_friends">+ D\'amis</string>
+    <string name="my_firends">Mes amis</string>
+    <string name="me">Moi</string>
+    <string name="write_all">Remplir tous les champs</string>
+    <string name="is_publish">Publier</string>
+    <string name="online">En ligne</string>
+    <string name="offline">Hors ligne</string>
+    <string name="publication_of">Publication de </string>
+    <string name="download_in_progress">telechargement en cour ...</string>
+    <string name="delete">Supprimer</string>
+    <string name="delete_explain">Voulez vous supprimer cette image ?</string>
+    <string name="comment_your_post">a commenté votre publication</string>
+    <string name="unlock">Debloquer l\'utilisateur d'abord</string>
+    <string name="unlock_simple">Debloquer</string>
+    <string name="you_are_block">Vous avez ete bloquer</string>
+    <string name="bloquer">Bloquer</string>
+    <string name="write">Ecrire</string>
+    <string name="you_can_write">"Vous pouvez ecrire a cette personne "</string>
+    <string name="select_a_sex">Choisir un sexe.</string>
+    <string name="choice_an_image">Choisir une image</string>
+    <string name="delete_ask_friend">Voulez vous supprimer cette demande ?</string>
+    <string name="start">Commencer</string>
+    <string name="verificcation_error">Erreur ,  s\'il vous plait essayer plus tard</string>
 </resources>
