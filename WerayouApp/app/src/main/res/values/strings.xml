@@ -65,7 +65,7 @@
     <string name="delete">Supprimer</string>
     <string name="delete_explain">Voulez vous supprimer cette image ?</string>
     <string name="comment_your_post">a commenté votre publication</string>
-    <string name="unlock">Debloquer l\'utilisateur d'abord</string>
+    <string name="unlock">Debloquer l\'utilisateur d\'abord</string>
     <string name="unlock_simple">Debloquer</string>
     <string name="you_are_block">Vous avez ete bloquer</string>
     <string name="bloquer">Bloquer</string>
