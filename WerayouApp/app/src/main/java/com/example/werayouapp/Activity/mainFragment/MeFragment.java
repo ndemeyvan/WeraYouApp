@@ -254,7 +254,7 @@ public class MeFragment extends Fragment {
             if (map.get("age") != null) {
                 userAge = map.get("age").toString();
                 String ageFinal = userAge.substring(0, 1).toUpperCase() + userAge.substring(1);
-                age.setText(ageFinal + " ans");
+                age.setText(ageFinal + getResources().getString(R.string.years));
             }
             if (map.get("ville") != null) {
                 String ville = map.get("ville").toString();
