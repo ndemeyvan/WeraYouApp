@@ -13,7 +13,7 @@
     <string name="enter_otp_text_explain">You have received an SMS, containing a 6-digit code. Please enter this code here and click on the CHECK button.</string>
     <string name="enter_otp_field_text">Enter verification code</string>
     <string name="verification">Check</string>
-    <string name="modify">edit</string>
+    <string name="modify">Modify</string>
     <string name="country">Country:</string>
     <string name="town">City :</string>
     <string name="age">Age :</string>
@@ -37,7 +37,7 @@
     <string name="what_is_your_secon_name">What is your first name</string>
     <string name="what_is_your_town">What is your city?</string>
     <string name="say_something">Say something about you.</string>
-    <string name="register">Record</string>
+    <string name="register">Register</string>
     <string name="what_is_your_age">What is your age ?</string>
     <string name="say_someThing_118">Say something about you. (118 characters maximum)</string>
     <string name="your_sex">What is your sex?</string>
@@ -72,7 +72,7 @@
     <string name="select_a_sex">Choose a gender.</string>
     <string name="choice_an_image">Choose an image</string>
     <string name="delete_ask_friend">Do you want to delete this request?</string>
-    <string name="start">to start</string>
+    <string name="start">Start</string>
     <string name="verificcation_error">Error, please try later</string>
     <string name="intro_page_1_text">Werayou is a social network that allows its users to meet lovers and chat live</string>
 </resources>

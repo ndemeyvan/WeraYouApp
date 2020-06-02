@@ -356,13 +356,20 @@ public class ProfilActivity extends AppCompatActivity {
             if (map.get("recherche") != null) {
                 String recherche = map.get("recherche").toString();
                 String rechercheFinal = recherche.substring(0, 1).toUpperCase() + recherche.substring(1);
-                cherche.setText(rechercheFinal);
-
+                if (recherche.equals("Homme")){
+                    cherche.setText(getResources().getString(R.string.homme));
+                }else{
+                    cherche.setText(getResources().getString(R.string.femme));
+                }
 
             }
             if (map.get("sexe") != null) {
                 String userSexe = map.get("sexe").toString();
-                sexe.setText(userSexe);
+                if (userSexe.equals("Homme")){
+                    sexe.setText(getResources().getString(R.string.homme));
+                }else{
+                    sexe.setText(getResources().getString(R.string.femme));
+                }
 
             }
             if (map.get("pays") != null) {

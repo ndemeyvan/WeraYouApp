@@ -63,7 +63,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     EditText user_nom;
     EditText pays_user;
     EditText phone_user;
-    String[] recherche = {getResources().getString(R.string.what_you_want), getResources().getString(R.string.homme), getResources().getString(R.string.femme), getResources().getString(R.string.femme)};
+    String[] recherche ;
     String interesse;
     Uri mImageUri;
     byte[] final_image;
@@ -95,6 +95,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        recherche = new String[]{getResources().getString(R.string.what_you_want), getResources().getString(R.string.homme), getResources().getString(R.string.femme)};
         storageReference = FirebaseStorage.getInstance().getReference();
         profile_image = findViewById(R.id.profile_image);
         imageButton = findViewById(R.id.imageButton);
