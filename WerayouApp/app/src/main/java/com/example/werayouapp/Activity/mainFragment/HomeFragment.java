@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth user;
     List<Cards> rowsItems;
     ProgressBar progressBar;
-    TextView messageDeDernierCards;
+    TextView message;
     DatabaseReference db;
     ImageView right;
     ImageView left;
@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
                 Context.MODE_PRIVATE);
         user = FirebaseAuth.getInstance();
         currentUser = user.getCurrentUser().getUid();
-        messageDeDernierCards = v.findViewById(R.id.messageDeDernierCards);
+        message = v.findViewById(R.id.message);
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
         if (sharedpreferences.contains("lastCountrySave")) {
@@ -161,13 +161,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onAdapterAboutToEmpty(int i) {
                 if (i == 0) {
-                    messageDeDernierCards.setText(getResources().getString(R.string.no_proposition));
-                    messageDeDernierCards.setVisibility(View.VISIBLE);
+//                    messageDeDernierCards.setText(getResources().getString(R.string.no_proposition));
+//                    messageDeDernierCards.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    messageDeDernierCards.setText(getResources().getString(R.string.no_proposition));
-                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+                    //messageDeDernierCards.setText(getResources().getString(R.string.no_proposition));
+//                    messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }
@@ -250,6 +250,7 @@ public class HomeFragment extends Fragment {
         });
 
         showCase();
+        checkIfEmpty();
 
         return v;
     }
@@ -261,9 +262,9 @@ public class HomeFragment extends Fragment {
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "HomeFragment");
         sequence.setConfig(config);
         sequence.addSequenceItem(left,
-                "Si un profil ne vous intéresse pas, cliquez sur la CROIX en bas de l'image ou faites glisser l'image vers la gauche", "OK");
+                getResources().getString(R.string.profile_Explain_one), "OK");
         sequence.addSequenceItem(right,
-                "Si un profil vous intéresse, cliquez sur le COEUR en bas de l'image ou faites glisser l'image vers la droite, l'utilisateur reçoit votre demande d'ami . ", "OK");
+                getResources().getString(R.string.profile_Explain_two), "OK");
         sequence.start();
 
     }
@@ -309,13 +310,13 @@ public class HomeFragment extends Fragment {
                     //
                 }
                 if (rowsItems.size() == 0) {
-                    messageDeDernierCards.setText("il n'y a pas de proposition ");
-                    messageDeDernierCards.setVisibility(View.VISIBLE);
+//                    messageDeDernierCards.setText("il n'y a pas de proposition ");
+//                    messageDeDernierCards.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    messageDeDernierCards.setText("il n'y a pas de proposition ");
-                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+//                    messageDeDernierCards.setText("il n'y a pas de proposition ");
+//                    messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }
@@ -346,14 +347,14 @@ public class HomeFragment extends Fragment {
 //            //dialog.dismiss();
 //        }
         if (rowsItems.size() == 0) {
-            messageDeDernierCards.setText("il n'y a pas de proposition ");
-            messageDeDernierCards.setVisibility(View.VISIBLE);
+//            messageDeDernierCards.setText("il n'y a pas de proposition ");
+//            messageDeDernierCards.setVisibility(View.VISIBLE);
             right.setEnabled(false);
             left.setEnabled(false);
             progressBar.setVisibility(View.INVISIBLE);
         } else {
-            messageDeDernierCards.setText("il n'y a pas de proposition ");
-            messageDeDernierCards.setVisibility(View.INVISIBLE);
+//            messageDeDernierCards.setText("il n'y a pas de proposition ");
+//            messageDeDernierCards.setVisibility(View.INVISIBLE);
             right.setEnabled(true);
             left.setEnabled(true);
         }
@@ -374,13 +375,13 @@ public class HomeFragment extends Fragment {
                     //
                 }
                 if (rowsItems.size() == 0) {
-                    messageDeDernierCards.setText("il n'y a pas de proposition ");
-                    messageDeDernierCards.setVisibility(View.VISIBLE);
+//                    messageDeDernierCards.setText("il n'y a pas de proposition ");
+//                    messageDeDernierCards.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    messageDeDernierCards.setText("il n'y a pas de proposition ");
-                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+//                    messageDeDernierCards.setText("il n'y a pas de proposition ");
+//                    messageDeDernierCards.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }
@@ -413,5 +414,13 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
+    void checkIfEmpty() {
+        if (rowsItems.size() <= 0) {
+            message.setVisibility(View.VISIBLE);
+        } else {
+            message.setVisibility(View.INVISIBLE);
+        }
+    }
 
 }

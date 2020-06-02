@@ -34,12 +34,13 @@
         app:layout_constraintTop_toTopOf="@+id/frame" />
 
     <TextView
-        android:id="@+id/messageDeDernierCards"
+        android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:visibility="invisible"
         android:textSize="12sp"
+        android:text="@string/no_proposition"
         app:layout_constraintBottom_toBottomOf="@+id/frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -76,4 +76,10 @@
     <string name="delete_ask_friend">Voulez vous supprimer cette demande ?</string>
     <string name="start">Commencer</string>
     <string name="verificcation_error">Erreur ,  s\'il vous plait essayer plus tard</string>
+
+    <string name="profile_Explain_one">Si un profil ne vous intéresse pas, cliquez sur la CROIX en bas de l\'image ou faites glisser l\'image vers la gauche</string>
+    <string name="profile_Explain_two">Si un profil vous intéresse, cliquez sur le COEUR en bas de l\'image ou faites glisser l\'image vers la droite, l\'utilisateur reçoit votre demande d\'ami . </string>
+
+
+
 </resources>
