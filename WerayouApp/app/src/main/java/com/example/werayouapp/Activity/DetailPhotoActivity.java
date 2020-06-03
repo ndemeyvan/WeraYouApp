@@ -385,9 +385,9 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     likeNumber=dataSnapshot.getChildrenCount();
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + getResources().getString(R.string.comments));
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber +  " "+getResources().getString(R.string.comments));
                 }else{
-                    likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + getResources().getString(R.string.comments));
+                    likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments));
 
                 }
             }
@@ -494,10 +494,10 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                 Log.e("size", commentList.size() + "");
                 commentNumber = commentList.size();
                 if (likeNumber <= 0) {
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + getResources().getString(R.string.comments));
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments));
                 } else {
                     //likecommentsNumbers.setText((likeNumber-1) +" Like(s) - " + commentNumber + " Commentaires");
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + getResources().getString(R.string.comments));
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments));
 
                 }
                 //creating adapter
@@ -615,7 +615,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                             //json.put("to","/topics/"+id_user);
                             json.put("to", "/topics/" + id_user);
                             JSONObject notificationObj = new JSONObject();
-                            notificationObj.put("title", notificationName+ getResources().getString(R.string.comment_your_post));
+                            notificationObj.put("title", notificationName+  " "+getResources().getString(R.string.comment_your_post));
                             notificationObj.put("body", commentaire);
                             JSONObject extraData = new JSONObject();
                             extraData.put("id_recepteur", "");

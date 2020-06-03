@@ -250,7 +250,7 @@ public class HomeFragment extends Fragment {
         });
 
         showCase();
-        checkIfEmpty();
+        //checkIfEmpty();
 
         return v;
     }
@@ -311,12 +311,12 @@ public class HomeFragment extends Fragment {
                 }
                 if (rowsItems.size() == 0) {
 //                    messageDeDernierCards.setText("il n'y a pas de proposition ");
-//                    messageDeDernierCards.setVisibility(View.VISIBLE);
+                    message.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
 //                    messageDeDernierCards.setText("il n'y a pas de proposition ");
-//                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+                    message.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }
@@ -348,13 +348,13 @@ public class HomeFragment extends Fragment {
 //        }
         if (rowsItems.size() == 0) {
 //            messageDeDernierCards.setText("il n'y a pas de proposition ");
-//            messageDeDernierCards.setVisibility(View.VISIBLE);
+            message.setVisibility(View.VISIBLE);
             right.setEnabled(false);
             left.setEnabled(false);
             progressBar.setVisibility(View.INVISIBLE);
         } else {
 //            messageDeDernierCards.setText("il n'y a pas de proposition ");
-//            messageDeDernierCards.setVisibility(View.INVISIBLE);
+            message.setVisibility(View.INVISIBLE);
             right.setEnabled(true);
             left.setEnabled(true);
         }
@@ -376,12 +376,12 @@ public class HomeFragment extends Fragment {
                 }
                 if (rowsItems.size() == 0) {
 //                    messageDeDernierCards.setText("il n'y a pas de proposition ");
-//                    messageDeDernierCards.setVisibility(View.VISIBLE);
+                    message.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
 //                    messageDeDernierCards.setText("il n'y a pas de proposition ");
-//                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+                    message.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }

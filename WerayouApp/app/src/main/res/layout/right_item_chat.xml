@@ -17,7 +17,7 @@
         android:padding="8dp"
         android:text="Hello"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,8 +42,8 @@
 
             <ImageView
                 android:id="@+id/imageChat"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/wesplash"
                 android:visibility="gone"

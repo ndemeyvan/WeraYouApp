@@ -278,11 +278,12 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 progressBar.setVisibility(View.INVISIBLE);
-                /*Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
+                startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-                finish();
                 makeToast(getResources().getString(R.string.is_publish));
+                finish();
+
             }
         });
         //
@@ -310,37 +311,37 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         return randomStringBuilder.toString();
     }
 
-    void setStatus(String status){
-        Map<String, Object> user_data = new HashMap<>();
-        user_data.put("isOnline", status);
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                //startActivity(intent);
-                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
-
-            }
-        });
-    }
+//    void setStatus(String status){
+//        Map<String, Object> user_data = new HashMap<>();
+//        user_data.put("isOnline", status);
+//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                //Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+//                //startActivity(intent);
+//                // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+//
+//            }
+//        });
+//    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        setStatus("offline");
+        //setStatus("offline");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setStatus("online");
+       // setStatus("online");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        setStatus("online");
+        //setStatus("online");
     }
 
 

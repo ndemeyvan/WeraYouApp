@@ -5,25 +5,30 @@
         android:id="@+id/home"
         android:icon="@drawable/ic_home"
         android:title="home"
+        android:iconTint="@color/colorPrimary"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/friends"
         android:icon="@drawable/ic_add_friend"
+        android:iconTint="@color/colorPrimary"
         android:title="amis" />
 
     <item
         android:id="@+id/amies"
         android:icon="@drawable/ic_friend"
+        android:iconTint="@color/colorPrimary"
         android:title="amis" />
 
     <item
         android:id="@+id/message"
         android:icon="@drawable/ic_conversation"
+        android:iconTint="@color/colorPrimary"
         android:title="conversation" />
 
     <item
         android:id="@+id/me"
         android:icon="@drawable/ic_account"
+        android:iconTint="@color/colorPrimary"
         android:title="moi" />
 </menu>

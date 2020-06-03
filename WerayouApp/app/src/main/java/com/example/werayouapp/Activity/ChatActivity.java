@@ -280,6 +280,8 @@ public class ChatActivity extends AppCompatActivity {
 
         readMessage(userID, id_user);
 
+        setStatus("online");
+
     }
 
 
@@ -911,17 +913,17 @@ public class ChatActivity extends AppCompatActivity {
         Map<String, Object> user_data = new HashMap<>();
         user_data.put("isOnline", status);
 
-//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//
-//        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//
-//
-//            }
-//        });
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        userDb.child("isOnline").setValue(status);
+
+        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//        userDb.child("isOnline").setValue(status);
     }
 
     void setLastMessageStatuts(String status, String expediteur, String recepteur) {
