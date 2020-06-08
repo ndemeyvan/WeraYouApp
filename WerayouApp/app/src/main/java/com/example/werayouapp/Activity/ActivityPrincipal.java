@@ -98,7 +98,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
         if (sharedpreferences.contains("LastCountryCode")) {
             String contryCode = sharedpreferences.getString("LastCountryCode", "");
-            mCountryCode.setDefaultCountryUsingNameCode(contryCode);
+            mCountryCode.setDefaultCountryUsingNameCode(contryCode.toLowerCase());
             mCountryCode.resetToDefaultCountry();
             Log.i("ValueCode", contryCode);
         } else {
@@ -124,11 +124,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
             });
 
         }
-
-//        setSupportActionBar(toolbar);
-//        BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
-//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
 
         bottomNavigation = findViewById(R.id.bottomNavigationView);
         this.createNavItems();
@@ -292,20 +287,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        new AlertDialog.Builder(getApplicationContext())
-//                .setTitle("Weareyou")
-//                .setMessage("Voulez vous quitter l'application ?.")
-//                .setCancelable(false)
-//                // Specifying a listener allows you to take an action before dismissing the dialog.
-//                // The dialog is automatically dismissed when a dialog button is clicked.
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        finish();
-//                    }
-//                })
-//                .setIcon(android.R.drawable.ic_dialog_alert)
-//                .show();
-
         finish();
 
     }
@@ -396,7 +377,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
 
         void setStatus(final String status) {
-        Map<String, Object> user_data = new HashMap<>();
+    //    Map<String, Object> user_data = new HashMap<>();
 //        user_data.put("isOnline", status);
 //        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
 //        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -406,8 +387,8 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 //            }
 //        });
 
-            DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-            userDb.child("isOnline").setValue(status);
+//            DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//            userDb.child("isOnline").setValue(status);
     }
 
 

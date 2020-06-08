@@ -84,7 +84,8 @@ public class HomeFragment extends Fragment {
 
         if (sharedpreferences.contains("lastCountrySave")) {
             contry = sharedpreferences.getString("lastCountrySave", "");
-            checkUserSex(contry);
+            checkUserSex(contry.toLowerCase());
+            Log.i("lastCountrySave", contry);
         } else {
             db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
             db.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -93,6 +94,10 @@ public class HomeFragment extends Fragment {
                     if (dataSnapshot.exists()) {
                         if (dataSnapshot.child("pays").getValue() != null) {
                             String myCountry = dataSnapshot.child("pays").getValue().toString();
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString("lastCountrySave", myCountry);
+                            editor.commit();
+//                            getActivity().finishAffinity();
                             checkUserSex(myCountry.toLowerCase());
                         }
                     }
@@ -113,7 +118,7 @@ public class HomeFragment extends Fragment {
         flingContainer = v.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
         progressBar = v.findViewById(R.id.progressBar);
-        // dialog = ProgressDialog.show(getActivity(), "","Loading. Please wait...", true);
+
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -161,17 +166,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onAdapterAboutToEmpty(int i) {
                 if (i == 0) {
-//                    messageDeDernierCards.setText(getResources().getString(R.string.no_proposition));
-//                    messageDeDernierCards.setVisibility(View.VISIBLE);
+
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    //messageDeDernierCards.setText(getResources().getString(R.string.no_proposition));
-//                    messageDeDernierCards.setVisibility(View.INVISIBLE);
+
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }
-                //makeToast(getActivity(), "plus de proposition !");
             }
 
             @Override
@@ -182,7 +184,7 @@ public class HomeFragment extends Fragment {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                //makeToast(getContext(), "Clicked!");
+
             }
         });
         right.setOnClickListener(new View.OnClickListener() {
@@ -236,13 +238,13 @@ public class HomeFragment extends Fragment {
                 contry = name.toLowerCase();
                 if (sharedpreferences.contains("lastCountrySave")) {
                     SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString("lastCountrySave", contry);
+                    editor.putString("lastCountrySave", contry.toLowerCase());
                     editor.commit();
                     Intent i = new Intent(getContext(), ActivityPrincipal.class);
                     getActivity().finish();
                     getActivity().overridePendingTransition(0, 0);
                     startActivity(i);
-                    //getActivity().overridePendingTransition(0, 0);
+                    getActivity().overridePendingTransition(0, 0);
                 }else{
 
                 }

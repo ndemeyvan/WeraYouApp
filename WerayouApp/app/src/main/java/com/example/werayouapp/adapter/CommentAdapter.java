@@ -70,16 +70,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.commentaire.setText(commentaire);
         holder.createdDate.setText(createdDate);
         holder.layout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_simple));
-//        holder.profil_image.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!id.equals(userID)) {
-//                    Intent intent = new Intent(context, ProfilActivity.class);
-//                    intent.putExtra("id", id);
-//                    context.startActivity(intent);
-//                }
-//            }
-//        });
         getData(holder, id);
 
 

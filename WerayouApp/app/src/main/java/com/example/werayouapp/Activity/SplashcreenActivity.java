@@ -28,10 +28,6 @@ public class SplashcreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashcreen);
 
-        //
-//        user = FirebaseAuth.getInstance();
-//        userID = user.getCurrentUser().getUid();
-//        FirebaseMessaging.getInstance().subscribeToTopic(userID);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -40,7 +36,7 @@ public class SplashcreenActivity extends AppCompatActivity {
                 finish();
             }
         }, 2000);
-        //SystemClock.sleep(3000);
+
 
     }
 

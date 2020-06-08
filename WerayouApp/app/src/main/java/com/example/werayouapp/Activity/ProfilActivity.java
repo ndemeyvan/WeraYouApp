@@ -554,34 +554,22 @@ public class ProfilActivity extends AppCompatActivity {
         Toast.makeText(ProfilActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 
-    void setStatus(String status){
-        Map<String, Object> user_data = new HashMap<>();
-        user_data.put("isOnline", status);
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-
-            }
-        });
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //setStatus("offline");
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //setStatus("online");
+
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        //setStatus("online");
+
     }
 }

@@ -119,23 +119,20 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                             if (map.get("nom") != null) {
                                 nom = map.get("nom").toString();
-
                             }
                             if (map.get("prenom") != null) {
                                 prenom = map.get("prenom").toString();
                                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
                                 holder.nom_profil.setText(prenomFinal + " " + nomFinal);
-
                             }
                             if (map.get("image") != null) {
                                 String profileImageUrl = map.get("image").toString();
                                 Picasso.with(context).load(profileImageUrl).into(holder.profil_image);
                                 holder.progressBar.setVisibility(View.INVISIBLE);
-
                             }
 
-                            //
+
                         }
                     }
 

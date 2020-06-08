@@ -209,8 +209,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 } else {
                     toast(getResources().getString(R.string.select_a_sex));
                 }
-
-                /////////// envoi des fichier dans la base de donnee
             }
         });
     }
