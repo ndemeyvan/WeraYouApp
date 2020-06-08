@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.werayouapp.Activity.ChatActivity;
 import com.example.werayouapp.Activity.DetailImageChat;
 import com.example.werayouapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     final int MSG_TYPE_LEFT=0;
     private boolean ischat;
     private List<ModelChat> modelChatList;
+    private MediaPlayer mMediaPlayer;
+
 
     public ChatAdapter(Context context, List<ModelChat> modelChatList,boolean ischat) {
         this.context = context;
@@ -42,6 +45,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         viewGroup.getContext();
         firebaseAuth=FirebaseAuth.getInstance();
+
         if(i==MSG_TYPE_RIGHT){
             View v=LayoutInflater.from ( viewGroup.getContext () ).inflate ( R.layout.right_item_chat ,viewGroup,false);
             return new ViewHolder ( v );
@@ -51,6 +55,26 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
 
 
+    }
+
+    public void stop() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+    }
+
+    public void play(Context c, int rid) {
+        stop();
+        mMediaPlayer = MediaPlayer.create(c, rid);
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                stop();
+            }
+        });
+
+        mMediaPlayer.start();
     }
 
     @Override
@@ -68,7 +92,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             Picasso.with(context).load(image).into(viewHolder.imageChat);
             viewHolder.imageChat.setVisibility(View.VISIBLE);
             viewHolder.imageChat.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
-
         } else if (type.equals("msgAndImage")) {
             viewHolder.message.setVisibility(View.VISIBLE);
             viewHolder.message.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
@@ -77,7 +100,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             viewHolder.imageChat.setVisibility(View.VISIBLE);
             viewHolder.imageChat.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
             viewHolder.dateTime.setText(modelChatList.get(i).getCreatedDate());
-
         }
 
         viewHolder.imageChat.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +140,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         firebaseAuth= FirebaseAuth.getInstance ();
         current_user=firebaseAuth.getCurrentUser ().getUid ();
         if (modelChatList.get ( position ).getExpediteur ().equals ( current_user )){
-
             return MSG_TYPE_RIGHT;
         }else{
 

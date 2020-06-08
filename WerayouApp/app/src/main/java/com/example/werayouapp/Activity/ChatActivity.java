@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -112,6 +113,7 @@ public class ChatActivity extends AppCompatActivity {
     String URL = "https://fcm.googleapis.com/fcm/send";
     private String Mon_nom;
     private String Mon_prenom;
+    private MediaPlayer mMediaPlayer;
 
 
     @Override
@@ -138,8 +140,6 @@ public class ChatActivity extends AppCompatActivity {
         id_user = getIntent().getStringExtra("id");
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
-
-        String topic = "news";
         FirebaseMessaging.getInstance().unsubscribeFromTopic(userID);
         //
         mRecyclerView = findViewById(R.id.recyclerview);
@@ -222,7 +222,7 @@ public class ChatActivity extends AppCompatActivity {
                 JSONObject json = new JSONObject();
                 try {
                     //json.put("to","/topics/"+id_user);
-                    json.put("to", "/topics/" + id_user);
+                    json.put("to", "/topics/" + userID);
                     JSONObject notificationObj = new JSONObject();
                     notificationObj.put("title", Mon_nom + " " + Mon_prenom);
                     notificationObj.put("body", msg);
@@ -295,10 +295,8 @@ public class ChatActivity extends AppCompatActivity {
                     iBlockHim.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     linearLayout.setVisibility(View.GONE);
-                    Log.i("Status ", "present dans mes gens bloquer");
                 } else {
                     checkifSheBlcokedMe(herID, myID);
-                    Log.i("Status ", "absent dans mes gens bloquer");
                 }
             }
 
@@ -316,15 +314,11 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    Log.i("Status ", "il ma bloquer");
-
-                    iBlockHim.setText("Vous avez ete bloquer par " + nom);
+                    iBlockHim.setText(getResources().getString(R.string.your_are_block)+" " + nom);
                     iBlockHim.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     linearLayout.setVisibility(View.GONE);
                 } else {
-                    Log.i("Status ", "il ne ma pas bloquer");
-
                     mRecyclerView.setVisibility(View.VISIBLE);
                     iBlockHim.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
@@ -565,7 +559,6 @@ public class ChatActivity extends AppCompatActivity {
                                 } else {
                                     user_status.setText(getResources().getString(R.string.offline));
                                 }
-
                             }
                             if (map.get("image") != null) {
                                 String profileImageUrl = map.get("image").toString();
@@ -661,7 +654,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void getMyInfo() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -713,12 +706,11 @@ public class ChatActivity extends AppCompatActivity {
 
     //cette fonction envoi uniquement les image en message
     void sendMessageWithImage(final String expediteur, final String recepteur) {
-        dialog = ProgressDialog.show(ChatActivity.this, "", "envoie de l'image ...", true);
+        dialog = ProgressDialog.show(ChatActivity.this, "", getResources().getString(R.string.send_image), true);
         //debut envoie dans storage
         String random = random();
         final StorageReference ref = storageReference.child("messages_images").child(random + " .jpg");
         UploadTask uploadTask = ref.putBytes(final_image);
-
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -814,12 +806,11 @@ public class ChatActivity extends AppCompatActivity {
 
     //cette fonction envoie les message et les image
     void sendMessageWithImageAndMessage(final String expediteur, final String recepteur, final String msg) {
-        dialog = ProgressDialog.show(ChatActivity.this, "", "Loading. Please wait...", true);
+        dialog = ProgressDialog.show(ChatActivity.this, "", getResources().getString(R.string.loading), true);
         //debut envoie dans storage
         String random = random();
         final StorageReference ref = storageReference.child("messages_images").child(random + " .jpg");
         UploadTask uploadTask = ref.putBytes(final_image);
-
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -841,9 +832,7 @@ public class ChatActivity extends AppCompatActivity {
                         // ...
                     }
                     stockageWithURIForMessageAndImage(task, expediteur, recepteur, msg);
-
                 } else {
-
                     // Handle failures
                     // ...
                 }
@@ -872,6 +861,7 @@ public class ChatActivity extends AppCompatActivity {
                     chatAdapter.notifyDataSetChanged();
                     mRecyclerView.smoothScrollToPosition(mRecyclerView.getAdapter().getItemCount());
 
+
                 }
             }
 
@@ -883,6 +873,27 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void stop() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+    }
+
+    public void play(Context c, int rid) {
+        stop();
+
+        mMediaPlayer = MediaPlayer.create(c, rid);
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                stop();
+            }
+        });
+
+        mMediaPlayer.start();
     }
 
     void makeToast(String msg) {

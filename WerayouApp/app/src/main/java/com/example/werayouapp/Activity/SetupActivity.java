@@ -97,9 +97,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_nom = findViewById(R.id.user_nom);
         spinnerTwo = findViewById(R.id.spinnerTwo);
         spinnerTwo.setOnItemSelectedListener(this);
-        mRadioGroup = (RadioGroup) findViewById(R.id.spinner);
-        radio_homme = (RadioButton) findViewById(R.id.radio_homme);
-        radio_femme = (RadioButton) findViewById(R.id.radio_femme);
+        mRadioGroup =findViewById(R.id.spinner);
+        radio_homme =findViewById(R.id.radio_homme);
+        radio_femme =findViewById(R.id.radio_femme);
         country = getIntent().getStringExtra("country");
         countryCode = getIntent().getStringExtra("countryCode");
         Log.i("CountryCode",countryCode);
@@ -181,11 +181,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         interesse = recherche[i];
-        if (interesse.equals("Femme")||interesse.equals("Woman")){
-            interesse="Femme";
-        }else if (interesse.equals("Homme")||interesse.equals("Man")){
-            interesse="Homme";
-        }
+
     }
 
     @Override
@@ -198,96 +194,87 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///////////
-                final String apropos = Apropos.getText().toString();
-                final String ville = ville_user.getText().toString();
-                final String ageUser = age_user.getText().toString();
-                final String nom = user_nom.getText().toString();
-                final String prenom = user_prenom.getText().toString();
                 int selectedId = mRadioGroup.getCheckedRadioButtonId();
                 if (radio_femme.isChecked()) {
                     // find the radiobutton by returned id
                     radio_femme = (RadioButton) findViewById(selectedId);
                     sexe = radio_femme.getText().toString();
                     sexe="Femme";
+                    proceed();
                 } else if (radio_homme.isChecked()) {
                     radio_homme = (RadioButton) findViewById(selectedId);
                     sexe = radio_homme.getText().toString();
                     sexe="Homme";
+                    proceed();
                 } else {
                     toast(getResources().getString(R.string.select_a_sex));
                 }
-                //////////
+
                 /////////// envoi des fichier dans la base de donnee
-              //  if (ischange) {
-                    if (!interesse.equals("Que recherchez vous ?") || !interesse.equals(getResources().getString(R.string.what_you_want))) {
-                        //
-                        if (!TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)&& sexe!=null) {
-
-                            button.setVisibility(View.INVISIBLE);
-                            progressBar.setVisibility(View.VISIBLE);
-
-                            final StorageReference ref = storageReference.child("image_de_profile").child(userID + " .jpg");
-                            UploadTask uploadTask = ref.putBytes(final_image);
-
-                            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                                @Override
-                                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                    if (!task.isSuccessful()) {
-                                        throw task.getException();
-                                    }
-                                    // Continue with the task to get the download URL
-                                    return ref.getDownloadUrl();
-                                }
-                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    if (task.isSuccessful()) {
-                                        if (task.isSuccessful()) {
-                                            Uri downloadUri = task.getResult();
-
-                                        } else {
-                                            // Handle failures
-                                            // ...
-                                        }
-
-                                        stockage(task, nom, prenom, ville, ageUser, apropos);
-
-                                    } else {
-                                        button.setVisibility(View.VISIBLE);
-                                        progressBar.setVisibility(View.INVISIBLE);
-                                        Toast.makeText(getApplicationContext(), "Erreur , try later ", Toast.LENGTH_LONG).show();
-                                        // Handle failures
-                                        // ...
-                                    }
-                                }
-                            });
-                            ////////fin de l'nvoie
-
-                        } else {
-                            button.setVisibility(View.VISIBLE);
-                            progressBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.write_all), Toast.LENGTH_LONG).show();
-                        }
-                        //
-
-                    } else {
-                        toast(getResources().getString(R.string.what_you_want));
-                    }
-
-//                } else {
-//                    stockage(null, nom, prenom, ville, ageUser, apropos);
-//                }
             }
         });
     }
 
-    public void stockage(@NonNull Task<Uri> task, String nom, String prenom, String ville, String ageUser, String apropos) {
+    void proceed(){
         if (interesse.equals("Femme")||interesse.equals("Woman")){
             interesse="Femme";
+            secondStep();
         }else if (interesse.equals("Homme")||interesse.equals("Man")){
             interesse="Homme";
+            secondStep();
+        }else{
+            toast(getResources().getString(R.string.write_all));
         }
+
+    }
+
+    void secondStep(){
+        final String apropos = Apropos.getText().toString();
+        final String ville = ville_user.getText().toString();
+        final String ageUser = age_user.getText().toString();
+        final String nom = user_nom.getText().toString();
+        final String prenom = user_prenom.getText().toString();
+        if (!TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)&& sexe!=null) {
+            button.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+            final StorageReference ref = storageReference.child("image_de_profile").child(userID + " .jpg");
+            UploadTask uploadTask = ref.putBytes(final_image);
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return ref.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                        } else {
+
+                        }
+                        stockage(task, nom, prenom, ville, ageUser, apropos);
+                    } else {
+                        button.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getApplicationContext(), "Erreur , try later ", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+        } else {
+            button.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.write_all), Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    public void stockage(@NonNull Task<Uri> task, String nom, String prenom, String ville, String ageUser, String apropos) {
+
         Uri downloadUri;
         if (task != null) {
             downloadUri = task.getResult();
@@ -326,7 +313,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 }
             });
         } else {
-            toast(getResources().getString(R.string.what_you_want));
+            toast(getResources().getString(R.string.write_all));
         }
 
 
@@ -336,5 +323,23 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     public void onBackPressed() {
         super.onBackPressed();
         user.signOut();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        user.signOut();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
     }
 }

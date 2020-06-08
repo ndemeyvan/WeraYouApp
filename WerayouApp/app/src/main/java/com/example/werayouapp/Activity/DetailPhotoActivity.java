@@ -385,9 +385,9 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     likeNumber=dataSnapshot.getChildrenCount();
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber +  " "+getResources().getString(R.string.comments));
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber +  " "+getResources().getString(R.string.comments)+"(s)");
                 }else{
-                    likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments));
+                    likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments)+"(s)");
 
                 }
             }
@@ -494,10 +494,10 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                 Log.e("size", commentList.size() + "");
                 commentNumber = commentList.size();
                 if (likeNumber <= 0) {
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments));
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments)+"(s)");
                 } else {
                     //likecommentsNumbers.setText((likeNumber-1) +" Like(s) - " + commentNumber + " Commentaires");
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments));
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments)+"(s)");
 
                 }
                 //creating adapter
@@ -534,7 +534,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                                 String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
                                 String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
                                 nom_profil.setText(prenomFinal + " " + nomFinal);
-                                toolbar.setTitle(getResources().getString(R.string.publication_of) + prenomFinal + " " + nomFinal);
+                                toolbar.setTitle(prenomFinal + " " + nomFinal);
                             }
                             if (map.get("image") != null) {
                                 String profileImageUrl = map.get("image").toString();
@@ -613,9 +613,11 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                         JSONObject json = new JSONObject();
                         try {
                             //json.put("to","/topics/"+id_user);
-                            json.put("to", "/topics/" + id_user);
+                            json.put("to", "/topics/" + userID);
                             JSONObject notificationObj = new JSONObject();
-                            notificationObj.put("title", notificationName+  " "+getResources().getString(R.string.comment_your_post));
+                            notificationObj.put("title",
+                                    notificationName+  " "+
+                                            getResources().getString(R.string.comment_your_post));
                             notificationObj.put("body", commentaire);
                             JSONObject extraData = new JSONObject();
                             extraData.put("id_recepteur", "");
@@ -665,6 +667,58 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
             }
         });
     }
+
+    public void getMyInfo() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+                Db.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                            if (map.get("nom") != null) {
+                                notificationName = map.get("nom").toString();
+                            }
+                            if (map.get("prenom") != null) {
+                                notificationName = map.get("prenom").toString();
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+    }
+
 
     //fait un toast
     void makeToast(String msg, Context context) {
