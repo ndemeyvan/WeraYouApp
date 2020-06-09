@@ -5,92 +5,113 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="4dp"
+    android:layout_marginTop="0dp"
+    android:layout_marginBottom="0dp"
     android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profil_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/wesplash"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/nom_profil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Audrey abena"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/profil_image"
-        app:layout_constraintTop_toTopOf="@+id/profil_image" />
-
-    <TextView
-        android:id="@+id/commentaire"
+    <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="Olalal j'aime bien ta photo elle est trop jolie je jure !!!! Qui te fait les make up stp ? "
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardCornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/createdDate"
-        app:layout_constraintTop_toBottomOf="@+id/createdDate" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/profil_image"
-        app:layout_constraintEnd_toEndOf="@+id/profil_image"
-        app:layout_constraintStart_toStartOf="@+id/profil_image"
-        app:layout_constraintTop_toTopOf="@+id/profil_image" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="2dp">
 
-    <TextView
-        android:id="@+id/createdDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="25 Dec. 2019"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/nom_profil"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/nom_profil"
-        app:layout_constraintTop_toBottomOf="@+id/nom_profil" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profil_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/wesplash"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/image"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/createdDate"
-        app:layout_constraintTop_toBottomOf="@+id/createdDate"
-        app:srcCompat="@drawable/ic_add_photo_red" />
+            <TextView
+                android:id="@+id/nom_profil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Audrey abena"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/profil_image"
+                app:layout_constraintTop_toTopOf="@+id/profil_image" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/isnewmessage"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginEnd="32dp"
-        android:src="@mipmap/ic_launcher"
-        android:visibility="gone"
-        app:civ_border_color="#E91E63"
-        app:civ_border_width="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/createdDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nom_profil" />
+            <TextView
+                android:id="@+id/commentaire"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="Olalal j'aime bien ta photo elle est trop jolie je jure !!!! Qui te fait les make up stp ? "
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/createdDate"
+                app:layout_constraintTop_toBottomOf="@+id/createdDate" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/profil_image"
+                app:layout_constraintEnd_toEndOf="@+id/profil_image"
+                app:layout_constraintStart_toStartOf="@+id/profil_image"
+                app:layout_constraintTop_toTopOf="@+id/profil_image" />
+
+            <TextView
+                android:id="@+id/createdDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="25 Dec. 2019"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/nom_profil"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/nom_profil"
+                app:layout_constraintTop_toBottomOf="@+id/nom_profil" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/createdDate"
+                app:layout_constraintTop_toBottomOf="@+id/createdDate"
+                app:srcCompat="@drawable/ic_add_photo_red" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/isnewmessage"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="32dp"
+                android:src="@mipmap/ic_launcher"
+                android:visibility="gone"
+                app:civ_border_color="#E91E63"
+                app:civ_border_width="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/createdDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/nom_profil" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

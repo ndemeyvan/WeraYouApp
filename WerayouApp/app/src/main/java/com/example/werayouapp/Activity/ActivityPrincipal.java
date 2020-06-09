@@ -54,7 +54,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 public class ActivityPrincipal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     AHBottomNavigation bottomNavigation;
-    ImageView add_image;
+    TextView add_image;
     Toolbar toolbar;
     TextView toobarTitle;
     SharedPreferences sharedpreferences;
