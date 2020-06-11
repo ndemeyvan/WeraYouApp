@@ -262,7 +262,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         String date = saveCurrentDate;
-        Date jour= new Date();
+        Date jour = new Date();
         final long time = jour.getTime();
         Map<String, Object> post_data = new HashMap<>();
         post_data.put("image", downloadUri.toString());
@@ -271,14 +271,14 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         post_data.put("id_user", userID);
         post_data.put("statut", "public");
         post_data.put("createdDate", date);
-        post_data.put("serverTime",time);
+        post_data.put("serverTime", time);
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("posts").child(key);
         userDb.setValue(post_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
+                Intent intent = new Intent(AddPhotoActivity.this, ActivityPrincipal.class);
                 startActivity(intent);
                 makeToast(getResources().getString(R.string.is_publish));
                 finish();
@@ -306,7 +306,6 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         }
         return randomStringBuilder.toString();
     }
-
 
 
     @Override

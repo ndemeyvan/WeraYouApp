@@ -148,10 +148,10 @@ public class OtpActivity extends AppCompatActivity {
         mAuth.signOut();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mAuth.signOut();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        mAuth.signOut();
+//    }
 
 }

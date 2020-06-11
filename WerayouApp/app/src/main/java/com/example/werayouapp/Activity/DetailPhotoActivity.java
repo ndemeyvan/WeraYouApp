@@ -102,6 +102,8 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
     private String commentaire;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +115,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         image = getIntent().getStringExtra("image");
         date = getIntent().getStringExtra("date");
         requestQueue = Volley.newRequestQueue(this);
+
 
         //
         user = FirebaseAuth.getInstance();
@@ -612,7 +615,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                         JSONObject json = new JSONObject();
                         try {
                             //json.put("to","/topics/"+id_user);
-                            json.put("to", "/topics/" + userID);
+                            json.put("to", "/topics/" + id_user);
                             JSONObject notificationObj = new JSONObject();
                             notificationObj.put("title",
                                     notificationName+  " "+

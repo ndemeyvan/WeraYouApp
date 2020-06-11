@@ -66,8 +66,8 @@ public class MeFragment extends Fragment {
     TextView cherche;
     TextView sexe;
     FirebaseAuth user;
-    private String userID;
-    private String prenom;
+    String userID;
+    String prenom;
     TextView TextChange;
     ProgressBar progressBar;
     TextView paysView;
@@ -93,7 +93,6 @@ public class MeFragment extends Fragment {
         cardView2 = v.findViewById(R.id.cardView2);
         nomUser = v.findViewById(R.id.nomUser);
         age = v.findViewById(R.id.age);
-        user = FirebaseAuth.getInstance();
         cherche = v.findViewById(R.id.cherche);
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
@@ -125,7 +124,7 @@ public class MeFragment extends Fragment {
         getUserData();
         getPost();
         Locale locale = ConfigurationCompat.getLocales(Resources.getSystem().getConfiguration()).get(0);
-        Log.i("locale",locale.getDisplayName());
+        Log.i("locale", locale.getDisplayName());
         sharedpreferences = getActivity().getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
         if (!sharedpreferences.contains(myPref)) {
@@ -179,6 +178,7 @@ public class MeFragment extends Fragment {
                 mRecyclerView.setAdapter(adapter);
                 // adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -254,7 +254,7 @@ public class MeFragment extends Fragment {
             if (map.get("age") != null) {
                 userAge = map.get("age").toString();
                 String ageFinal = userAge.substring(0, 1).toUpperCase() + userAge.substring(1);
-                age.setText(ageFinal + " "+getResources().getString(R.string.years));
+                age.setText(ageFinal + " " + getResources().getString(R.string.years));
             }
             if (map.get("ville") != null) {
                 String ville = map.get("ville").toString();
@@ -274,18 +274,18 @@ public class MeFragment extends Fragment {
             if (map.get("recherche") != null) {
                 String recherche = map.get("recherche").toString();
                 String rechercheFinal = recherche.substring(0, 1).toUpperCase() + recherche.substring(1);
-                if (recherche.equals("Homme")){
+                if (recherche.equals("Homme")) {
                     cherche.setText(getResources().getString(R.string.homme));
-                }else{
+                } else {
                     cherche.setText(getResources().getString(R.string.femme));
                 }
 
             }
             if (map.get("sexe") != null) {
                 String userSexe = map.get("sexe").toString();
-                if (userSexe.equals("Homme")){
+                if (userSexe.equals("Homme")) {
                     sexe.setText(getResources().getString(R.string.homme));
-                }else{
+                } else {
                     sexe.setText(getResources().getString(R.string.femme));
                 }
 

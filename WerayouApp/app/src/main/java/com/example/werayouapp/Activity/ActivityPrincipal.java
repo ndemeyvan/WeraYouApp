@@ -30,6 +30,7 @@ import com.example.werayouapp.Activity.mainFragment.HomeFragment;
 import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
+import com.example.werayouapp.login.LoginActivity;
 import com.example.werayouapp.login.OtpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -58,6 +59,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     Toolbar toolbar;
     TextView toobarTitle;
     SharedPreferences sharedpreferences;
+    SharedPreferences firstOpenSharedpreferences;
     FirebaseAuth user;
     String userID;
     CountryCodePicker mCountryCode;
@@ -65,6 +67,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     String myPref = "countryCode";
     DatabaseReference usersDb;
     String countryCode;
+    String firstOpen = "firstOpen";
 
 
     @Override
@@ -75,9 +78,11 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
 
-        toolbar =findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         add_image = findViewById(R.id.add_image);
         sharedpreferences = getSharedPreferences(myPref,
+                Context.MODE_PRIVATE);
+        firstOpenSharedpreferences = getSharedPreferences(firstOpen,
                 Context.MODE_PRIVATE);
 
         // setStatus("online");
@@ -189,8 +194,8 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                     toobarTitle.setText("");
                     FriendsFragment fragment = new FriendsFragment();
                     loadFragment(fragment);
-                    updateNotification("newFriendNotif", false);
                     checkifHavenotification();
+                    updateNotification("newFriendNotif", false);
                 } else if (position == 2) {
                     toobarTitle.setText("");
                     MyFriendFragment fragment = new MyFriendFragment();
@@ -199,8 +204,8 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                     toobarTitle.setText("");
                     MessageFragment fragment = new MessageFragment();
                     loadFragment(fragment);
-                    updateNotification("newMessageNotif", false);
                     checkifHavenotification();
+                    updateNotification("newMessageNotif", false);
                 } else if (position == 4) {
                     toobarTitle.setText("");
                     MeFragment fragment = new MeFragment();
@@ -212,19 +217,52 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
     }
 
-    void updateNotification(String key, boolean status) {
-        Map<String, Object> user_data = new HashMap<>();
-        user_data.put(key, status);
-//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//
-//            }
-//        });
+    void updateNotification(final String key, final boolean status) {
+        final DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Map<String, Object> user_data = new HashMap<>();
+                    user_data.put(key, status);
+                    DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+                    userDb.child(key).setValue(status);
+                } else {
+                    if (users != null) {
+                        user.signOut();
+                        SharedPreferences preferences = getSharedPreferences(myPref, Context.MODE_PRIVATE);
+                        SharedPreferences FirstOpenPreferences = getSharedPreferences(firstOpen, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        SharedPreferences.Editor firstOpeneditor = FirstOpenPreferences.edit();
+                        firstOpeneditor.clear();
+                        firstOpeneditor.apply();
+                        editor.clear();
+                        editor.apply();
+                        Intent homeIntent = new Intent(ActivityPrincipal.this, LoginActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                    } else {
+                        SharedPreferences preferences = getSharedPreferences(myPref, Context.MODE_PRIVATE);
+                        SharedPreferences FirstOpenPreferences = getSharedPreferences(firstOpen, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        SharedPreferences.Editor firstOpeneditor = FirstOpenPreferences.edit();
+                        firstOpeneditor.clear();
+                        firstOpeneditor.apply();
+                        editor.clear();
+                        editor.apply();
+                        Intent homeIntent = new Intent(ActivityPrincipal.this, LoginActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                    }
+                }
+            }
 
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        userDb.child(key).setValue(status);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     void checkifHavenotification() {
@@ -276,7 +314,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     }
 
     public interface FragmentCommunicator {
-         void passData(String name);
+        void passData(String name);
     }
 
     public void passVal(FragmentCommunicator fragmentCommunicator) {
@@ -376,8 +414,8 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     }
 
 
-        void setStatus(final String status) {
-    //    Map<String, Object> user_data = new HashMap<>();
+    void setStatus(final String status) {
+        //    Map<String, Object> user_data = new HashMap<>();
 //        user_data.put("isOnline", status);
 //        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
 //        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {

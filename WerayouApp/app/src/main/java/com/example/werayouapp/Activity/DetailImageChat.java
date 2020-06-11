@@ -1,7 +1,9 @@
 package com.example.werayouapp.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -15,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.example.werayouapp.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -69,7 +72,7 @@ public class DetailImageChat extends AppCompatActivity implements NavigationView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!userID.equals(expediteur)){
+        if (!userID.equals(expediteur)) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.download_menu, menu);
         }

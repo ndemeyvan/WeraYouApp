@@ -272,7 +272,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
 
     public void stockage(@NonNull Task<Uri> task, String nom, String prenom, String ville, String ageUser, String apropos) {
-
         Uri downloadUri;
         if (task != null) {
             downloadUri = task.getResult();
@@ -326,7 +325,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        user.signOut();
+//        user.signOut();
     }
 
     @Override

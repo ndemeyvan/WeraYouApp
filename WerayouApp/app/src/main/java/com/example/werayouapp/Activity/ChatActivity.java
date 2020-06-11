@@ -218,54 +218,58 @@ public class ChatActivity extends AppCompatActivity {
                     sendMessageWithImageAndMessage(userID, id_user, msg);
 
                 }
-                //send notification
-                JSONObject json = new JSONObject();
-                try {
-                    //json.put("to","/topics/"+id_user);
-                    json.put("to", "/topics/" + userID);
-                    JSONObject notificationObj = new JSONObject();
-                    notificationObj.put("title", Mon_nom + " " + Mon_prenom);
-                    notificationObj.put("body", msg);
 
-                    JSONObject extraData = new JSONObject();
-                    extraData.put("id_recepteur", id_user);
-                    extraData.put("type", "chat_notification");
-                    extraData.put("id_post", "");
-                    extraData.put("id_user", userID);
-                    extraData.put("description", "");
-                    extraData.put("image", "");
-                    extraData.put("date", "");
+                if (id_user!=userID){
+                    //send notification
+                    JSONObject json = new JSONObject();
+                    try {
+                        //json.put("to","/topics/"+id_user);
+                        json.put("to", "/topics/" + id_user);
+                        JSONObject notificationObj = new JSONObject();
+                        notificationObj.put("title", Mon_nom + " " + Mon_prenom);
+                        notificationObj.put("body", msg);
 
-                    json.put("notification", notificationObj);
-                    json.put("data", extraData);
+                        JSONObject extraData = new JSONObject();
+                        extraData.put("id_recepteur", id_user);
+                        extraData.put("type", "chat_notification");
+                        extraData.put("id_post", "");
+                        extraData.put("id_user", userID);
+                        extraData.put("description", "");
+                        extraData.put("image", "");
+                        extraData.put("date", "");
 
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
-                            json,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
+                        json.put("notification", notificationObj);
+                        json.put("data", extraData);
 
-                                    Log.d("MUR", "onResponse: ");
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d("MUR", "onError: " + error.networkResponse);
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                                json,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+
+                                        Log.d("MUR", "onResponse: ");
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("MUR", "onError: " + error.networkResponse);
+                            }
                         }
+                        ) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> header = new HashMap<>();
+                                header.put("content-type", "application/json");
+                                header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
+                                return header;
+                            }
+                        };
+                        requestQueue.add(request);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    ) {
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> header = new HashMap<>();
-                            header.put("content-type", "application/json");
-                            header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
-                            return header;
-                        }
-                    };
-                    requestQueue.add(request);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+
             }
 
 
