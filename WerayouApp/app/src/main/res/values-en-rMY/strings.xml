@@ -74,7 +74,7 @@
     <string name="delete_ask_friend">Do you want to delete this request?</string>
     <string name="start">Start</string>
     <string name="verificcation_error">Error, please try later</string>
-    <string name="intro_page_1_text">Werayou is a social network that allows its users to meet lovers and chat live</string>
+    <string name="intro_page_1_text">Werayou is a social network that allows its users to meet and chat live</string>
 
     <string name="profile_Explain_one">If you are not interested in a profile, click on the CROSS at the bottom of the image or drag the image to the left</string>
     <string name="profile_Explain_two">If a profile interests you, click on the HEART at the bottom of the image or drag the image to the right, the user receives your friend request.</string>

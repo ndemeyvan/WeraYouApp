@@ -402,7 +402,7 @@ public class ChatActivity extends AppCompatActivity {
         }
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM");
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM YYYY");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         String date = saveCurrentDate;
         final HashMap<String, Object> messageMap = new HashMap<>();
@@ -482,7 +482,7 @@ public class ChatActivity extends AppCompatActivity {
         }
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM");
+        SimpleDateFormat currentDate =new SimpleDateFormat(" dd MMM YYYY");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         String date = saveCurrentDate;
         final HashMap<String, Object> messageMap = new HashMap<>();
@@ -757,7 +757,7 @@ public class ChatActivity extends AppCompatActivity {
 
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM");
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM YYYY");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         String date = saveCurrentDate;
         final HashMap<String, Object> messageMap = new HashMap<>();

@@ -702,7 +702,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
     }
 
     public void getMyInfo() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

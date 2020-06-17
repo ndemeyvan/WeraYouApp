@@ -59,7 +59,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.putExtra("image", image);
             intent.putExtra("date", date);
             intent.putExtra("post_notification", "post_notification");
-
         } else if (type.equals("new_friends_notification")){
             intent = new Intent(this, ActivityPrincipal.class);
         }
