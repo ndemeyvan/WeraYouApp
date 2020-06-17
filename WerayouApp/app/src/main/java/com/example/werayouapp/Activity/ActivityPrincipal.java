@@ -85,8 +85,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         firstOpenSharedpreferences = getSharedPreferences(firstOpen,
                 Context.MODE_PRIVATE);
 
-        // setStatus("online");
-
         if (getIntent().hasExtra("chat_notification")) {
             Intent intent = new Intent(ActivityPrincipal.this, ChatActivity.class);
             intent.putExtra("id", getIntent().getStringExtra("id"));
@@ -463,20 +461,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     }
 
 
-    void setStatus(final String status) {
-        //    Map<String, Object> user_data = new HashMap<>();
-//        user_data.put("isOnline", status);
-//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//        userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//
-//            }
-//        });
 
-//            DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//            userDb.child("isOnline").setValue(status);
-    }
 
 
     @Override

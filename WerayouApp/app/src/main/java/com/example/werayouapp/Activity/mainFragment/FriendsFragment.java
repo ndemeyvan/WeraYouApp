@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.werayouapp.R;
@@ -28,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,6 +44,7 @@ public class FriendsFragment extends Fragment {
     TextView message;
     SharedPreferences sharedpreferences;
     String myPref = "firstOpen";
+    ProgressBar progressBar;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -59,6 +62,7 @@ public class FriendsFragment extends Fragment {
         message = v.findViewById(R.id.message);
         // mRecyclerView.addItemDecoration(new Grids(2, dpToPx(8), true));
         ///
+        progressBar=v.findViewById(R.id.progressBar);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setNestedScrollingEnabled(false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -68,7 +72,7 @@ public class FriendsFragment extends Fragment {
         ///
         friendsModelList = new ArrayList<>();
         getAsk();
-        checkIfEmpty();
+        //checkIfEmpty();
         sharedpreferences = getActivity().getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
         if (!sharedpreferences.contains(myPref)) {
@@ -103,15 +107,20 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
-
+                progressBar.setVisibility(View.VISIBLE);
                 friendsModelList.clear();//vide la liste de la recyclrView pour eviter les doublons
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     FriendsModel ask = postSnapshot.getValue(FriendsModel.class);
                     friendsModelList.add(ask);
-                    checkIfEmpty();
-                    //progressBar.setVisibility(View.INVISIBLE);
-                }
 
+                    progressBar.setVisibility(View.INVISIBLE);
+                    message.setVisibility(View.INVISIBLE);
+                }
+                if (friendsModelList.size() == 0) {
+                    message.setVisibility(View.VISIBLE);
+                    message.setText(getResources().getString(R.string.no_proposition));
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
                 //creating adapter
                 adapter = new AddFriendsAdapteur(friendsModelList, getActivity());
                 //adding adapter to recyclerview
@@ -127,10 +136,15 @@ public class FriendsFragment extends Fragment {
     }
 
     void checkIfEmpty() {
-        if (friendsModelList.size() <= 0) {
+        if (friendsModelList.size() == 0) {
+
             message.setVisibility(View.VISIBLE);
+
+            progressBar.setVisibility(View.INVISIBLE);
         } else {
             message.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+
         }
     }
 

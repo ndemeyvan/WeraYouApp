@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.werayouapp.Activity.ChatActivity;
@@ -53,6 +54,7 @@ public class MessageFragment extends Fragment {
     String userID;
     SharedPreferences sharedpreferences;
     String myPref = "firstOpen";
+    ProgressBar progressBar;
 
     public MessageFragment() {
         // Required empty public constructor
@@ -69,6 +71,7 @@ public class MessageFragment extends Fragment {
         userID = user.getCurrentUser().getUid();
         //
         message = v.findViewById(R.id.message);
+        progressBar=v.findViewById(R.id.progressBar);
         //
         mRecyclerView = v.findViewById(R.id.recyclerview);
         mRecyclerView = v.findViewById(R.id.recyclerview);
@@ -115,12 +118,22 @@ public class MessageFragment extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
                 modelChatList.clear();//vide la liste de la recyclrView pour eviter les doublons
+                progressBar.setVisibility(View.VISIBLE);
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     LastMessageModel comment = postSnapshot.getValue(LastMessageModel.class);
                     modelChatList.add(comment);
+
+                    progressBar.setVisibility(View.INVISIBLE);
                     message.setVisibility(View.INVISIBLE);
                 }
                 Collections.sort(modelChatList);
+                if (modelChatList.size() == 0) {
+                    message.setVisibility(View.VISIBLE);
+                    message.setText(getResources().getString(R.string.no_conversation));
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+
+
 
                 // commentNumber=commentList.size();
 
@@ -136,12 +149,21 @@ public class MessageFragment extends Fragment {
             }
         });
 
+
+
+    }
+
+    void checkIfEmpty() {
         if (modelChatList.size() == 0) {
             message.setVisibility(View.VISIBLE);
+
+            progressBar.setVisibility(View.INVISIBLE);
+
         } else {
             message.setVisibility(View.INVISIBLE);
-        }
+            progressBar.setVisibility(View.VISIBLE);
 
+        }
     }
 
 

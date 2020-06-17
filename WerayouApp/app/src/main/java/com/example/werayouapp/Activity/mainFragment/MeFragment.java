@@ -117,7 +117,7 @@ public class MeFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
-                getActivity().finish();
+                //getActivity().finish();
             }
         });
         postList = new ArrayList<>();
@@ -147,8 +147,6 @@ public class MeFragment extends Fragment {
                     .show();
         }
 
-
-
         return v;
 
     }
@@ -169,12 +167,8 @@ public class MeFragment extends Fragment {
                     progressBarTwo.setVisibility(View.INVISIBLE);
                     aucun_post.setVisibility(View.INVISIBLE);
                     Collections.reverse(postList);
-//                    Collections.sort(postList);
                 }
-//                if (postList.size()==postList.size()-1){
-//                    Collections.sort(postList);
-//                }
-              // Collections.sort(postList);
+
                 if (postList.size() == 0) {
                     aucun_post.setVisibility(View.VISIBLE);
                     progressBarTwo.setVisibility(View.INVISIBLE);
@@ -195,31 +189,11 @@ public class MeFragment extends Fragment {
 
     ///recupere les information de l'utilisateur
     public void getUserData() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        db.addChildEventListener(new ChildEventListener() {
+       // DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        usersDb.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-                usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        data(dataSnapshot);
-                        getPost();
-                        if (postList.size() == 0) {
-                            aucun_post.setVisibility(View.VISIBLE);
-                            progressBarTwo.setVisibility(View.INVISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 data(dataSnapshot);
                 getPost();
                 if (postList.size() == 0) {
@@ -229,19 +203,54 @@ public class MeFragment extends Fragment {
             }
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+
+
+//        usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//        db.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                data(dataSnapshot);
+//                getPost();
+//                if (postList.size() == 0) {
+//                    aucun_post.setVisibility(View.VISIBLE);
+//                    progressBarTwo.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
 
 
     }

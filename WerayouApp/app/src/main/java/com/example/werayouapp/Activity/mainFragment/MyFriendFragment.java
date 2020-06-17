@@ -103,14 +103,18 @@ public class MyFriendFragment extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
                 friendsModelList.clear();//vide la liste de la recyclrView pour eviter les doublons
-                progressBar.setVisibility(View.INVISIBLE);
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MyFriendModel ask = postSnapshot.getValue(MyFriendModel.class);
                     friendsModelList.add(ask);
-                    checkIfEmpty();
-                    //progressBar.setVisibility(View.INVISIBLE);
-                }
 
+                    progressBar.setVisibility(View.INVISIBLE);
+                    message.setVisibility(View.INVISIBLE);
+                }
+                if (friendsModelList.size() == 0) {
+                    message.setVisibility(View.VISIBLE);
+                    message.setText(getResources().getString(R.string.no_proposition));
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
                 //creating adapter
                 adapter = new MyFriendAdapter(friendsModelList, getActivity());
                 //adding adapter to recyclerview
@@ -126,16 +130,5 @@ public class MyFriendFragment extends Fragment {
 
     }
 
-    void checkIfEmpty() {
-        if (friendsModelList.size() <= 0) {
-
-            message.setVisibility(View.VISIBLE);
-            message.setText(getResources().getString(R.string.no_friend_now));
-        } else {
-            message.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.INVISIBLE);
-
-        }
-    }
 
 }

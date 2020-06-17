@@ -26,7 +26,7 @@
     <string name="no_friend_now">Vous n\'avez pas d\'amies actuellement</string>
     <string name="add_photo">Ajouter une photo</string>
     <string name="add_description">Ajouter une description</string>
-    <string name="explain_post_visibility">ce post sera uniquement visible sur votre mur</string>
+    <string name="explain_post_visibility">Ce post sera uniquement visible sur votre mur</string>
     <string name="enter_message">Votre message ...</string>
     <string name="comment_first">Commenter le premier .</string>
     <string name="likes">like</string>

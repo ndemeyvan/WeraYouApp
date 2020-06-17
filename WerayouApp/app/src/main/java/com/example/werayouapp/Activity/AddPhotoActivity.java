@@ -249,6 +249,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
 
 
     void stockageWithURI(@NonNull Task<Uri> task, String description) {
+
         Uri downloadUri;
         if (task != null) {
             downloadUri = task.getResult();
@@ -278,14 +279,13 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Intent intent = new Intent(AddPhotoActivity.this, ActivityPrincipal.class);
-                startActivity(intent);
+//                Intent intent = new Intent(AddPhotoActivity.this, ActivityPrincipal.class);
+//                startActivity(intent);
                 makeToast(getResources().getString(R.string.is_publish));
                 finish();
 
             }
         });
-        //
 
     }
 

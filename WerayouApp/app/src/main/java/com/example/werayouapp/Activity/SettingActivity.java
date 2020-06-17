@@ -441,7 +441,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                  Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                startActivity(intent);
+                //startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
                 makeToast(getResources().getString(R.string.register));
@@ -473,7 +473,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                startActivity(intent);
+               // startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
                 makeToast(getResources().getString(R.string.register));
