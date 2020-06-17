@@ -227,7 +227,7 @@ public class ChatActivity extends AppCompatActivity {
                         //json.put("to","/topics/"+id_user);
                         json.put("to", "/topics/" + id_user);
                         JSONObject notificationObj = new JSONObject();
-                        notificationObj.put("title", Mon_nom + " " + Mon_prenom);
+                        notificationObj.put("title", getResources().getString(R.string.message_of)+" "+Mon_nom + " " + Mon_prenom);
                         notificationObj.put("body", msg);
 
                         JSONObject extraData = new JSONObject();

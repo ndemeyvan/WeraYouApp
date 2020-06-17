@@ -85,5 +85,6 @@
     <string name="loading">Loading. Please wait...</string>
 
     <string name="your_are_block">You have been blocked by </string>
+    <string name="message_of">New messages from: </string>
 
 </resources>
