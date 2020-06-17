@@ -501,6 +501,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //setStatus("offline");
+       finish();
     }
 }
