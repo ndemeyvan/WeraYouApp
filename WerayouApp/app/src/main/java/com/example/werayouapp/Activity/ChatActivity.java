@@ -192,6 +192,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         requestQueue = Volley.newRequestQueue(this);
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -202,21 +203,21 @@ public class ChatActivity extends AppCompatActivity {
                     isWithImage = false;
                     imageToSend.setVisibility(View.GONE);
                     resetImage.setVisibility(View.GONE);
-                    setLastMessageStatuts("oui", id_user, userID);
+                    //setLastMessageStatuts("oui", id_user, userID);
                 } else if (!msg.isEmpty() && isWithImage == false) {
                     editText.setText("");
                     sendmessage(userID, id_user, msg);
                     isWithImage = false;
                     imageToSend.setVisibility(View.GONE);
                     resetImage.setVisibility(View.GONE);
-                    setLastMessageStatuts("oui", id_user, userID);
+                    //setLastMessageStatuts("oui", id_user, userID);
                 } else if (!msg.isEmpty() && isWithImage == true) {
                     editText.setText("");
                     isWithImage = false;
                     imageToSend.setVisibility(View.GONE);
                     resetImage.setVisibility(View.GONE);
                     sendMessageWithImageAndMessage(userID, id_user, msg);
-                    setLastMessageStatuts("oui", id_user, userID);
+                    //setLastMessageStatuts("oui", id_user, userID);
                 }
 
                 if (id_user!=userID){
@@ -425,6 +426,7 @@ public class ChatActivity extends AppCompatActivity {
         contact.setId_expediteur(expediteur);
         contact.setDernier_message("image");
         contact.setServerTime(time);
+        contact.setIsnew("non");
         //
         reference.child("dernier_message")
                 .child(expediteur)
@@ -439,6 +441,7 @@ public class ChatActivity extends AppCompatActivity {
                         contact.setId_expediteur(recepteur);
                         contact.setDernier_message("image");
                         contact.setServerTime(time);
+                        contact.setIsnew("oui");
                         //
                         reference.child("dernier_message")
                                 .child(recepteur)
@@ -503,6 +506,7 @@ public class ChatActivity extends AppCompatActivity {
         contact.setId_recepteur(recepteur);
         contact.setId_expediteur(expediteur);
         contact.setDernier_message("image");
+        contact.setIsnew("non");
         //
         reference.child("dernier_message")
                 .child(expediteur)
@@ -517,6 +521,7 @@ public class ChatActivity extends AppCompatActivity {
                         contact.setId_expediteur(recepteur);
                         contact.setDernier_message("image");
                         contact.setServerTime(time);
+                        contact.setIsnew("oui");
                         //
                         reference.child("dernier_message")
                                 .child(recepteur)
@@ -534,7 +539,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    //recuperer les information de l'utilisateur
+    //recuperer les information de l'utilisateur a qui le message est envoye
     public void getUserData() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
         db.addChildEventListener(new ChildEventListener() {
@@ -602,7 +607,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-
+    // recupere les information de  qui le message est envoye
     public void getUserstatus() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
         db.addChildEventListener(new ChildEventListener() {
@@ -657,12 +662,13 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    //recupere les info de lutilisateur actuel
     public void getMyInfo() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
                 Db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
