@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,6 +39,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.werayouapp.R;
 import com.example.werayouapp.adapter.CommentAdapter;
 import com.example.werayouapp.model.CommentModel;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -49,6 +51,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -100,8 +103,6 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
     String URL = "https://fcm.googleapis.com/fcm/send";
     private String notificationName;
     private String commentaire;
-
-
 
 
     @Override
@@ -250,21 +251,51 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
     }
 
     void deletePost() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post);
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query applesQuery = ref.child("Users").child(id_user).child("posts").child(id_post);
+
+        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                    appleSnapshot.getRef().removeValue();
-                    finish();
+                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                    appleSnapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            finish();
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            makeToast("error please try later",getApplicationContext());
+                        }
+                    });
+
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("info", "impossible de supprimer ", databaseError.toException());
+               // Log.e(TAG, "onCancelled", databaseError.toException());
             }
         });
+//        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post);
+//        db.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+//                    appleSnapshot.getRef().removeValue();
+////                    Intent intent = new Intent(getApplicationContext(),ActivityPrincipal.class);
+////                    startActivity(intent);
+//                    finish();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.e("info", "impossible de supprimer ", databaseError.toException());
+//            }
+//        });
     }
 
     void editDesc() {
@@ -386,11 +417,11 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         like.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    likeNumber=dataSnapshot.getChildrenCount();
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber +  " "+getResources().getString(R.string.comments)+"(s)");
-                }else{
-                    likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments)+"(s)");
+                if (dataSnapshot.exists()) {
+                    likeNumber = dataSnapshot.getChildrenCount();
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " " + getResources().getString(R.string.comments) + "(s)");
+                } else {
+                    likecommentsNumbers.setText((0) + " Like(s) - " + commentNumber + " " + getResources().getString(R.string.comments) + "(s)");
 
                 }
             }
@@ -459,14 +490,14 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         like.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     islike = true;
                     like_icon.setImageResource(R.drawable.ic_heart_like);
-                    Log.i("StatusLike ","J'ai deja liker");
-                }else{
+                    Log.i("StatusLike ", "J'ai deja liker");
+                } else {
                     like_icon.setImageResource(R.drawable.ic_heart_empty);
                     islike = false;
-                    Log.i("StatusLike ","absent dans mes gens bloquer");
+                    Log.i("StatusLike ", "absent dans mes gens bloquer");
                 }
             }
 
@@ -496,10 +527,10 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                 Log.e("size", commentList.size() + "");
                 commentNumber = commentList.size();
                 if (likeNumber <= 0) {
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments)+"(s)");
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " " + getResources().getString(R.string.comments) + "(s)");
                 } else {
                     //likecommentsNumbers.setText((likeNumber-1) +" Like(s) - " + commentNumber + " Commentaires");
-                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " "+getResources().getString(R.string.comments)+"(s)");
+                    likecommentsNumbers.setText((likeNumber) + " Like(s) - " + commentNumber + " " + getResources().getString(R.string.comments) + "(s)");
 
                 }
                 //creating adapter
@@ -584,7 +615,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         send_comment_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 commentaire = comment_edittext.getText().toString();
+                commentaire = comment_edittext.getText().toString();
                 String key = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child("posts").child(id_post).child("commentaires").push().getKey();
 
                 if (!TextUtils.isEmpty(commentaire)) {
@@ -610,7 +641,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
 
                         }
                     });
-                    if (id_user!=userID){
+                    if (id_user != userID) {
                         //send notification
                         JSONObject json = new JSONObject();
                         try {
@@ -618,7 +649,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                             json.put("to", "/topics/" + id_user);
                             JSONObject notificationObj = new JSONObject();
                             notificationObj.put("title",
-                                    notificationName+  " "+
+                                    notificationName + " " +
                                             getResources().getString(R.string.comment_your_post));
                             notificationObj.put("body", commentaire);
                             JSONObject extraData = new JSONObject();
@@ -734,7 +765,6 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
         finish();
     }
-
 
 
     @Override

@@ -72,7 +72,7 @@ public class Post implements Comparable<Post>{
 
     @Override
     public int compareTo(Post o) {
-        int result=o.getServerTime().intValue();
+        int result = o.getServerTime().intValue();
         Log.i("ResultPost",result+"");
         return result-this.serverTime.intValue();
     }

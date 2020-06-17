@@ -131,6 +131,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         }
 
         bottomNavigation = findViewById(R.id.bottomNavigationView);
+        bottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
         this.createNavItems();
 
         toolbar = findViewById(R.id.toolbar);
@@ -158,11 +159,13 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         });
 
         showCase();
+        checkIfHaveAccount();
 
     }
 
     void notification(int i) {
         bottomNavigation.setNotification("new", i);
+        bottomNavigation.setNotificationBackgroundColor(getResources().getColor(R.color.green));
     }
 
     private void createNavItems() {
@@ -264,6 +267,52 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         });
 
     }
+
+    void checkIfHaveAccount() {
+        final DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    if (userID != null) {
+                        user.signOut();
+                        SharedPreferences preferences = getSharedPreferences(myPref, Context.MODE_PRIVATE);
+                        SharedPreferences FirstOpenPreferences = getSharedPreferences(firstOpen, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        SharedPreferences.Editor firstOpeneditor = FirstOpenPreferences.edit();
+                        firstOpeneditor.clear();
+                        firstOpeneditor.apply();
+                        editor.clear();
+                        editor.apply();
+                        Intent homeIntent = new Intent(ActivityPrincipal.this, LoginActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                    } else {
+                        SharedPreferences preferences = getSharedPreferences(myPref, Context.MODE_PRIVATE);
+                        SharedPreferences FirstOpenPreferences = getSharedPreferences(firstOpen, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        SharedPreferences.Editor firstOpeneditor = FirstOpenPreferences.edit();
+                        firstOpeneditor.clear();
+                        firstOpeneditor.apply();
+                        editor.clear();
+                        editor.apply();
+                        Intent homeIntent = new Intent(ActivityPrincipal.this, LoginActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                    }
+                }else{
+                    //statement
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 
     void checkifHavenotification() {
         DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);

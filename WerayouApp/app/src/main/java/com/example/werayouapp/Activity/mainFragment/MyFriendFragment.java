@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.werayouapp.R;
@@ -44,6 +45,7 @@ public class MyFriendFragment extends Fragment {
     TextView message;
     SharedPreferences sharedpreferences;
     String myPref = "firstOpen";
+    ProgressBar progressBar;
 
     public MyFriendFragment() {
         // Required empty public constructor
@@ -57,6 +59,7 @@ public class MyFriendFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_amies, container, false);
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
+        progressBar=v.findViewById(R.id.progressBar);
         message = v.findViewById(R.id.message);
         mRecyclerView = v.findViewById(R.id.recyclerview);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -66,13 +69,13 @@ public class MyFriendFragment extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         ///
         friendsModelList = new ArrayList<>();
-        getAsk();
+
         sharedpreferences = getActivity().getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
         if (!sharedpreferences.contains(myPref)) {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Weareyou")
-                    .setMessage(getResources().getString(R.string.no_proposition))
+                    .setMessage(getResources().getString(R.string.close_app))
                     .setCancelable(false)
                     // Specifying a listener allows you to take an action before dismissing the dialog.
                     // The dialog is automatically dismissed when a dialog button is clicked.
@@ -87,6 +90,7 @@ public class MyFriendFragment extends Fragment {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
+        getAsk();
         return v;
     }
 
@@ -99,6 +103,7 @@ public class MyFriendFragment extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
                 friendsModelList.clear();//vide la liste de la recyclrView pour eviter les doublons
+                progressBar.setVisibility(View.INVISIBLE);
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MyFriendModel ask = postSnapshot.getValue(MyFriendModel.class);
                     friendsModelList.add(ask);
@@ -123,9 +128,13 @@ public class MyFriendFragment extends Fragment {
 
     void checkIfEmpty() {
         if (friendsModelList.size() <= 0) {
+
             message.setVisibility(View.VISIBLE);
+            message.setText(getResources().getString(R.string.no_friend_now));
         } else {
             message.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+
         }
     }
 

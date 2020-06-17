@@ -202,21 +202,21 @@ public class ChatActivity extends AppCompatActivity {
                     isWithImage = false;
                     imageToSend.setVisibility(View.GONE);
                     resetImage.setVisibility(View.GONE);
-
+                    setLastMessageStatuts("oui", id_user, userID);
                 } else if (!msg.isEmpty() && isWithImage == false) {
                     editText.setText("");
                     sendmessage(userID, id_user, msg);
                     isWithImage = false;
                     imageToSend.setVisibility(View.GONE);
                     resetImage.setVisibility(View.GONE);
-
+                    setLastMessageStatuts("oui", id_user, userID);
                 } else if (!msg.isEmpty() && isWithImage == true) {
                     editText.setText("");
                     isWithImage = false;
                     imageToSend.setVisibility(View.GONE);
                     resetImage.setVisibility(View.GONE);
                     sendMessageWithImageAndMessage(userID, id_user, msg);
-
+                    setLastMessageStatuts("oui", id_user, userID);
                 }
 
                 if (id_user!=userID){

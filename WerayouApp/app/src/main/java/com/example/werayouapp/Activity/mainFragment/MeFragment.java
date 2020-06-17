@@ -147,6 +147,8 @@ public class MeFragment extends Fragment {
                     .show();
         }
 
+
+
         return v;
 
     }
@@ -162,12 +164,17 @@ public class MeFragment extends Fragment {
                 postList.clear();//vide la liste de la recyclrView pour eviter les doublons
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
+
                     postList.add(post);
                     progressBarTwo.setVisibility(View.INVISIBLE);
                     aucun_post.setVisibility(View.INVISIBLE);
-
+                    Collections.reverse(postList);
+//                    Collections.sort(postList);
                 }
-                Collections.sort(postList);
+//                if (postList.size()==postList.size()-1){
+//                    Collections.sort(postList);
+//                }
+              // Collections.sort(postList);
                 if (postList.size() == 0) {
                     aucun_post.setVisibility(View.VISIBLE);
                     progressBarTwo.setVisibility(View.INVISIBLE);
@@ -305,5 +312,9 @@ public class MeFragment extends Fragment {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
 
-
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        Collections.sort(postList);
+//    }
 }
