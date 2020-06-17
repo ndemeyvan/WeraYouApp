@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
     View v;
 
     com.example.werayouapp.adapter.ArrayAdapter arrayAdapter;
-    int i;
     SwipeFlingAdapterView flingContainer;
     SharedPreferences sharedpreferences;
     FirebaseAuth user;
@@ -59,12 +58,10 @@ public class HomeFragment extends Fragment {
     Cards obj;
     String contry;
     String myPref = "countryPref";
-    //
     String recherche;
-    //
     String currentUser;
-    //
     DatabaseReference usersDb;
+    int i;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -97,7 +94,6 @@ public class HomeFragment extends Fragment {
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString("lastCountrySave", myCountry);
                             editor.commit();
-//                            getActivity().finishAffinity();
                             checkUserSex(myCountry.toLowerCase());
                         }
                     }
@@ -144,7 +140,6 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-                //makeToast(getActivity(), "left!");
             }
 
             @Override
@@ -166,7 +161,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onAdapterAboutToEmpty(int i) {
                 if (i == 0) {
-
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
@@ -230,7 +224,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         ((ActivityPrincipal) getActivity()).passVal(new ActivityPrincipal.FragmentCommunicator() {
             @Override
             public void passData(String name) {
@@ -252,12 +245,10 @@ public class HomeFragment extends Fragment {
         });
 
         showCase();
-        //checkIfEmpty();
-
         return v;
     }
 
-
+    //Explication lors de la premiere utilisation
     void showCase() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
@@ -271,6 +262,7 @@ public class HomeFragment extends Fragment {
 
     }
 
+    //Quel est le sexe de l'utilisateur actuel
     public void checkUserSex(final String contry) {
         Log.i("currentUser", currentUser);
         db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser);
@@ -297,27 +289,23 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    //Recupere les utilisateurs des de sexe unique
     public void getUsers(final String contry, final String oppositeUserSex) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("sexe").getValue().toString().equals(oppositeUserSex) && dataSnapshot.child("pays").getValue().toString().equals(contry.toLowerCase()) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
-                    //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
                     rowsItems.add(item);
-                    //dialog.dismiss();
                     arrayAdapter.notifyDataSetChanged();
-                    //
                 }
                 if (rowsItems.size() == 0) {
-//                    messageDeDernierCards.setText("il n'y a pas de proposition ");
                     message.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-//                    messageDeDernierCards.setText("il n'y a pas de proposition ");
                     message.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
@@ -327,9 +315,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //pas vraiment neccesaire pour l'instant
-                //rowsItems.clear();
-                // getOppositeSexUsers();
+
             }
 
             @Override
@@ -344,45 +330,36 @@ public class HomeFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        //
-//        if (rowsItems.size() <= 0) {
-//            //dialog.dismiss();
-//        }
+
         if (rowsItems.size() == 0) {
-//            messageDeDernierCards.setText("il n'y a pas de proposition ");
             message.setVisibility(View.VISIBLE);
             right.setEnabled(false);
             left.setEnabled(false);
             progressBar.setVisibility(View.INVISIBLE);
         } else {
-//            messageDeDernierCards.setText("il n'y a pas de proposition ");
             message.setVisibility(View.INVISIBLE);
             right.setEnabled(true);
             left.setEnabled(true);
         }
     }
 
+    //recupere les utilisateurs des deux sexe
     public void getTwoUsersSex(final String contry) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("pays").getValue().toString().equals(contry.toLowerCase()) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
-                    //
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     progressBar.setVisibility(View.INVISIBLE);
                     rowsItems.add(item);
-                    //dialog.dismiss();
                     arrayAdapter.notifyDataSetChanged();
-                    //
                 }
                 if (rowsItems.size() == 0) {
-//                    messageDeDernierCards.setText("il n'y a pas de proposition ");
                     message.setVisibility(View.VISIBLE);
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-//                    messageDeDernierCards.setText("il n'y a pas de proposition ");
                     message.setVisibility(View.INVISIBLE);
                     right.setEnabled(true);
                     left.setEnabled(true);
@@ -392,9 +369,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //pas vraiment neccesaire pour l'instant
-                //rowsItems.clear();
-                // getOppositeSexUsers();
+
             }
 
             @Override
@@ -409,9 +384,8 @@ public class HomeFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        //
+
         if (rowsItems.size() <= 0) {
-            //dialog.dismiss();
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
