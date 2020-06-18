@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -126,10 +127,11 @@ public class ProfilActivity extends AppCompatActivity {
         });
         progressBar = findViewById(R.id.progressBar);
         postList = new ArrayList<>();
+
+        getUserData();
         checkifIsFriend();
         checkifIBlcoked();
         checkifSheBlcokedMe();
-        getUserData();
         getPost();
         //action d'ecrire ou accepter
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -427,34 +429,21 @@ public class ProfilActivity extends AppCompatActivity {
     }
 
     void checkifIBlcoked() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer");
-        db.addChildEventListener(new ChildEventListener() {
+
+
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer");
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(id_user)) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(id_user)) {
                     deniedButton.setText(getResources().getString(R.string.unlock_simple));
-                    isLock = true;
                     addButton.setBackgroundColor(Color.parseColor("#999999"));
                     addButton.setTextColor(Color.parseColor("#000000"));
-                } else {
-                    isLock = false;
-
+                    isLock = true;
+                    Log.i("lol","lol");
+                }else {
+                    isLock=false;
                 }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
 
             @Override
@@ -462,6 +451,44 @@ public class ProfilActivity extends AppCompatActivity {
 
             }
         });
+
+
+//        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer");
+//        db.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                if (dataSnapshot.exists() && dataSnapshot.hasChild(id_user)) {
+//                    isLock = false;
+//                } else {
+//                    deniedButton.setText(getResources().getString(R.string.unlock_simple));
+//                    addButton.setBackgroundColor(Color.parseColor("#999999"));
+//                    addButton.setTextColor(Color.parseColor("#000000"));
+//                    isLock = true;
+//                    Log.i("lol","lol");
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
     void checkifSheBlcokedMe() {
@@ -567,6 +594,7 @@ public class ProfilActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Log.i("lol","exit");
         finish();
     }
 

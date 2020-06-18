@@ -300,6 +300,8 @@ public class ChatActivity extends AppCompatActivity {
                     iBlockHim.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     linearLayout.setVisibility(View.GONE);
+                    emojiButton.setVisibility(View.INVISIBLE);
+                    imageButton.setVisibility(View.INVISIBLE);
                 } else {
                     checkifSheBlcokedMe(herID, myID);
                 }
@@ -323,6 +325,8 @@ public class ChatActivity extends AppCompatActivity {
                     iBlockHim.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     linearLayout.setVisibility(View.GONE);
+                    emojiButton.setVisibility(View.INVISIBLE);
+                    imageButton.setVisibility(View.INVISIBLE);
                 } else {
                     mRecyclerView.setVisibility(View.VISIBLE);
                     iBlockHim.setVisibility(View.GONE);

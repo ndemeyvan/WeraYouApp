@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:elevation="5dp"
         android:padding="0dp"
-        android:paddingBottom="5dp"
+        android:paddingBottom="0dp"
         app:cardCornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,32 +25,32 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:elevation="0dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profil_image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
                 android:src="@drawable/wesplash"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/nom_profil"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Audrey abena"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/profil_image"
-                app:layout_constraintTop_toTopOf="@+id/profil_image" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/message"
@@ -58,13 +58,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="Olalal j'aime bien ta photo elle est trop jolie je jure !!!! Qui te fait les make up stp ? "
                 android:textColor="@color/black"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:maxLines="2"
-                android:ellipsize="end"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/createdDate"

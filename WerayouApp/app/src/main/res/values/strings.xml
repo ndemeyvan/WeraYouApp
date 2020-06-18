@@ -34,7 +34,7 @@
     <string name="your_comment">Votre commentaire ...</string>
     <string name="accept">Accepter</string>
     <string name="denied">Refuser</string>
-    <string name="no_post_person">Cette personne n\'a rien publié pour l\'instant</string>
+    <string name="no_post_person">Cet personne n\'a rien publié pour l\'instant</string>
     <string name="what_is_your_name">Quel est votre nom ?</string>
     <string name="what_is_your_secon_name">Quel est votre prenom</string>
     <string name="what_is_your_town">Quel est votre ville ?</string>

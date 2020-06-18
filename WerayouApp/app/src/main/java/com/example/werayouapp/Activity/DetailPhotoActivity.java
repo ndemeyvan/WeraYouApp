@@ -169,7 +169,8 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         getLikeCount();
         checkifLike();
         getComments();
-        getMyInfo();
+        getInfo();
+
         like_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -624,7 +625,7 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
                     String saveCurrentDate = currentDate.format(calendar.getTime());
-                    String date = saveCurrentDate;
+                    final String date = saveCurrentDate;
                     Map<String, Object> comment_data = new HashMap<>();
                     comment_data.put("id", user.getUid());
                     comment_data.put("commentaire", commentaire);
@@ -639,58 +640,61 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                             send_comment_button.setVisibility(View.VISIBLE);
                             progressBar2.setVisibility(View.INVISIBLE);
 
-                        }
-                    });
-                    if (id_user != userID) {
-                        //send notification
-                        JSONObject json = new JSONObject();
-                        try {
-                            //json.put("to","/topics/"+id_user);
-                            json.put("to", "/topics/" + id_user);
-                            JSONObject notificationObj = new JSONObject();
-                            notificationObj.put("title",
-                                    notificationName + " " +
-                                            getResources().getString(R.string.comment_your_post));
-                            notificationObj.put("body", commentaire);
-                            JSONObject extraData = new JSONObject();
-                            extraData.put("id_recepteur", "");
-                            extraData.put("type", "post_notification");
-                            extraData.put("id_post", id_post);
-                            extraData.put("id_user", id_user);
-                            extraData.put("description", description);
-                            extraData.put("image", image);
-                            extraData.put("date", date);
-                            json.put("notification", notificationObj);
-                            json.put("data", extraData);
 
-                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
-                                    json,
-                                    new Response.Listener<JSONObject>() {
+                            if (!id_user.equals(userID)) {
+                                Log.i("it's the same user ","its is : "+id_user.equals(userID));
+                                //send notification
+                                JSONObject json = new JSONObject();
+                                try {
+                                    //json.put("to","/topics/"+id_user);
+                                    json.put("to", "/topics/" + id_user);
+                                    JSONObject notificationObj = new JSONObject();
+                                    notificationObj.put("title",
+                                            notificationName + " " +
+                                                    getResources().getString(R.string.comment_your_post));
+                                    notificationObj.put("body", commentaire);
+                                    JSONObject extraData = new JSONObject();
+                                    extraData.put("id_recepteur", "");
+                                    extraData.put("type", "post_notification");
+                                    extraData.put("id_post", id_post);
+                                    extraData.put("id_user", id_user);
+                                    extraData.put("description", description);
+                                    extraData.put("image", image);
+                                    extraData.put("date", date);
+                                    json.put("notification", notificationObj);
+                                    json.put("data", extraData);
+
+                                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                                            json,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+
+                                                    Log.d("MUR", "onResponse: ");
+                                                }
+                                            }, new Response.ErrorListener() {
                                         @Override
-                                        public void onResponse(JSONObject response) {
-
-                                            Log.d("MUR", "onResponse: ");
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.d("MUR", "onError: " + error.networkResponse);
                                         }
-                                    }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.d("MUR", "onError: " + error.networkResponse);
+                                    }
+                                    ) {
+                                        @Override
+                                        public Map<String, String> getHeaders() throws AuthFailureError {
+                                            Map<String, String> header = new HashMap<>();
+                                            header.put("content-type", "application/json");
+                                            header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
+                                            return header;
+                                        }
+                                    };
+                                    requestQueue.add(request);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
                             }
-                            ) {
-                                @Override
-                                public Map<String, String> getHeaders() throws AuthFailureError {
-                                    Map<String, String> header = new HashMap<>();
-                                    header.put("content-type", "application/json");
-                                    header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
-                                    return header;
-                                }
-                            };
-                            requestQueue.add(request);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
+                    });
+
 
 
                 } else {
@@ -701,12 +705,12 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
         });
     }
 
-    public void getMyInfo() {
+    public void getInfo() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user);
+                Db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
                 Db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
