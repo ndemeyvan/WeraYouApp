@@ -18,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,8 @@ public class ProfilActivity extends AppCompatActivity {
     Button deniedButton;
     boolean isFriend;
     boolean isLock;
+    TextView you_are_block;
+    LinearLayout linearLayout5;
     //
     String userID;
     private boolean iamblocked;
@@ -97,6 +100,8 @@ public class ProfilActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         addButton = findViewById(R.id.addButton);
         deniedButton = findViewById(R.id.deniedButton);
+        you_are_block=findViewById(R.id.you_are_block);
+        linearLayout5=findViewById(R.id.linearLayout5);
         //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
@@ -177,7 +182,7 @@ public class ProfilActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     snapshot.getRef().removeValue();
-                    deniedButton.setText("Bloquer");
+                    deniedButton.setText(getResources().getString(R.string.lock));
                     isLock=false;
                     addButton.setBackgroundColor(Color.parseColor("#4CAF50"));
                     addButton.setTextColor(Color.parseColor("#FFFFFF"));
@@ -426,7 +431,7 @@ public class ProfilActivity extends AppCompatActivity {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(currentUser)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(id_user)) {
                     deniedButton.setText(getResources().getString(R.string.unlock_simple));
                     isLock = true;
                     addButton.setBackgroundColor(Color.parseColor("#999999"));
@@ -465,12 +470,17 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("bloquer").hasChild(currentUser)) {
-                    deniedButton.setVisibility(View.INVISIBLE);
-                    addButton.setVisibility(View.INVISIBLE);
+                    deniedButton.setVisibility(View.GONE);
+                    addButton.setVisibility(View.GONE);
+//                    linearLayout5.setVisibility(View.GONE);
                     iamblocked = false;
+                    mRecyclerView.setVisibility(View.GONE);
+                    aucun_post.setVisibility(View.GONE);
+                    you_are_block.setVisibility(View.VISIBLE);
                 } else {
                     iamblocked = true;
-
+//                    mRecyclerView.setVisibility(View.VISIBLE);
+//                    you_are_block.setVisibility(View.GONE);
                 }
             }
 
@@ -554,6 +564,11 @@ public class ProfilActivity extends AppCompatActivity {
         Toast.makeText(ProfilActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     @Override
     protected void onPause() {

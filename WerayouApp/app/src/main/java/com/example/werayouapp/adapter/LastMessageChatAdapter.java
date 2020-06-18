@@ -55,7 +55,7 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View contactView = inflater.inflate(R.layout.comment_message_layout, parent, false);
+        View contactView = inflater.inflate(R.layout.last_message, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
@@ -73,10 +73,10 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
         holder.createdDate.setVisibility(View.GONE);
         if (dernier_message.equals("image")) {
             holder.image.setVisibility(View.VISIBLE);
-            holder.commentaire.setVisibility(View.GONE);
+            holder.message.setVisibility(View.GONE);
         } else {
-            holder.commentaire.setText(dernier_message);
-            holder.commentaire.setVisibility(View.VISIBLE);
+            holder.message.setText(dernier_message);
+            holder.message.setVisibility(View.VISIBLE);
             holder.image.setVisibility(View.INVISIBLE);
         }
         holder.layout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_simple));
@@ -176,7 +176,7 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
         CircleImageView profil_image;
         ProgressBar progressBar;
         TextView nom_profil;
-        TextView commentaire;
+        TextView message;
         TextView createdDate;
         ConstraintLayout layout;
         ImageView image;
@@ -187,7 +187,7 @@ public class LastMessageChatAdapter extends RecyclerView.Adapter<LastMessageChat
             profil_image = itemView.findViewById(R.id.profil_image);
             progressBar = itemView.findViewById(R.id.progressBar);
             nom_profil = itemView.findViewById(R.id.nom_profil);
-            commentaire = itemView.findViewById(R.id.commentaire);
+            message = itemView.findViewById(R.id.message);
             createdDate = itemView.findViewById(R.id.createdDate);
             image = itemView.findViewById(R.id.image);
             layout = itemView.findViewById(R.id.layout);

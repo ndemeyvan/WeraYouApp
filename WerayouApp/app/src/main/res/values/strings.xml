@@ -67,7 +67,7 @@
     <string name="comment_your_post">a commenté votre publication</string>
     <string name="unlock">Debloquer l\'utilisateur d\'abord</string>
     <string name="unlock_simple">Debloquer</string>
-    <string name="you_are_block">Vous avez ete bloquer</string>
+    <string name="you_are_block">Vous avez été bloqué.</string>
     <string name="bloquer">Bloquer</string>
     <string name="write">Ecrire</string>
     <string name="you_can_write">"Vous pouvez ecrire a cette personne "</string>
@@ -80,6 +80,7 @@
     <string name="profile_Explain_one">Si un profil ne vous intéresse pas, cliquez sur la CROIX en bas de l\'image ou faites glisser l\'image vers la gauche</string>
     <string name="profile_Explain_two">Si un profil vous intéresse, cliquez sur le COEUR en bas de l\'image ou faites glisser l\'image vers la droite, l\'utilisateur reçoit votre demande d\'ami . </string>
     <string name="years">ans</string>
+    <string name="lock">Bloquer</string>
 
     <string name="send_image">envoie de l\'image ...</string>
     <string name="loading">En cour de chargement ...</string>
