@@ -69,7 +69,6 @@ public class MyFriendFragment extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         ///
         friendsModelList = new ArrayList<>();
-
         sharedpreferences = getActivity().getSharedPreferences(myPref,
                 Context.MODE_PRIVATE);
         if (!sharedpreferences.contains(myPref)) {

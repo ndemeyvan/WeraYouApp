@@ -46,8 +46,10 @@
                 android:layout_marginTop="8dp"
                 android:text="Audrey abena"
                 android:textColor="@color/black"
-                android:textSize="18sp"
                 android:textStyle="bold"
+                android:textSize="15sp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/profil_image"
                 app:layout_constraintTop_toTopOf="parent" />

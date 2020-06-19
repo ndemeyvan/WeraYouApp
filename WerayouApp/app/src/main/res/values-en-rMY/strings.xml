@@ -80,6 +80,7 @@
     <string name="profile_Explain_two">If a profile interests you, click on the HEART at the bottom of the image or drag the image to the right, the user receives your friend request.</string>
     <string name="years">years</string>
     <string name="lock">Lock</string>
+    <string name="unlock_first">Unblock this person first</string>
 
 
     <string name="send_image">send image ...</string>

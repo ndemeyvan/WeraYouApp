@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -77,7 +78,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         final String id_user = myFriendModelList.get(i).getId();
         getUserData(holder, id_user);
 
-        holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
+        holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProfilActivity.class);
@@ -177,6 +178,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
         Button writeButton;
         Button blockButton;
         ConstraintLayout layout;
+        CardView card;
 
 
         public ViewHolder(final View itemView) {
@@ -186,6 +188,7 @@ public class MyFriendAdapter extends RecyclerView.Adapter<MyFriendAdapter.ViewHo
             nom_profil = itemView.findViewById(R.id.nom_profil);
             seeProfilText = itemView.findViewById(R.id.seeProfilText);
             layout = itemView.findViewById(R.id.layout);
+            card=itemView.findViewById(R.id.card);
 
         }
 

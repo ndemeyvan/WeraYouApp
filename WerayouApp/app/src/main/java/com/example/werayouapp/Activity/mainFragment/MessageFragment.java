@@ -125,10 +125,10 @@ public class MessageFragment extends Fragment {
 
                     progressBar.setVisibility(View.INVISIBLE);
                     message.setVisibility(View.INVISIBLE);
+//                    Collections.reverse(modelChatList);
 
                 }
-                Collections.reverse(modelChatList);
-                //Collections.sort(modelChatList);
+                Collections.sort(modelChatList);
                 if (modelChatList.size() == 0) {
                     message.setVisibility(View.VISIBLE);
                     message.setText(getResources().getString(R.string.no_conversation));

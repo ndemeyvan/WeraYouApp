@@ -81,6 +81,7 @@
     <string name="years">years</string>
 
     <string name="lock">Lock</string>
+    <string name="unlock_first">Unblock this person first</string>
 
     <string name="send_image">send image ...</string>
     <string name="loading">Loading. Please wait...</string>

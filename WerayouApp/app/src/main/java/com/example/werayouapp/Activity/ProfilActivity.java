@@ -78,7 +78,7 @@ public class ProfilActivity extends AppCompatActivity {
     //
     String userID;
     private boolean iamblocked;
-
+    TextView unclock_first;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +104,7 @@ public class ProfilActivity extends AppCompatActivity {
         you_are_block=findViewById(R.id.you_are_block);
         linearLayout5=findViewById(R.id.linearLayout5);
         //
+        unclock_first=findViewById(R.id.unclock_first);
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
         //
@@ -161,13 +162,11 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isFriend == false) {
-                    //makeToast("vous n'etes pas amies vous pouvez refuser vous pouvez refuser sa demande");
                     reject();
                 } else {
                     if (isLock==true){
                         unLock();
                     }else{
-                        //bloquer un utilisateur
                         blockUser();
                     }
                 }
@@ -188,6 +187,8 @@ public class ProfilActivity extends AppCompatActivity {
                     isLock=false;
                     addButton.setBackgroundColor(Color.parseColor("#4CAF50"));
                     addButton.setTextColor(Color.parseColor("#FFFFFF"));
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    unclock_first.setVisibility(View.GONE);
                 }
             }
 
@@ -440,8 +441,12 @@ public class ProfilActivity extends AppCompatActivity {
                     addButton.setBackgroundColor(Color.parseColor("#999999"));
                     addButton.setTextColor(Color.parseColor("#000000"));
                     isLock = true;
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    unclock_first.setVisibility(View.VISIBLE);
+
                     Log.i("lol","lol");
                 }else {
+
                     isLock=false;
                 }
             }
@@ -452,43 +457,6 @@ public class ProfilActivity extends AppCompatActivity {
             }
         });
 
-
-//        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer");
-//        db.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                if (dataSnapshot.exists() && dataSnapshot.hasChild(id_user)) {
-//                    isLock = false;
-//                } else {
-//                    deniedButton.setText(getResources().getString(R.string.unlock_simple));
-//                    addButton.setBackgroundColor(Color.parseColor("#999999"));
-//                    addButton.setTextColor(Color.parseColor("#000000"));
-//                    isLock = true;
-//                    Log.i("lol","lol");
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
     }
 
     void checkifSheBlcokedMe() {

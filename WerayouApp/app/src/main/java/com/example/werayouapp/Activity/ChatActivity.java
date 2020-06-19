@@ -98,6 +98,7 @@ public class ChatActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
     DatabaseReference reference;
     StorageReference storageReference;
+    LinearLayout linearLayout3;
 
     byte[] final_image;
     boolean iamblocked;
@@ -136,6 +137,7 @@ public class ChatActivity extends AppCompatActivity {
         user_status = findViewById(R.id.user_status);
         iBlockHim = findViewById(R.id.iBlockHim);
         linearLayout = findViewById(R.id.linearLayout);
+        linearLayout3=findViewById(R.id.linearLayout3);
         //
         id_user = getIntent().getStringExtra("id");
         user = FirebaseAuth.getInstance();
@@ -296,12 +298,13 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    iBlockHim.setText("Debloquer cette personne d'abord");
+                    iBlockHim.setText(getResources().getString(R.string.unlock_first));
                     iBlockHim.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     linearLayout.setVisibility(View.GONE);
                     emojiButton.setVisibility(View.INVISIBLE);
                     imageButton.setVisibility(View.INVISIBLE);
+                    linearLayout3.setVisibility(View.GONE);
                 } else {
                     checkifSheBlcokedMe(herID, myID);
                 }
@@ -327,11 +330,15 @@ public class ChatActivity extends AppCompatActivity {
                     linearLayout.setVisibility(View.GONE);
                     emojiButton.setVisibility(View.INVISIBLE);
                     imageButton.setVisibility(View.INVISIBLE);
+                    linearLayout3.setVisibility(View.GONE);
+
                 } else {
                     mRecyclerView.setVisibility(View.VISIBLE);
                     iBlockHim.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                     linearLayout.setVisibility(View.VISIBLE);
+                    linearLayout3.setVisibility(View.VISIBLE);
+
                 }
             }
 
