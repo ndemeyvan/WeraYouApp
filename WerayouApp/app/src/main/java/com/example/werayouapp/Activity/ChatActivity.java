@@ -376,6 +376,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 makeToast(getResources().getString(R.string.bloquer));
+                lock_unlock_user.setText(getResources().getString(R.string.unlock_simple));
                 isLock=true;
                 //checkifIBlcoked();
             }
