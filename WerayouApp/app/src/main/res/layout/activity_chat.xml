@@ -120,6 +120,17 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
 
+          <TextView
+              android:id="@+id/lock_unlock_user"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="16dp"
+              android:text="@string/unlock_simple"
+              android:textColor="@color/white"
+              app:layout_constraintBottom_toBottomOf="@+id/linearLayout8"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintTop_toTopOf="@+id/linearLayout8" />
+
           <de.hdodenhof.circleimageview.CircleImageView
               android:id="@+id/profil_image"
               android:layout_width="35dp"
@@ -130,11 +141,11 @@
               app:layout_constraintTop_toTopOf="parent" />
 
           <LinearLayout
-              android:layout_width="0dp"
+              android:id="@+id/linearLayout8"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:orientation="vertical"
               app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintStart_toEndOf="@+id/profil_image"
               app:layout_constraintTop_toTopOf="parent">
 

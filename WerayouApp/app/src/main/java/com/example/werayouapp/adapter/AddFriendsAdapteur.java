@@ -47,6 +47,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -210,9 +211,12 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         final String date = saveCurrentDate;
-        Map<String, String> user_data = new HashMap<>();
+        Date jour = new Date();
+        final long time = jour.getTime();
+        Map<String, Object> user_data = new HashMap<>();
         user_data.put("updatedDate", date);
         user_data.put("id", id_user);
+        user_data.put("time", time);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("mesAmis").child(id_user);
@@ -235,17 +239,24 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                     }
                 });
                 ///mettre l'utilisateur dans les valider
-                Map<String, String> user_data = new HashMap<>();
+                Date jour = new Date();
+                final long time = jour.getTime();
+                Map<String, Object> user_data = new HashMap<>();
                 user_data.put("updatedDate", date);
                 user_data.put("id", id_user);
+                user_data.put("time", time);
+
                 /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
                 DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("valider").child(id_user);
                 db_.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Map<String, String> dataForAsker = new HashMap<>();
+                        Date jour = new Date();
+                        final long time = jour.getTime();
+                        Map<String, Object> dataForAsker = new HashMap<>();
                         dataForAsker.put("updatedDate", date);
                         dataForAsker.put("id", userID);
+                        dataForAsker.put("time", time);
                         DatabaseReference dbTwoAskUser = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("mesAmis").child(userID);
                         dbTwoAskUser.setValue(dataForAsker);
                     }
@@ -263,9 +274,12 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         final String date = saveCurrentDate;
-        final Map<String, String> user_data = new HashMap<>();
+        Date jour = new Date();
+        final long time = jour.getTime();
+        final Map<String, Object> user_data = new HashMap<>();
         user_data.put("updatedDate", date);
         user_data.put("id", id_user);
+        user_data.put("time", time);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("refuser").child(id_user);

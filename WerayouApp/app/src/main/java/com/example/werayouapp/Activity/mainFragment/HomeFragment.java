@@ -132,8 +132,12 @@ public class HomeFragment extends Fragment {
                 obj = (Cards) o;
                 String userId = obj.getId();
                 //usersDb.child(userId).child("connections").child("refuser").child(currentUser).setValue(true);
-                Map<String, String> data = new HashMap<>();
+                Date jour = new Date();
+                final long time = jour.getTime();
+                Map<String, Object> data = new HashMap<>();
                 data.put("id", currentUser);
+                data.put("time", time);
+
                 DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("refuser").child(currentUser);
                 userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -147,8 +151,12 @@ public class HomeFragment extends Fragment {
             public void onRightCardExit(Object o) {
                 obj = (Cards) o;
                 String userId = obj.getId();
-                Map<String, String> data = new HashMap<>();
+                Date jour = new Date();
+                final long time = jour.getTime();
+                Map<String, Object> data = new HashMap<>();
                 data.put("id", currentUser);
+                data.put("time", time);
+
                 DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("accepter").child(currentUser);
                 userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -194,8 +202,8 @@ public class HomeFragment extends Fragment {
                     final long time = jour.getTime();
                     Map<String, Object> data = new HashMap<>();
                     data.put("id", currentUser);
+                    data.put("time", time);
 
-                    data.put("requestTime", time);
                     DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("accepter").child(currentUser);
                     userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -219,7 +227,8 @@ public class HomeFragment extends Fragment {
                     final long time = jour.getTime();
                     Map<String, Object> data = new HashMap<>();
                     data.put("id", currentUser);
-                    data.put("rejectTime", time);
+                    data.put("time", time);
+
                     DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("refuser").child(currentUser);
                     userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -394,6 +403,8 @@ public class HomeFragment extends Fragment {
         });
 
     }
+
+
 
 
 }

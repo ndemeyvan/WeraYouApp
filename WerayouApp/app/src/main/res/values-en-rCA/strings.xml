@@ -82,6 +82,7 @@
     <string name="lock">Lock</string>
     <string name="unlock_first">Unblock this person first .</string>
 
+    <string name="lock_user">Are you sure you want to block this user?</string>
 
     <string name="send_image">send image ...</string>
     <string name="loading">Loading. Please wait...</string>

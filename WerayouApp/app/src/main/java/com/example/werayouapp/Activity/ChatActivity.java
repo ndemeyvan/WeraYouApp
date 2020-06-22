@@ -21,6 +21,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -41,18 +44,17 @@ import com.example.werayouapp.R;
 import com.example.werayouapp.UtilsForChat.ChatAdapter;
 import com.example.werayouapp.UtilsForChat.DisplayAllChat;
 import com.example.werayouapp.UtilsForChat.ModelChat;
-import com.example.werayouapp.intro.WelcomeActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
@@ -70,7 +72,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -126,7 +127,8 @@ public class ChatActivity extends AppCompatActivity {
     String myPref = "smsCount";
     ProgressBar message_progressBar;
     TextView message;
-
+    TextView lock_unlock_user;
+    boolean iamLock;
 
 
     @Override
@@ -152,6 +154,7 @@ public class ChatActivity extends AppCompatActivity {
         linearLayout3=findViewById(R.id.linearLayout3);
         message_progressBar=findViewById(R.id.message_progressBar);
         message=findViewById(R.id.message);
+        lock_unlock_user=findViewById(R.id.lock_unlock_user);
 
         id_user = getIntent().getStringExtra("id");
         sharedpreferences = getSharedPreferences(id_user,
@@ -194,11 +197,6 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-        //emodi
-        //appel de fonction
-        getUserData();
-        getMyInfo();
-        checkifIsBlcoked(userID, id_user);
         //annuler lenvoi d'une image
         resetImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,12 +300,136 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        getUserData();
+        getMyInfo();
+        checkifIsBlcoked(userID, id_user);
+        checkifIBlcoked();
         readMessage(userID, id_user);
+
+        lock_unlock_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isLock==true) {
+                    Log.i("lol","lol");
+                    new AlertDialog.Builder(ChatActivity.this)
+                            .setTitle("Weareyou")
+                            .setMessage(getResources().getString(R.string.lock_user))
+                            .setCancelable(false)
+                            // Specifying a listener allows you to take an action before dismissing the dialog.
+                            // The dialog is automatically dismissed when a dialog button is clicked.
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    blockUser();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                } else {
+                    //Log.i("lol","lol");
+                    new AlertDialog.Builder(ChatActivity.this)
+                            .setTitle("Weareyou")
+                            .setMessage(getResources().getString(R.string.unlock_simple) +" ?")
+                            .setCancelable(false)
+                            // Specifying a listener allows you to take an action before dismissing the dialog.
+                            // The dialog is automatically dismissed when a dialog button is clicked.
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    unLock();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+
+                }
+            }
+        });
 
         setStatus(true);
 
     }
 
+
+
+
+    void blockUser() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+        final String date = saveCurrentDate;
+        final Map<String, String> user_data = new HashMap<>();
+        user_data.put("updatedDate", date);
+        user_data.put("id", id_user);
+        DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
+        boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                makeToast(getResources().getString(R.string.bloquer));
+                isLock=true;
+                //checkifIBlcoked();
+            }
+        });
+    }
+
+    void checkifIBlcoked() {
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer");
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(id_user)) {
+                    lock_unlock_user.setText(getResources().getString(R.string.unlock_simple));
+                    isLock = true;
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    iBlockHim.setText(getResources().getString(R.string.unlock_first));
+                    Log.i("lol","lol");
+                }else {
+                    lock_unlock_user.setText(getResources().getString(R.string.lock));
+                    isLock=false;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+
+
+    void unLock(){
+        /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    snapshot.getRef().removeValue();
+                    lock_unlock_user.setText(getResources().getString(R.string.lock));
+                    isLock=false;
+                    mRecyclerView.setVisibility(View.VISIBLE);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
 
     void checkifIsBlcoked(final String myID, final String herID) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(myID).child("connections").child("bloquer").child(herID);
@@ -322,7 +444,10 @@ public class ChatActivity extends AppCompatActivity {
                     emojiButton.setVisibility(View.INVISIBLE);
                     imageButton.setVisibility(View.INVISIBLE);
                     linearLayout3.setVisibility(View.GONE);
+                    isLock=true;
                 } else {
+                    lock_unlock_user.setText(getResources().getString(R.string.lock));
+                    isLock=false;
                     checkifSheBlcokedMe(herID, myID);
                 }
             }
@@ -348,6 +473,7 @@ public class ChatActivity extends AppCompatActivity {
                     emojiButton.setVisibility(View.INVISIBLE);
                     imageButton.setVisibility(View.INVISIBLE);
                     linearLayout3.setVisibility(View.GONE);
+                    lock_unlock_user.setVisibility(View.GONE);
 
                 } else {
                     mRecyclerView.setVisibility(View.VISIBLE);
@@ -355,6 +481,7 @@ public class ChatActivity extends AppCompatActivity {
                     mRecyclerView.setVisibility(View.VISIBLE);
                     linearLayout.setVisibility(View.VISIBLE);
                     linearLayout3.setVisibility(View.VISIBLE);
+                    lock_unlock_user.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -1083,5 +1210,6 @@ public class ChatActivity extends AppCompatActivity {
 //        FirebaseMessaging.getInstance().subscribeToTopic("");
 
     }
+
 
 }

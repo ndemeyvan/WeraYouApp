@@ -434,8 +434,6 @@ public class ProfilActivity extends AppCompatActivity {
     }
 
     void checkifIBlcoked() {
-
-
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer");
         rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
