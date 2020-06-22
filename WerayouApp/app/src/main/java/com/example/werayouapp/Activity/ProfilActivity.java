@@ -42,6 +42,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -236,9 +237,12 @@ public class ProfilActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         final String date = saveCurrentDate;
-        final Map<String, String> user_data = new HashMap<>();
+        Date jour = new Date();
+        final long time = jour.getTime();
+        final Map<String, Object> user_data = new HashMap<>();
         user_data.put("updatedDate", date);
         user_data.put("id", id_user);
+        user_data.put("rejectTime", time);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("refuser").child(id_user);
@@ -508,9 +512,12 @@ public class ProfilActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         final String date = saveCurrentDate;
-        Map<String, String> user_data = new HashMap<>();
+        Date jour = new Date();
+        final long time = jour.getTime();
+        Map<String, Object> user_data = new HashMap<>();
         user_data.put("updatedDate", date);
         user_data.put("id", id_user);
+        user_data.put("requestTime", time);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("mesAmis").child(id_user);

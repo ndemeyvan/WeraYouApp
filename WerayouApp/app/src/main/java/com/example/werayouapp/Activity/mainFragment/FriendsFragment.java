@@ -107,7 +107,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //iterating through all the values in database
-                progressBar.setVisibility(View.VISIBLE);
+                //progressBar.setVisibility(View.VISIBLE);
                 friendsModelList.clear();//vide la liste de la recyclrView pour eviter les doublons
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     FriendsModel ask = postSnapshot.getValue(FriendsModel.class);
@@ -118,7 +118,7 @@ public class FriendsFragment extends Fragment {
                 }
                 if (friendsModelList.size() == 0) {
                     message.setVisibility(View.VISIBLE);
-                    message.setText(getResources().getString(R.string.no_proposition));
+                    //message.setText(getResources().getString(R.string.no_friend_now));
                     progressBar.setVisibility(View.INVISIBLE);
                 }
                 //creating adapter

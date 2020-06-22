@@ -8,20 +8,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +41,7 @@ import com.example.werayouapp.R;
 import com.example.werayouapp.UtilsForChat.ChatAdapter;
 import com.example.werayouapp.UtilsForChat.DisplayAllChat;
 import com.example.werayouapp.UtilsForChat.ModelChat;
+import com.example.werayouapp.intro.WelcomeActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -64,6 +70,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -115,6 +122,11 @@ public class ChatActivity extends AppCompatActivity {
     private String Mon_nom;
     private String Mon_prenom;
     private MediaPlayer mMediaPlayer;
+    SharedPreferences sharedpreferences;
+    String myPref = "smsCount";
+    ProgressBar message_progressBar;
+    TextView message;
+
 
 
     @Override
@@ -138,8 +150,13 @@ public class ChatActivity extends AppCompatActivity {
         iBlockHim = findViewById(R.id.iBlockHim);
         linearLayout = findViewById(R.id.linearLayout);
         linearLayout3=findViewById(R.id.linearLayout3);
-        //
+        message_progressBar=findViewById(R.id.message_progressBar);
+        message=findViewById(R.id.message);
+
         id_user = getIntent().getStringExtra("id");
+        sharedpreferences = getSharedPreferences(id_user,
+                Context.MODE_PRIVATE);
+        //
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
         FirebaseMessaging.getInstance().unsubscribeFromTopic(userID);
@@ -287,7 +304,7 @@ public class ChatActivity extends AppCompatActivity {
 
         readMessage(userID, id_user);
 
-        setStatus("online");
+        setStatus(true);
 
     }
 
@@ -573,8 +590,8 @@ public class ChatActivity extends AppCompatActivity {
                                 toolbar.setTitle(getResources().getString(R.string.publication_of) + prenomFinal + " " + nomFinal);
                             }
                             if (map.get("isOnline") != null) {
-                                String status = map.get("isOnline").toString();
-                                if (status.equals("online")) {
+                                boolean status = (Boolean) map.get("isOnline");
+                                if (status == true) {
                                     user_status.setText(getResources().getString(R.string.online));
                                 } else {
                                     user_status.setText(getResources().getString(R.string.offline));
@@ -631,8 +648,8 @@ public class ChatActivity extends AppCompatActivity {
                         if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                             if (map.get("isOnline") != null) {
-                                String status = map.get("isOnline").toString();
-                                if (status.equals("online")) {
+                                boolean status = (Boolean) map.get("isOnline");
+                                if (status == true) {
                                     user_status.setText(getResources().getString(R.string.online));
                                 } else {
                                     user_status.setText(getResources().getString(R.string.offline));
@@ -876,13 +893,57 @@ public class ChatActivity extends AppCompatActivity {
                     ModelChat chat = snapshot.getValue(ModelChat.class);
                     if (chat.getRecepteur().equals(monId) && chat.getExpediteur().equals(sonID) || chat.getRecepteur().equals(sonID) && chat.getExpediteur().equals(monId)) {
                         modelChatList.add(chat);
+                        message_progressBar.setVisibility(View.INVISIBLE);
+                        message.setVisibility(View.INVISIBLE);
+
                     }
+
+                    if (modelChatList.size() == 0) {
+                        message.setVisibility(View.VISIBLE);
+                        message_progressBar.setVisibility(View.INVISIBLE);
+                    }
+
                     chatAdapter = new ChatAdapter(getApplicationContext(), modelChatList, true);
                     mRecyclerView.setAdapter(chatAdapter);
                     chatAdapter.notifyDataSetChanged();
                     mRecyclerView.smoothScrollToPosition(mRecyclerView.getAdapter().getItemCount());
 
 
+                }
+                //play notification sound if user send or receive notification
+//                play(ChatActivity.this,R.raw.notif);
+
+//                play notification sound if user send or receive notification
+                if (!sharedpreferences.contains(id_user)) {
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putInt(id_user,chatAdapter.getItemCount());
+                    editor.commit();
+//                    play(ChatActivity.this,R.raw.newnotification);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                           stop();
+                        }
+                    }, 2000);
+                }else {
+                    int number = sharedpreferences.getInt(id_user,0);
+                    Log.i("messageSharePref",number+"");
+                    Log.i("messageList",modelChatList.size()+"");
+                    Log.i("messageItemCount",chatAdapter.getItemCount()+"");
+                    if (chatAdapter.getItemCount()>number){
+                        play(ChatActivity.this,R.raw.notif);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putInt(id_user,chatAdapter.getItemCount());
+                        editor.commit();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                stop();
+                            }
+                        }, 1500);
+                    }else{
+
+                    }
                 }
             }
 
@@ -895,6 +956,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     }
+
 
     public void stop() {
         if (mMediaPlayer != null) {
@@ -941,7 +1003,7 @@ public class ChatActivity extends AppCompatActivity {
         return randomStringBuilder.toString();
     }
 
-    void setStatus(String status) {
+    void setStatus(boolean status) {
         Map<String, Object> user_data = new HashMap<>();
         user_data.put("isOnline", status);
 
@@ -995,7 +1057,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        setStatus("offline");
+        setStatus(false);
 //        FirebaseMessaging.getInstance().subscribeToTopic(userID);
 
     }
@@ -1009,7 +1071,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-       setStatus("online");
+       setStatus(false);
 //        FirebaseMessaging.getInstance().subscribeToTopic("");
 
     }
@@ -1017,7 +1079,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        setStatus("online");
+        setStatus(true);
 //        FirebaseMessaging.getInstance().subscribeToTopic("");
 
     }

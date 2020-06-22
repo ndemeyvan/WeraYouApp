@@ -130,6 +130,7 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
         bottomNavigation = findViewById(R.id.bottomNavigationView);
         bottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
+        //bottomNavigation.setSaveFromParentEnabled(true);
         this.createNavItems();
 
         toolbar = findViewById(R.id.toolbar);

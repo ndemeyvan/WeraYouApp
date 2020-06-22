@@ -45,7 +45,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         viewGroup.getContext();
         firebaseAuth=FirebaseAuth.getInstance();
-
         if(i==MSG_TYPE_RIGHT){
             View v=LayoutInflater.from ( viewGroup.getContext () ).inflate ( R.layout.right_item_chat ,viewGroup,false);
             return new ViewHolder ( v );
@@ -83,7 +82,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         final String image = modelChat.getImage();
         String type = modelChat.getType();
         if (type.equals("message")){
-            viewHolder.message.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
+            //viewHolder.message.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
             viewHolder.message.setText ( modelChat.getMessage () );
             viewHolder.imageChat.setVisibility(View.GONE);
             viewHolder.dateTime.setText(modelChatList.get(i).getCreatedDate());
@@ -94,7 +93,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             //viewHolder.imageChat.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
         } else if (type.equals("msgAndImage")) {
             viewHolder.message.setVisibility(View.VISIBLE);
-            viewHolder.message.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
+           // viewHolder.message.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
             viewHolder.message.setText ( modelChat.getMessage () );
             Picasso.with(context).load(image).into(viewHolder.imageChat);
             viewHolder.imageChat.setVisibility(View.VISIBLE);
@@ -142,7 +141,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         if (modelChatList.get ( position ).getExpediteur ().equals ( current_user )){
             return MSG_TYPE_RIGHT;
         }else{
-
             return MSG_TYPE_LEFT;
         }
 

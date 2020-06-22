@@ -298,8 +298,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             user_data.put("id", userID);
             user_data.put("newFriendNotif", false);
             user_data.put("apropos", apropos);
-            user_data.put("isOnline", "online");
+            user_data.put("isOnline", true);
             user_data.put("countryCode", countryCode);
+            user_data.put("isBlockAccount", false);
+
             DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
             userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

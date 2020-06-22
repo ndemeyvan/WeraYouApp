@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,8 +190,12 @@ public class HomeFragment extends Fragment {
                 try {
                     flingContainer.getTopCardListener().selectRight();
                     String userId = obj.getId();
-                    Map<String, String> data = new HashMap<>();
+                    Date jour = new Date();
+                    final long time = jour.getTime();
+                    Map<String, Object> data = new HashMap<>();
                     data.put("id", currentUser);
+
+                    data.put("requestTime", time);
                     DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("accepter").child(currentUser);
                     userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -210,8 +215,11 @@ public class HomeFragment extends Fragment {
                 try {
                     flingContainer.getTopCardListener().selectLeft();
                     String userId = obj.getId();
-                    Map<String, String> data = new HashMap<>();
+                    Date jour = new Date();
+                    final long time = jour.getTime();
+                    Map<String, Object> data = new HashMap<>();
                     data.put("id", currentUser);
+                    data.put("rejectTime", time);
                     DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("connections").child("refuser").child(currentUser);
                     userDb.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -385,18 +393,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-//        if (rowsItems.size() <= 0) {
-//            progressBar.setVisibility(View.INVISIBLE);
-//        }
     }
 
-
-    void checkIfEmpty() {
-        if (rowsItems.size() <= 0) {
-            message.setVisibility(View.VISIBLE);
-        } else {
-            message.setVisibility(View.INVISIBLE);
-        }
-    }
 
 }
