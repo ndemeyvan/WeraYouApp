@@ -50,7 +50,7 @@
     <string name="like_you">A flashe sur vous</string>
     <string name="see_profile">Voir profil</string>
     <string name="reject">Refuser</string>
-    <string name="close_app">Pour des raisons de stabilité, veuillez fermer l\'application et la relancer.</string>
+    <string name="close_app">Pour des raisons de stabilité, veuillez fermer l\'application et la relancer , en cas de relance d\'ecran , fermer et relancer l\'application pour regler le probleme.</string>
     <string name="no_proposition">Il n\'y a plus de proposition.</string>
     <string name="make_search">Vous pouvez faire une recherche par pays .\n Cliquez ici pour choisir un pays.</string>
     <string name="more_friends">+ D\'amis</string>

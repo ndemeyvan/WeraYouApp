@@ -48,7 +48,7 @@
     <string name="like_you">Flash on you</string>
     <string name="see_profile">See profile</string>
     <string name="reject">Refuse</string>
-    <string name="close_app">For stability reasons, please close the application and relaunch it.</string>
+    <string name="close_app">For stability reasons, please close the application and relaunch it, if the screen is restarted, close and relaunch the application to resolve the problem.</string>
     <string name="no_proposition">There are no more proposals.</string>
     <string name="make_search">You can search by country. Click here to choose a country.</string>
     <string name="more_friends">+ Friends</string>
