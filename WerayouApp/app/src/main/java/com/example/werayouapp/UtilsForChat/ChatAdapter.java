@@ -85,7 +85,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             //viewHolder.message.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
             viewHolder.message.setText ( modelChat.getMessage () );
             viewHolder.imageChat.setVisibility(View.GONE);
-            viewHolder.dateTime.setText(modelChatList.get(i).getCreatedDate());
+            viewHolder.dateTime.setText("     "+modelChatList.get(i).getCreatedDate());
         }else if (type.equals("image")){
             viewHolder.message.setVisibility(View.GONE);
             Picasso.with(context).load(image).into(viewHolder.imageChat);
@@ -98,7 +98,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             Picasso.with(context).load(image).into(viewHolder.imageChat);
             viewHolder.imageChat.setVisibility(View.VISIBLE);
             //viewHolder.imageChat.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale));
-            viewHolder.dateTime.setText(modelChatList.get(i).getCreatedDate());
+            viewHolder.dateTime.setText("     "+modelChatList.get(i).getCreatedDate());
         }
 
         viewHolder.imageChat.setOnClickListener(new View.OnClickListener() {
