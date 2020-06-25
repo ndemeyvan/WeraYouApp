@@ -61,11 +61,8 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
     Toolbar toolbar;
     Uri mImageUri;
     StorageReference storageReference;
-
-    //
     String userID;
     FirebaseAuth user;
-    //
     byte[] final_image;
 
 
@@ -87,10 +84,7 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(AddPhotoActivity.this,ActivityPrincipal.class);
-                //startActivity(intent);
-                //overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
+            public void onClick(View v) { ;
                 finish();
             }
         });
@@ -279,8 +273,6 @@ public class AddPhotoActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 progressBar.setVisibility(View.INVISIBLE);
-//                Intent intent = new Intent(AddPhotoActivity.this, ActivityPrincipal.class);
-//                startActivity(intent);
                 makeToast(getResources().getString(R.string.is_publish));
                 finish();
 

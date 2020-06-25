@@ -82,7 +82,7 @@
                 android:id="@+id/country_code_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:gravity="center_horizontal"
                 app:ccp_contentColor="@color/white"
                 app:ccp_defaultNameCode="FR"

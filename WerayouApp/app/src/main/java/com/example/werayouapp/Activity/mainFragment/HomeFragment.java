@@ -221,6 +221,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
+
                     flingContainer.getTopCardListener().selectLeft();
                     String userId = obj.getId();
                     Date jour = new Date();
@@ -236,6 +237,7 @@ public class HomeFragment extends Fragment {
 
                         }
                     });
+
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -367,7 +369,7 @@ public class HomeFragment extends Fragment {
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("pays").getValue().toString().equals(contry.toLowerCase()) && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
+                if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("refuser").hasChild(currentUser) && !dataSnapshot.child("connections").child("accepter").hasChild(currentUser) && !dataSnapshot.child("connections").child("valider").hasChild(currentUser) && !dataSnapshot.child("connections").child("mesAmis").hasChild(currentUser) && dataSnapshot.child("pays").getValue().toString().equals(contry.toLowerCase()) && (Boolean) dataSnapshot.child("isBlockAccount").getValue() != true && !dataSnapshot.child("id").getValue().toString().equals(currentUser)) {
                     Cards item = new Cards(dataSnapshot.child("nom").getValue().toString(), dataSnapshot.child("prenom").getValue().toString(), dataSnapshot.child("image").getValue().toString(), dataSnapshot.child("id").getValue().toString(), dataSnapshot.child("pays").getValue().toString(), dataSnapshot.child("ville").getValue().toString(), dataSnapshot.child("apropos").getValue().toString(), dataSnapshot.child("age").getValue().toString());
                     rowsItems.add(item);
                     arrayAdapter.notifyDataSetChanged();

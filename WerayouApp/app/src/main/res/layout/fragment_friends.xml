@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:visibility="invisible"
-        android:text="@string/no_friend_now"
+        android:text="@string/no_ask_friend"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

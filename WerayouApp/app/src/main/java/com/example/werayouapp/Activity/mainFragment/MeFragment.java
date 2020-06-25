@@ -162,7 +162,6 @@ public class MeFragment extends Fragment {
                 postList.clear();//vide la liste de la recyclrView pour eviter les doublons
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
-
                     postList.add(post);
                     progressBarTwo.setVisibility(View.INVISIBLE);
                     aucun_post.setVisibility(View.INVISIBLE);

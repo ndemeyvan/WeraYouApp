@@ -68,16 +68,16 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     String country;
     FirebaseAuth user;
     String sexe;
-    private RadioGroup mRadioGroup;
+    RadioGroup mRadioGroup;
     RadioButton radio_homme;
     RadioButton radio_femme;
     TextView place;
     TextView phone;
-    private String userID;
-    private static StorageReference storageReference;
+    String userID;
+    static StorageReference storageReference;
     EditText Apropos;
     Spinner spinnerTwo;
-    private String countryCode;
+    String countryCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +97,12 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         user_nom = findViewById(R.id.user_nom);
         spinnerTwo = findViewById(R.id.spinnerTwo);
         spinnerTwo.setOnItemSelectedListener(this);
-        mRadioGroup =findViewById(R.id.spinner);
-        radio_homme =findViewById(R.id.radio_homme);
-        radio_femme =findViewById(R.id.radio_femme);
+        mRadioGroup = findViewById(R.id.spinner);
+        radio_homme = findViewById(R.id.radio_homme);
+        radio_femme = findViewById(R.id.radio_femme);
         country = getIntent().getStringExtra("country");
         countryCode = getIntent().getStringExtra("countryCode");
-        Log.i("CountryCode",countryCode);
+        Log.i("CountryCode", countryCode);
 
 
         ArrayAdapter arrayAdapterTwo = new ArrayAdapter(this, android.R.layout.simple_spinner_item, recherche);
@@ -199,12 +199,12 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                     // find the radiobutton by returned id
                     radio_femme = (RadioButton) findViewById(selectedId);
                     sexe = radio_femme.getText().toString();
-                    sexe="Femme";
+                    sexe = "Femme";
                     proceed();
                 } else if (radio_homme.isChecked()) {
                     radio_homme = (RadioButton) findViewById(selectedId);
                     sexe = radio_homme.getText().toString();
-                    sexe="Homme";
+                    sexe = "Homme";
                     proceed();
                 } else {
                     toast(getResources().getString(R.string.select_a_sex));
@@ -213,26 +213,26 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         });
     }
 
-    void proceed(){
-        if (interesse.equals("Femme")||interesse.equals("Woman")){
-            interesse="Femme";
+    void proceed() {
+        if (interesse.equals("Femme") || interesse.equals("Woman")) {
+            interesse = "Femme";
             secondStep();
-        }else if (interesse.equals("Homme")||interesse.equals("Man")){
-            interesse="Homme";
+        } else if (interesse.equals("Homme") || interesse.equals("Man")) {
+            interesse = "Homme";
             secondStep();
-        }else{
+        } else {
             toast(getResources().getString(R.string.write_all));
         }
 
     }
 
-    void secondStep(){
+    void secondStep() {
         final String apropos = Apropos.getText().toString();
         final String ville = ville_user.getText().toString();
         final String ageUser = age_user.getText().toString();
         final String nom = user_nom.getText().toString();
         final String prenom = user_prenom.getText().toString();
-        if (!TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos)&& sexe!=null) {
+        if (!TextUtils.isEmpty(ville) && mImageUri != null && !TextUtils.isEmpty(ageUser) && !TextUtils.isEmpty(nom) && !TextUtils.isEmpty(prenom) && !TextUtils.isEmpty(apropos) && sexe != null) {
             button.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.VISIBLE);
             final StorageReference ref = storageReference.child("image_de_profile").child(userID + " .jpg");
@@ -298,9 +298,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             user_data.put("id", userID);
             user_data.put("newFriendNotif", false);
             user_data.put("apropos", apropos);
-            user_data.put("isOnline", true);
+            user_data.put("isOnline", false);
             user_data.put("countryCode", countryCode);
             user_data.put("isBlockAccount", false);
+            user_data.put("created_date", date);
 
             DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
             userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {

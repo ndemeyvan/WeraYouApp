@@ -29,8 +29,8 @@ public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
         }
 
-        TextView name = (TextView) convertView.findViewById(R.id.nom_profil);
-        ImageView image = (ImageView) convertView.findViewById(R.id.imageUser);
+        TextView name = convertView.findViewById(R.id.nom_profil);
+        ImageView image = convertView.findViewById(R.id.imageUser);
         TextView cityUser = convertView.findViewById(R.id.cityUser);
         CardView card = convertView.findViewById(R.id.card_item);
         TextView apropos = convertView.findViewById(R.id.description);
@@ -41,8 +41,6 @@ public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
         cityUser.setText(card_item.getPays().substring(0, 1).toUpperCase()+ card_item.getPays().substring(1) + " / " + card_item.getVille() + " / " + card_item.getAge() + " ans");
         Picasso.with(convertView.getContext()).load(card_item.getImage()).into(image);
         apropos.setText(card_item.getApropos().substring(0, 1).toUpperCase()+ card_item.getApropos().substring(1));
-
-
 
         return convertView;
 

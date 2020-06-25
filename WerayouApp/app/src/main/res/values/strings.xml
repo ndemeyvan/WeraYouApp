@@ -88,9 +88,10 @@
     <string name="your_are_block">Vous avez ete bloquer par </string>
     <string name="message_of">Nouveaux message de : </string>
 
+
     <string name="lock_user">Voulez vraiment bloquer cet utilisateur ?</string>
-
-
+    <string name="no_ask_friend">Vous n\'avez aucune demande d\'ami</string>
+    <string name="private_phone">le numéro de téléphone reste privé. il ne sera pas visible par les autres utilisateurs.</string>
 
 
 </resources>

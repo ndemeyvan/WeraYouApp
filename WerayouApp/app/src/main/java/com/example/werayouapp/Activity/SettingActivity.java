@@ -63,7 +63,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     EditText user_nom;
     EditText pays_user;
     EditText phone_user;
-    String[] recherche ;
+    String[] recherche;
     String interesse;
     Uri mImageUri;
     byte[] final_image;
@@ -71,22 +71,22 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     boolean ischange = false;
     Button button;
     FirebaseAuth user;
-    private String userID;
-    private static StorageReference storageReference;
+    String userID;
+    static StorageReference storageReference;
     EditText Apropos;
     /*private RadioGroup mRadioGroup;
     RadioButton radio_homme;
     RadioButton radio_femme;*/
     Spinner spinnerTwo;
-    private DatabaseReference usersDb;
-    private String nom;
-    private String prenom;
-    private String userAge;
-    private String ville;
-    private String profileImageUrl;
+    DatabaseReference usersDb;
+    String nom;
+    String prenom;
+    String userAge;
+    String ville;
+    String profileImageUrl;
     ProgressBar progressBar;
     ProgressBar progressBar3;
-    private String userPays;
+    String userPays;
     Toolbar toolbar;
 
 
@@ -134,8 +134,8 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-                startActivity(intent);
+//                Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+//                startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
             }
@@ -311,14 +311,14 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     //
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if (recherche[i].equals("Que recherchez vous ?") || recherche[i].equals(getResources().getString(R.string.what_you_want))){
+        if (recherche[i].equals("Que recherchez vous ?") || recherche[i].equals(getResources().getString(R.string.what_you_want))) {
             makeToast(getResources().getString(R.string.select_a_sex));
-        }else{
+        } else {
             interesse = recherche[i];
-            if (interesse.equals("Femme")||interesse.equals("Woman")){
-                interesse="Femme";
-            }else if (interesse.equals("Homme")||interesse.equals("Man")){
-                interesse="Homme";
+            if (interesse.equals("Femme") || interesse.equals("Woman")) {
+                interesse = "Femme";
+            } else if (interesse.equals("Homme") || interesse.equals("Man")) {
+                interesse = "Homme";
             }
         }
 
@@ -423,24 +423,23 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
-        String randomKey = saveCurrentDate;
+        String date = saveCurrentDate;
         Map<String, Object> user_data = new HashMap<>();
         user_data.put("nom", nom);
         user_data.put("prenom", prenom);
         user_data.put("ville", ville);
         user_data.put("recherche", interesse);
-        user_data.put("UpdatedDate", randomKey);
+        user_data.put("UpdatedDate", date);
         user_data.put("image", downloadUri.toString());
         user_data.put("forfait", "gratuit");
         user_data.put("id", userID);
         user_data.put("apropos", apropos);
-        user_data.put("isOnline", true);
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                 Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+                Intent intent = new Intent(SettingActivity.this, ActivityPrincipal.class);
                 //startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
@@ -466,14 +465,15 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         user_data.put("forfait", "gratuit");
         user_data.put("id", userID);
         user_data.put("apropos", apropos);
-        user_data.put("isOnline", true);
+//        user_data.put("isOnline", true);
+//        user_data.put("isBlockAccount", false);
 
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         userDb.updateChildren(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
-               // startActivity(intent);
+                Intent intent = new Intent(SettingActivity.this, ActivityPrincipal.class);
+                // startActivity(intent);
                 // overridePendingTransition(R.anim.slide_in_right, R.anim.translate);
                 finish();
                 makeToast(getResources().getString(R.string.register));
@@ -487,7 +487,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(SettingActivity.this,ActivityPrincipal.class);
+        Intent intent = new Intent(SettingActivity.this, ActivityPrincipal.class);
         startActivity(intent);
         finish();
     }

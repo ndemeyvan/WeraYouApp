@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -109,9 +110,11 @@ public class MyFriendFragment extends Fragment {
                     progressBar.setVisibility(View.INVISIBLE);
                     message.setVisibility(View.INVISIBLE);
                 }
+
+                Collections.sort(friendsModelList);
                 if (friendsModelList.size() == 0) {
                     message.setVisibility(View.VISIBLE);
-                    message.setText(getResources().getString(R.string.no_proposition));
+                    message.setText(getResources().getString(R.string.no_friend_now));
                     progressBar.setVisibility(View.INVISIBLE);
                 }
                 //creating adapter

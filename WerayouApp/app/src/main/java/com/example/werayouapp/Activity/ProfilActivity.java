@@ -50,26 +50,26 @@ import java.util.Map;
 public class ProfilActivity extends AppCompatActivity {
     FirebaseAuth user;
     ImageView cardView2;
-    private DatabaseReference usersDb;
+    DatabaseReference usersDb;
     TextView nomUser;
-    private String nom;
+    String nom;
     TextView age;
-    private String userAge;
-    private String profileImageUrl;
+    String userAge;
+    String profileImageUrl;
     TextView cherche;
     TextView sexe;
-    private String prenom;
+    String prenom;
     ProgressBar progressBar;
     TextView paysView;
-    private RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
     List<Post> postList;
-    private RecyclerView.Adapter adapter;
+    RecyclerView.Adapter adapter;
     ProgressBar progressBarTwo;
     TextView aucun_post;
     TextView villeView;
-    private String id_user;
+    String id_user;
     Toolbar toolbar;
-    private String currentUser;
+    String currentUser;
     Button addButton;
     Button deniedButton;
     boolean isFriend;
@@ -78,7 +78,7 @@ public class ProfilActivity extends AppCompatActivity {
     LinearLayout linearLayout5;
     //
     String userID;
-    private boolean iamblocked;
+    boolean iamblocked;
     TextView unclock_first;
 
     @Override
@@ -102,10 +102,10 @@ public class ProfilActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         addButton = findViewById(R.id.addButton);
         deniedButton = findViewById(R.id.deniedButton);
-        you_are_block=findViewById(R.id.you_are_block);
-        linearLayout5=findViewById(R.id.linearLayout5);
+        you_are_block = findViewById(R.id.you_are_block);
+        linearLayout5 = findViewById(R.id.linearLayout5);
         //
-        unclock_first=findViewById(R.id.unclock_first);
+        unclock_first = findViewById(R.id.unclock_first);
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
         //
@@ -140,14 +140,14 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isFriend == true) {
-                    if (isLock==true){
+                    if (isLock == true) {
                         makeToast(getResources().getString(R.string.unlock));
-                    }else {
-                        if (iamblocked==false){
+                    } else {
+                        if (iamblocked == false) {
                             Intent intent = new Intent(ProfilActivity.this, ChatActivity.class);
                             intent.putExtra("id", id_user);
                             startActivity(intent);
-                        }else{
+                        } else {
                             makeToast(getResources().getString(R.string.you_are_block));
                         }
                     }
@@ -165,9 +165,9 @@ public class ProfilActivity extends AppCompatActivity {
                 if (isFriend == false) {
                     reject();
                 } else {
-                    if (isLock==true){
+                    if (isLock == true) {
                         unLock();
-                    }else{
+                    } else {
                         blockUser();
                     }
                 }
@@ -176,7 +176,7 @@ public class ProfilActivity extends AppCompatActivity {
 
     }
 
-    void unLock(){
+    void unLock() {
         /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer").child(id_user);
         db.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -185,11 +185,12 @@ public class ProfilActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     snapshot.getRef().removeValue();
                     deniedButton.setText(getResources().getString(R.string.lock));
-                    isLock=false;
+                    isLock = false;
                     addButton.setBackgroundColor(Color.parseColor("#4CAF50"));
                     addButton.setTextColor(Color.parseColor("#FFFFFF"));
                     mRecyclerView.setVisibility(View.VISIBLE);
                     unclock_first.setVisibility(View.GONE);
+                    aucun_post.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -242,7 +243,7 @@ public class ProfilActivity extends AppCompatActivity {
         final Map<String, Object> user_data = new HashMap<>();
         user_data.put("updatedDate", date);
         user_data.put("id", id_user);
-        user_data.put("rejectTime", time);
+        user_data.put("time", time);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("refuser").child(id_user);
@@ -273,15 +274,19 @@ public class ProfilActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         final String date = saveCurrentDate;
-        final Map<String, String> user_data = new HashMap<>();
+        Date jour = new Date();
+        final long time = jour.getTime();
+        final Map<String, Object> user_data = new HashMap<>();
         user_data.put("updatedDate", date);
         user_data.put("id", id_user);
+        user_data.put("time", time);
+
         DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("bloquer").child(id_user);
         boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 makeToast(getResources().getString(R.string.bloquer));
-                isLock=true;
+                isLock = true;
                 checkifIBlcoked();
             }
         });
@@ -350,7 +355,7 @@ public class ProfilActivity extends AppCompatActivity {
             if (map.get("age") != null) {
                 userAge = map.get("age").toString();
                 String ageFinal = userAge.substring(0, 1).toUpperCase() + userAge.substring(1);
-                age.setText(ageFinal + " "+getResources().getString(R.string.years));
+                age.setText(ageFinal + " " + getResources().getString(R.string.years));
             }
             if (map.get("ville") != null) {
                 String ville = map.get("ville").toString();
@@ -368,18 +373,18 @@ public class ProfilActivity extends AppCompatActivity {
             if (map.get("recherche") != null) {
                 String recherche = map.get("recherche").toString();
                 String rechercheFinal = recherche.substring(0, 1).toUpperCase() + recherche.substring(1);
-                if (recherche.equals("Homme")){
+                if (recherche.equals("Homme")) {
                     cherche.setText(getResources().getString(R.string.homme));
-                }else{
+                } else {
                     cherche.setText(getResources().getString(R.string.femme));
                 }
 
             }
             if (map.get("sexe") != null) {
                 String userSexe = map.get("sexe").toString();
-                if (userSexe.equals("Homme")){
+                if (userSexe.equals("Homme")) {
                     sexe.setText(getResources().getString(R.string.homme));
-                }else{
+                } else {
                     sexe.setText(getResources().getString(R.string.femme));
                 }
 
@@ -445,11 +450,12 @@ public class ProfilActivity extends AppCompatActivity {
                     isLock = true;
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     unclock_first.setVisibility(View.VISIBLE);
+                    aucun_post.setVisibility(View.INVISIBLE);
 
-                    Log.i("lol","lol");
-                }else {
+                    Log.i("lol", "lol");
+                } else {
 
-                    isLock=false;
+                    isLock = false;
                 }
             }
 
@@ -515,7 +521,7 @@ public class ProfilActivity extends AppCompatActivity {
         Map<String, Object> user_data = new HashMap<>();
         user_data.put("updatedDate", date);
         user_data.put("id", id_user);
-        user_data.put("requestTime", time);
+        user_data.put("time", time);
 
         /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("mesAmis").child(id_user);
@@ -538,17 +544,21 @@ public class ProfilActivity extends AppCompatActivity {
                     }
                 });
                 ///mettre l'utilisateur dans les valider
-                Map<String, String> user_data = new HashMap<>();
+                Map<String, Object> user_data = new HashMap<>();
                 user_data.put("updatedDate", date);
                 user_data.put("id", id_user);
+                user_data.put("time", time);
+
                 /*ici il est question d'ajouter un utilisateur ajouter de la collection de d'amies */
                 DatabaseReference db_ = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser).child("connections").child("valider").child(id_user);
                 db_.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Map<String, String> dataForAsker = new HashMap<>();
+                        Map<String, Object> dataForAsker = new HashMap<>();
                         dataForAsker.put("updatedDate", date);
                         dataForAsker.put("id", currentUser);
+                        dataForAsker.put("time", time);
+
                         DatabaseReference dbTwoAskUser = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("mesAmis").child(currentUser);
                         dbTwoAskUser.setValue(dataForAsker);
                     }
@@ -567,7 +577,7 @@ public class ProfilActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.i("lol","exit");
+        Log.i("lol", "exit");
         finish();
     }
 

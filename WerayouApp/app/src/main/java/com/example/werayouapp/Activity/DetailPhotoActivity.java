@@ -61,6 +61,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -376,7 +377,6 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
                             if (map.get("description") != null) {
                                 String desc = map.get("description").toString();
                                 description_view.setText(desc);
-
                             }
                             //
                         }
@@ -442,10 +442,12 @@ public class DetailPhotoActivity extends AppCompatActivity implements Navigation
             SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
             String saveCurrentDate = currentDate.format(calendar.getTime());
             String date = saveCurrentDate;
+            Date jour = new Date();
+            final long time = jour.getTime();
             Map<String, Object> comment_data = new HashMap<>();
             comment_data.put("id", user.getUid());
             comment_data.put("createdDate", date);
-            // comment_data.put ( "id_like",key);
+            comment_data.put("time", time);
             DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("posts").child(id_post).child("likes").child(userID);
             userDb.setValue(comment_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

@@ -116,9 +116,11 @@ public class FriendsFragment extends Fragment {
                     progressBar.setVisibility(View.INVISIBLE);
                     message.setVisibility(View.INVISIBLE);
                 }
+
+                Collections.sort(friendsModelList);
                 if (friendsModelList.size() == 0) {
                     message.setVisibility(View.VISIBLE);
-                    //message.setText(getResources().getString(R.string.no_friend_now));
+                    message.setText(getResources().getString(R.string.no_ask_friend));
                     progressBar.setVisibility(View.INVISIBLE);
                 }
                 //creating adapter
@@ -135,18 +137,18 @@ public class FriendsFragment extends Fragment {
 
     }
 
-    void checkIfEmpty() {
-        if (friendsModelList.size() == 0) {
-
-            message.setVisibility(View.VISIBLE);
-
-            progressBar.setVisibility(View.INVISIBLE);
-        } else {
-            message.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
-
-        }
-    }
+//    void checkIfEmpty() {
+//        if (friendsModelList.size() == 0) {
+//
+//            message.setVisibility(View.VISIBLE);
+//
+//            progressBar.setVisibility(View.INVISIBLE);
+//        } else {
+//            message.setVisibility(View.INVISIBLE);
+//            progressBar.setVisibility(View.VISIBLE);
+//
+//        }
+//    }
 
 
 }

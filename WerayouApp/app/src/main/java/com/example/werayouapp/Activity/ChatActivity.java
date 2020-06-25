@@ -107,12 +107,11 @@ public class ChatActivity extends AppCompatActivity {
     DatabaseReference reference;
     StorageReference storageReference;
     LinearLayout linearLayout3;
-
     byte[] final_image;
     boolean iamblocked;
     Uri mImageUri;
-    private static final int MAX_LENGTH = 100;
-    private boolean isWithImage = false;
+    static final int MAX_LENGTH = 100;
+    boolean isWithImage = false;
     ProgressDialog dialog;
     View rootview;
     EmojIconActions emojIcon;
@@ -120,15 +119,14 @@ public class ChatActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     TextView iBlockHim;
     String URL = "https://fcm.googleapis.com/fcm/send";
-    private String Mon_nom;
-    private String Mon_prenom;
-    private MediaPlayer mMediaPlayer;
+    String Mon_nom;
+    String Mon_prenom;
+    MediaPlayer mMediaPlayer;
     SharedPreferences sharedpreferences;
     String myPref = "smsCount";
     ProgressBar message_progressBar;
     TextView message;
     TextView lock_unlock_user;
-    boolean iamLock;
 
 
     @Override
@@ -151,10 +149,10 @@ public class ChatActivity extends AppCompatActivity {
         user_status = findViewById(R.id.user_status);
         iBlockHim = findViewById(R.id.iBlockHim);
         linearLayout = findViewById(R.id.linearLayout);
-        linearLayout3=findViewById(R.id.linearLayout3);
-        message_progressBar=findViewById(R.id.message_progressBar);
-        message=findViewById(R.id.message);
-        lock_unlock_user=findViewById(R.id.lock_unlock_user);
+        linearLayout3 = findViewById(R.id.linearLayout3);
+        message_progressBar = findViewById(R.id.message_progressBar);
+        message = findViewById(R.id.message);
+        lock_unlock_user = findViewById(R.id.lock_unlock_user);
 
         id_user = getIntent().getStringExtra("id");
         sharedpreferences = getSharedPreferences(id_user,
@@ -237,14 +235,14 @@ public class ChatActivity extends AppCompatActivity {
                     //setLastMessageStatuts("oui", id_user, userID);
                 }
 
-                if (id_user!=userID){
+                if (id_user != userID) {
                     //send notification
                     JSONObject json = new JSONObject();
                     try {
                         //json.put("to","/topics/"+id_user);
                         json.put("to", "/topics/" + id_user);
                         JSONObject notificationObj = new JSONObject();
-                        notificationObj.put("title", getResources().getString(R.string.message_of)+" "+Mon_nom + " " + Mon_prenom);
+                        notificationObj.put("title",Mon_nom + " " + Mon_prenom);
                         notificationObj.put("body", msg);
 
                         JSONObject extraData = new JSONObject();
@@ -309,8 +307,8 @@ public class ChatActivity extends AppCompatActivity {
         lock_unlock_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isLock==true) {
-                    Log.i("lol","lol");
+                if (!isLock == true) {
+                    Log.i("lol", "lol");
                     new AlertDialog.Builder(ChatActivity.this)
                             .setTitle("Weareyou")
                             .setMessage(getResources().getString(R.string.lock_user))
@@ -334,7 +332,7 @@ public class ChatActivity extends AppCompatActivity {
                     //Log.i("lol","lol");
                     new AlertDialog.Builder(ChatActivity.this)
                             .setTitle("Weareyou")
-                            .setMessage(getResources().getString(R.string.unlock_simple) +" ?")
+                            .setMessage(getResources().getString(R.string.unlock_simple) + " ?")
                             .setCancelable(false)
                             // Specifying a listener allows you to take an action before dismissing the dialog.
                             // The dialog is automatically dismissed when a dialog button is clicked.
@@ -361,23 +359,30 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-
-
     void blockUser() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM yyyy");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         final String date = saveCurrentDate;
-        final Map<String, String> user_data = new HashMap<>();
+        Date jour = new Date();
+        final long time = jour.getTime();
+        final Map<String, Object> user_data = new HashMap<>();
         user_data.put("updatedDate", date);
         user_data.put("id", id_user);
+        user_data.put("time", time);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+
         DatabaseReference boquer = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
         boquer.setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                progressDialog.dismiss();
                 makeToast(getResources().getString(R.string.bloquer));
                 lock_unlock_user.setText(getResources().getString(R.string.unlock_simple));
-                isLock=true;
+                isLock = true;
                 //checkifIBlcoked();
             }
         });
@@ -393,10 +398,10 @@ public class ChatActivity extends AppCompatActivity {
                     isLock = true;
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     iBlockHim.setText(getResources().getString(R.string.unlock_first));
-                    Log.i("lol","lol");
-                }else {
+                    Log.i("lol", "lol");
+                } else {
                     lock_unlock_user.setText(getResources().getString(R.string.lock));
-                    isLock=false;
+                    isLock = false;
                 }
             }
 
@@ -409,20 +414,25 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-
-
-    void unLock(){
+    void unLock() {
+//        dialog.setMessage(getResources().getString(R.string.loading));
+//        dialog.show();
         /*ici il est question de supprimer un utilisateur  de la collection de demande d'amies */
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("connections").child("bloquer").child(id_user);
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    progressDialog.dismiss();
                     snapshot.getRef().removeValue();
                     lock_unlock_user.setText(getResources().getString(R.string.lock));
-                    isLock=false;
+                    isLock = false;
                     mRecyclerView.setVisibility(View.VISIBLE);
-
+                    linearLayout3.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -442,13 +452,11 @@ public class ChatActivity extends AppCompatActivity {
                     iBlockHim.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     linearLayout.setVisibility(View.GONE);
-                    emojiButton.setVisibility(View.INVISIBLE);
-                    imageButton.setVisibility(View.INVISIBLE);
                     linearLayout3.setVisibility(View.GONE);
-                    isLock=true;
+                    isLock = true;
                 } else {
                     lock_unlock_user.setText(getResources().getString(R.string.lock));
-                    isLock=false;
+                    isLock = false;
                     checkifSheBlcokedMe(herID, myID);
                 }
             }
@@ -467,7 +475,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    iBlockHim.setText(getResources().getString(R.string.your_are_block)+" " + nom);
+                    iBlockHim.setText(getResources().getString(R.string.your_are_block) + " " + nom);
                     iBlockHim.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     linearLayout.setVisibility(View.GONE);
@@ -638,7 +646,7 @@ public class ChatActivity extends AppCompatActivity {
         }
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate =new SimpleDateFormat(" dd MMM YYYY");
+        SimpleDateFormat currentDate = new SimpleDateFormat(" dd MMM YYYY");
         String saveCurrentDate = currentDate.format(calendar.getTime());
         String date = saveCurrentDate;
         final HashMap<String, Object> messageMap = new HashMap<>();
@@ -1026,10 +1034,6 @@ public class ChatActivity extends AppCompatActivity {
 
                     }
 
-                    if (modelChatList.size() == 0) {
-                        message.setVisibility(View.VISIBLE);
-                        message_progressBar.setVisibility(View.INVISIBLE);
-                    }
 
                     chatAdapter = new ChatAdapter(getApplicationContext(), modelChatList, true);
                     mRecyclerView.setAdapter(chatAdapter);
@@ -1037,42 +1041,54 @@ public class ChatActivity extends AppCompatActivity {
                     mRecyclerView.smoothScrollToPosition(mRecyclerView.getAdapter().getItemCount());
 
 
+                    message_progressBar.setVisibility(View.INVISIBLE);
+                    message.setVisibility(View.INVISIBLE);
                 }
-                //play notification sound if user send or receive notification
+                if (modelChatList.size() == 0) {
+                    message.setVisibility(View.VISIBLE);
+                    message_progressBar.setVisibility(View.INVISIBLE);
+                } else {
+                    //play notification sound if user send or receive notification
 //                play(ChatActivity.this,R.raw.notif);
 
 //                play notification sound if user send or receive notification
-                if (!sharedpreferences.contains(id_user)) {
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putInt(id_user,chatAdapter.getItemCount());
-                    editor.commit();
-//                    play(ChatActivity.this,R.raw.newnotification);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                           stop();
-                        }
-                    }, 2000);
-                }else {
-                    int number = sharedpreferences.getInt(id_user,0);
-                    Log.i("messageSharePref",number+"");
-                    Log.i("messageList",modelChatList.size()+"");
-                    Log.i("messageItemCount",chatAdapter.getItemCount()+"");
-                    if (chatAdapter.getItemCount()>number){
-                        play(ChatActivity.this,R.raw.notif);
+
+                    if (!sharedpreferences.contains(id_user)) {
                         SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.putInt(id_user,chatAdapter.getItemCount());
-                        editor.commit();
+                        if (modelChatList.size() == 0) {
+                            editor.putInt(id_user, 0);
+                            editor.commit();
+                        } else {
+                            editor.putInt(id_user, chatAdapter.getItemCount());
+                            editor.commit();
+                        }
+
+//                    play(ChatActivity.this,R.raw.newnotification);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 stop();
                             }
-                        }, 1500);
-                    }else{
+                        }, 2000);
+                    } else {
+                        int number = sharedpreferences.getInt(id_user, 0);
+                        if (chatAdapter.getItemCount() > number) {
+                            play(ChatActivity.this, R.raw.notif);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putInt(id_user, chatAdapter.getItemCount());
+                            editor.commit();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    stop();
+                                }
+                            }, 1500);
+                        } else {
 
+                        }
                     }
                 }
+
             }
 
 
@@ -1144,8 +1160,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//        userDb.child("isOnline").setValue(status);
+
     }
 
     void setLastMessageStatuts(String status, String expediteur, String recepteur) {
@@ -1199,7 +1214,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-       setStatus(false);
+        setStatus(false);
 //        FirebaseMessaging.getInstance().subscribeToTopic("");
 
     }

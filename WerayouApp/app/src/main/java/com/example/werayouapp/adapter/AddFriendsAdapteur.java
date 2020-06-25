@@ -88,7 +88,9 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         user = FirebaseAuth.getInstance();
         userID = user.getCurrentUser().getUid();
         final String id_user = friendsModelList.get(i).getId();
+
         getUserData(holder, id_user);
+
         holder.seeProfilText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +100,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
 
             }
         });
+
         holder.profil_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,64 +109,19 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                 context.startActivity(intent);
             }
         });
-        //accepter une demande
+       // accepter une demande
         holder.addFirendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                accpet(id_user);
-                //send notification
-                JSONObject json = new JSONObject();
-                try {
-                    //json.put("to","/topics/"+id_user);
-                    json.put("to", "/topics/" + id_user);
-
-                    JSONObject notificationObj = new JSONObject();
-                    notificationObj.put("title", "nouvelle demande");
-                    notificationObj.put("body", "Quelqu'un a flasher sur vous :) !!!");
-
-                    JSONObject extraData = new JSONObject();
-                    extraData.put("id_recepteur", "");
-                    extraData.put("type", "new_friends_notification");
-                    extraData.put("id_post", "");
-                    extraData.put("id_user", "");
-                    extraData.put("description", "");
-                    extraData.put("image", "");
-                    extraData.put("date", "");
-
-                    json.put("notification", notificationObj);
-                    json.put("data", extraData);
-
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
-                            json,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-
-                                    Log.d("MUR", "onResponse: ");
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d("MUR", "onError: " + error.networkResponse);
-                        }
-                    }
-                    ) {
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> header = new HashMap<>();
-                            header.put("content-type", "application/json");
-                            header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
-                            return header;
-                        }
-                    };
-                    requestQueue.add(request);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (id_user!=null){
+                    accpet(id_user);
                 }
+//                Log.i("id_user",id_user);
+
             }
         });
 
-        //refuser une demande
+//        //refuser une demande
         holder.deniedFirendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,7 +133,12 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                         // The dialog is automatically dismissed when a dialog button is clicked.
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                reject(id_user);
+
+                                if (id_user!=null){
+                                    reject(id_user);
+                                }else{
+
+                                }
                             }
                         })
 
@@ -189,6 +152,8 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
         holder.constraintLayout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_simple));
 
     }
+
+
 
     void makeToast(String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
@@ -205,6 +170,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
             }
         });
     }
+
     //accepter une demande
     void accpet(final String id_user) {
         Calendar calendar = Calendar.getInstance();
@@ -259,6 +225,57 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                         dataForAsker.put("time", time);
                         DatabaseReference dbTwoAskUser = FirebaseDatabase.getInstance().getReference().child("Users").child(id_user).child("connections").child("mesAmis").child(userID);
                         dbTwoAskUser.setValue(dataForAsker);
+                        //send notification
+                        JSONObject json = new JSONObject();
+                        try {
+                            //json.put("to","/topics/"+id_user);
+                            json.put("to", "/topics/" + id_user);
+
+                            JSONObject notificationObj = new JSONObject();
+                            notificationObj.put("title", "nouvelle demande");
+                            notificationObj.put("body", "Quelqu'un a flasher sur vous :) !!!");
+
+                            JSONObject extraData = new JSONObject();
+                            extraData.put("id_recepteur", "");
+                            extraData.put("type", "new_friends_notification");
+                            extraData.put("id_post", "");
+                            extraData.put("id_user", "");
+                            extraData.put("description", "");
+                            extraData.put("image", "");
+                            extraData.put("date", "");
+
+                            json.put("notification", notificationObj);
+                            json.put("data", extraData);
+
+                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                                    json,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            Log.d("MUR", "onResponse: ");
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("MUR", "onError: " + error.networkResponse);
+                                }
+                            }
+                            ) {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> header = new HashMap<>();
+                                    header.put("content-type", "application/json");
+                                    header.put("authorization", "key=AIzaSyDXuRqLiT6p9MlCt1lg8MEqpkx67Tm0NpA");
+                                    return header;
+                                }
+                            };
+                            requestQueue.add(request);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 });
 
@@ -302,7 +319,7 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
                     }
                 });
 
-                makeToast("vous ne verez plus jamais cette personne");
+                //makeToast("vous ne verez plus jamais cette personne");
 
 
             }
@@ -311,64 +328,68 @@ public class AddFriendsAdapteur extends RecyclerView.Adapter<AddFriendsAdapteur.
 
     //recuperer les info de l'utilisateur
     public void getUserData(final ViewHolder holder, String id) {
-        final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
-        db.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                db.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
-                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                            if (map.get("nom") != null) {
-                                nom = map.get("nom").toString();
-                            }
-                            if (map.get("prenom") != null) {
-                                prenom = map.get("prenom").toString();
-                                String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
-                                String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
-                                holder.nom_profil.setText(prenomFinal + " " + nomFinal);
-                            }
 
-                            if (map.get("image") != null) {
-                                String image = map.get("image").toString();
-                                Picasso.with(context).load(image).into(holder.profil_image);
-                                holder.progressBar.setVisibility(View.INVISIBLE);
+      if (id != null){
+          Log.i("id_user",id);
+          final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
+          db.addChildEventListener(new ChildEventListener() {
+              @Override
+              public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                  db.addListenerForSingleValueEvent(new ValueEventListener() {
+                      @Override
+                      public void onDataChange(DataSnapshot dataSnapshot) {
+                          if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                              Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                              if (map.get("nom") != null) {
+                                  nom = map.get("nom").toString();
+                              }
+                              if (map.get("prenom") != null) {
+                                  prenom = map.get("prenom").toString();
+                                  String nomFinal = nom.substring(0, 1).toUpperCase() + nom.substring(1);
+                                  String prenomFinal = prenom.substring(0, 1).toUpperCase() + prenom.substring(1);
+                                  holder.nom_profil.setText(prenomFinal + " " + nomFinal);
+                              }
 
-                            }
+                              if (map.get("image") != null) {
+                                  String image = map.get("image").toString();
+                                  Picasso.with(context).load(image).into(holder.profil_image);
+                                  holder.progressBar.setVisibility(View.INVISIBLE);
 
-                            //
-                        }
+                              }
 
-                    }
+                              //
+                          }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                      }
 
-                    }
-                });
-            }
+                      @Override
+                      public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                      }
+                  });
+              }
+
+              @Override
+              public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
 
-            }
+              }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+              @Override
+              public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            }
+              }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+              @Override
+              public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
+              }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+              @Override
+              public void onCancelled(@NonNull DatabaseError databaseError) {
+              }
+          });
+      }
 
 
     }

@@ -1,13 +1,18 @@
 package com.example.werayouapp.model;
 
-public class MyFriendModel {
-    String id;
+import android.util.Log;
 
-    public MyFriendModel() {
+public class MyFriendModel implements Comparable< MyFriendModel >{
+    String id;
+    Long time;
+
+
+    public MyFriendModel(String id, Long time) {
+        this.id = id;
+        this.time = time;
     }
 
-    public MyFriendModel(String id) {
-        this.id = id;
+    public MyFriendModel() {
     }
 
     public String getId() {
@@ -16,5 +21,20 @@ public class MyFriendModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Long getTime() {
+        return time;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    @Override
+    public int compareTo(MyFriendModel o) {
+        int result=o.getTime().intValue();
+        Log.i("ResultComparable",result+"");
+        return result-this.time.intValue();
     }
 }

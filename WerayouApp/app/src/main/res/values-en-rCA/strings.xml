@@ -89,5 +89,7 @@
 
     <string name="your_are_block">You have been blocked by </string>
     <string name="message_of">New messages from: </string>
+    <string name="no_ask_friend">You have no friend requests</string>
+    <string name="private_phone">the phone number remains private. it will not be visible to other users.</string>
 
 </resources>
