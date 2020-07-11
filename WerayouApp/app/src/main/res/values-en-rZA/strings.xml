@@ -91,5 +91,6 @@
     <string name="message_of">New messages from: </string>
     <string name="no_ask_friend">You have no friend requests</string>
     <string name="private_phone">the phone number remains private. it will not be visible to other users.</string>
+    <string name="allez_sur_le_site">Go to the site</string>
 
 </resources>

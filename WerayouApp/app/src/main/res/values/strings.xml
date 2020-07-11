@@ -94,6 +94,7 @@
     <string name="private_phone">le numéro de téléphone reste privé. il ne sera pas visible par les autres utilisateurs.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="allez_sur_le_site">Allez sur le site</string>
 
 
 </resources>

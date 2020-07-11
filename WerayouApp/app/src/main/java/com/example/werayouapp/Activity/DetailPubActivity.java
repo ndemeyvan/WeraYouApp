@@ -26,6 +26,7 @@ public class DetailPubActivity extends AppCompatActivity {
     ImageView imagePub;
     Button button;
     Toolbar toolbar;
+    String bannerImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,8 @@ public class DetailPubActivity extends AppCompatActivity {
         desc = getIntent().getStringExtra("desc");
         title = getIntent().getStringExtra("title");
         websiteLink = getIntent().getStringExtra("websiteLink");
+        bannerImage = getIntent().getStringExtra("bannerImage");
+
         setContentView(R.layout.activity_detail_pub);
         titleTextview = findViewById(R.id.title);
         description = findViewById(R.id.description);

@@ -227,7 +227,9 @@ public class MessageFragment extends Fragment {
                         desc1 = map.get("desc").toString();
                         title1 = map.get("title").toString();
                         websiteLink1 = map.get("websiteLink").toString();
-                        Picasso.with(getActivity()).load(image1a).into(image1);
+                        final String bannerImage = map.get("bannerImage").toString();
+
+                        Picasso.with(getActivity()).load(bannerImage).into(image1);
 
                         image1.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -238,6 +240,8 @@ public class MessageFragment extends Fragment {
                                 intent.putExtra("desc", desc1);
                                 intent.putExtra("title", title1);
                                 intent.putExtra("websiteLink", websiteLink1);
+                                intent.putExtra("bannerImage", bannerImage);
+
                                 startActivity(intent);
                             }
                         });
@@ -267,7 +271,9 @@ public class MessageFragment extends Fragment {
                         desc2 = map.get("desc").toString();
                         title2 = map.get("title").toString();
                         websiteLink2 = map.get("websiteLink").toString();
-                        Picasso.with(getActivity()).load(image2a).into(image2);
+                        final String bannerImage = map.get("bannerImage").toString();
+
+                        Picasso.with(getActivity()).load(bannerImage).into(image2);
                         image2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -277,6 +283,8 @@ public class MessageFragment extends Fragment {
                                 intent.putExtra("desc", desc2);
                                 intent.putExtra("title", title2);
                                 intent.putExtra("websiteLink", websiteLink2);
+                                intent.putExtra("bannerImage", bannerImage);
+
                                 startActivity(intent);
 
 
@@ -307,7 +315,9 @@ public class MessageFragment extends Fragment {
                         desc3 = map.get("desc").toString();
                         title3 = map.get("title").toString();
                         websiteLink3 = map.get("websiteLink").toString();
-                        Picasso.with(getActivity()).load(image3a).into(image3);
+                        final String bannerImage = map.get("bannerImage").toString();
+
+                        Picasso.with(getActivity()).load(bannerImage).into(image3);
                         image3.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -317,6 +327,8 @@ public class MessageFragment extends Fragment {
                                 intent.putExtra("desc", desc3);
                                 intent.putExtra("title", title3);
                                 intent.putExtra("websiteLink", websiteLink3);
+                                intent.putExtra("bannerImage", bannerImage);
+
                                 startActivity(intent);
 
                             }
@@ -346,7 +358,9 @@ public class MessageFragment extends Fragment {
                         desc4 = map.get("desc").toString();
                         title4 = map.get("title").toString();
                         websiteLink4 = map.get("websiteLink").toString();
-                        Picasso.with(getActivity()).load(image4a).into(image4);
+                        final String bannerImage = map.get("bannerImage").toString();
+
+                        Picasso.with(getActivity()).load(bannerImage).into(image4);
                         image4.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -356,6 +370,8 @@ public class MessageFragment extends Fragment {
                                 intent.putExtra("desc", desc4);
                                 intent.putExtra("title", title4);
                                 intent.putExtra("websiteLink", websiteLink4);
+                                intent.putExtra("bannerImage", bannerImage);
+
                                 startActivity(intent);
 
                             }
@@ -385,7 +401,9 @@ public class MessageFragment extends Fragment {
                         desc5 = map.get("desc").toString();
                         title5 = map.get("title").toString();
                         websiteLink5 = map.get("websiteLink").toString();
-                        Picasso.with(getActivity()).load(image5a).into(image5);
+                        final String bannerImage = map.get("bannerImage").toString();
+
+                        Picasso.with(getActivity()).load(bannerImage).into(image5);
                         image5.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -395,6 +413,8 @@ public class MessageFragment extends Fragment {
                                 intent.putExtra("desc", desc5);
                                 intent.putExtra("title", title5);
                                 intent.putExtra("websiteLink", websiteLink5);
+                                intent.putExtra("bannerImage", bannerImage);
+
                                 startActivity(intent);
 
                             }
@@ -425,7 +445,9 @@ public class MessageFragment extends Fragment {
                         final String desc = map.get("desc").toString();
                         final String title = map.get("title").toString();
                         final String websiteLink = map.get("websiteLink").toString();
-                        Picasso.with(getActivity()).load(image).into(image6);
+                        final String bannerImage = map.get("bannerImage").toString();
+
+                        Picasso.with(getActivity()).load(bannerImage).into(image6);
                         image6.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -435,6 +457,8 @@ public class MessageFragment extends Fragment {
                                 intent.putExtra("desc", desc);
                                 intent.putExtra("title", title);
                                 intent.putExtra("websiteLink", websiteLink);
+                                intent.putExtra("bannerImage", bannerImage);
+
                                 startActivity(intent);
                             }
                         });

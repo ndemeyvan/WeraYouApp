@@ -67,7 +67,7 @@
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/primary_btn_bg"
                 android:padding="10dp"
-                android:text="Allez sur le site"
+                android:text="@string/allez_sur_le_site"
                 android:textAllCaps="false"
                 android:textColor="@android:color/background_light"
                 android:textSize="14sp"
