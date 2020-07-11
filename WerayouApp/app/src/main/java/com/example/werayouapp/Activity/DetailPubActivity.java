@@ -54,6 +54,7 @@ public class DetailPubActivity extends AppCompatActivity {
                 finish();
             }
         });
+        toolbar.setTitle(title);
         Picasso.with(DetailPubActivity.this).load(image).into(imagePub);
         if (hasWebsite == false) {
             button.setVisibility(View.GONE);

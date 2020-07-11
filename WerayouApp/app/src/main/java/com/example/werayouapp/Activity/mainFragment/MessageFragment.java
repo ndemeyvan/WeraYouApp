@@ -65,7 +65,6 @@ public class MessageFragment extends Fragment {
     ProgressBar progressBar;
     ViewFlipper viewFlipper;
     ImageView image6, image5, image4, image3, image2, image1;
-    TextView image6Text, image5Text, image4Text, image3Text, image2Text, image1Text;
     private String image1a;
     private boolean hasWebsite1;
     private String desc1;
@@ -129,13 +128,6 @@ public class MessageFragment extends Fragment {
         image3 = v.findViewById(R.id.image3);
         image2 = v.findViewById(R.id.image2);
         image1 = v.findViewById(R.id.image1);
-        //text
-        image6Text = v.findViewById(R.id.image6Text);
-        image5Text = v.findViewById(R.id.image5Text);
-        image4Text = v.findViewById(R.id.image4Text);
-        image3Text = v.findViewById(R.id.image3Text);
-        image2Text = v.findViewById(R.id.image2Text);
-        image1Text = v.findViewById(R.id.image1Text);
         //getLastMessage();
         getMessage();
         sharedpreferences = getActivity().getSharedPreferences(myPref,

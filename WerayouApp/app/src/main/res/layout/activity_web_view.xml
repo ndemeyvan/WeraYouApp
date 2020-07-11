@@ -61,6 +61,7 @@
                 android:layout_height="20dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginRight="28dp"
+                android:theme="@style/SpinnerTheme"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
