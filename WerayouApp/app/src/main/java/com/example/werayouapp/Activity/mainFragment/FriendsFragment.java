@@ -117,7 +117,7 @@ public class FriendsFragment extends Fragment {
                     message.setVisibility(View.INVISIBLE);
                 }
 
-                Collections.sort(friendsModelList);
+                //Collections.sort(friendsModelList);
                 if (friendsModelList.size() == 0) {
                     message.setVisibility(View.VISIBLE);
                     message.setText(getResources().getString(R.string.no_ask_friend));

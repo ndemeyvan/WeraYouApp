@@ -31,4 +31,9 @@
         android:icon="@drawable/ic_account"
         android:iconTint="@color/colorPrimary"
         android:title="moi" />
+    <item
+        android:id="@+id/pub"
+        android:icon="@drawable/ic_ads_shopping"
+        android:iconTint="@color/colorPrimary"
+        android:title="pub" />
 </menu>

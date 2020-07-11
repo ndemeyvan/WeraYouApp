@@ -13,6 +13,9 @@
         android:roundIcon="@drawable/welogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activity.WebViewActivity"></activity>
+        <activity android:name=".Activity.DetailPubActivity" />
+
         <service
             android:name=".Utiles.MyFirebaseMessagingService"
             android:exported="false">
@@ -20,16 +23,19 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/welogo" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".login.OtpActivity"></activity>
+        <activity android:name=".login.OtpActivity" />
         <activity android:name=".intro.WelcomeActivity" />
         <activity android:name=".Activity.DetailImageChat" />
         <activity android:name=".Activity.ChatActivity" />
@@ -55,7 +61,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

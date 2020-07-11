@@ -30,7 +30,7 @@ public class ArrayAdapter extends android.widget.ArrayAdapter<Cards> {
         }
 
         TextView name = convertView.findViewById(R.id.nom_profil);
-        ImageView image = convertView.findViewById(R.id.imageUser);
+        ImageView image = convertView.findViewById(R.id.publicity_image);
         TextView cityUser = convertView.findViewById(R.id.cityUser);
         CardView card = convertView.findViewById(R.id.card_item);
         TextView apropos = convertView.findViewById(R.id.description);

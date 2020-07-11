@@ -3,13 +3,10 @@ package com.example.werayouapp.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -19,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -31,9 +27,6 @@ import com.example.werayouapp.Activity.mainFragment.MeFragment;
 import com.example.werayouapp.Activity.mainFragment.MessageFragment;
 import com.example.werayouapp.R;
 import com.example.werayouapp.login.LoginActivity;
-import com.example.werayouapp.login.OtpActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -128,14 +121,17 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
 
         }
 
-        bottomNavigation = findViewById(R.id.bottomNavigationView);
-        bottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
-        //bottomNavigation.setSaveFromParentEnabled(true);
-        this.createNavItems();
 
         toolbar = findViewById(R.id.toolbar);
         toobarTitle = findViewById(R.id.toobarTitle);
         toobarTitle.setText("Werayou");
+
+        bottomNavigation = findViewById(R.id.bottomNavigationView);
+        bottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
+        //bottomNavigation.setSaveFromParentEnabled(true);
+        createNavItems();
+
+
         loadFragment(new HomeFragment());
 
         mCountryCode.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
@@ -174,12 +170,14 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
         AHBottomNavigationItem friend = new AHBottomNavigationItem("Amis", R.drawable.ic_friend);
         AHBottomNavigationItem messages = new AHBottomNavigationItem("Messages", R.drawable.ic_conversation);
         AHBottomNavigationItem me = new AHBottomNavigationItem("Moi", R.drawable.ic_account);
+//        AHBottomNavigationItem pub = new AHBottomNavigationItem("Pub", R.drawable.ic_ads_shopping);
         //ADD ITEMS TO BAR
         bottomNavigation.addItem(home);
         bottomNavigation.addItem(addfriend);
         bottomNavigation.addItem(friend);
         bottomNavigation.addItem(messages);
         bottomNavigation.addItem(me);
+//        bottomNavigation.addItem(pub);
         //notification
         checkifHavenotification();
         //PROPERTIES
@@ -213,6 +211,11 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                     MeFragment fragment = new MeFragment();
                     loadFragment(fragment);
                 }
+//                else if (position == 5) {
+//                    toobarTitle.setText("");
+//                    PubFragment fragment = new PubFragment();
+//                    loadFragment(fragment);
+//                }
                 return true;
             }
         });
@@ -414,6 +417,11 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                     toobarTitle.setText(getResources().getString(R.string.me));
                     fragment = new MeFragment();
                     loadFragment(fragment);
+//                case R.id.pub:
+//                    mCountryCode.setVisibility(View.INVISIBLE);
+//                    toobarTitle.setText(getResources().getString(R.string.me));
+//                    fragment = new PubFragment();
+//                    loadFragment(fragment);
                     return true;
             }
             return false;
@@ -460,8 +468,6 @@ public class ActivityPrincipal extends AppCompatActivity implements NavigationVi
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 
 
 

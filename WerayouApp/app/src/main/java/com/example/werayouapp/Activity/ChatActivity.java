@@ -1214,7 +1214,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setStatus(false);
+        //setStatus(false);
 //        FirebaseMessaging.getInstance().subscribeToTopic("");
 
     }

@@ -92,6 +92,8 @@
     <string name="lock_user">Voulez vraiment bloquer cet utilisateur ?</string>
     <string name="no_ask_friend">Vous n\'avez aucune demande d\'ami</string>
     <string name="private_phone">le numéro de téléphone reste privé. il ne sera pas visible par les autres utilisateurs.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
